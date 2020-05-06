@@ -1,0 +1,118 @@
+extension Document {
+    /**
+     Represent a resource
+     */
+    public struct ResourceObject {
+        /**
+         Resource's id
+         */
+        public let id: String?
+        
+        /**
+         Resource's type
+         */
+        public let type: String
+        
+        /**
+         Resource’s data
+         */
+        public let attributes: JsonObject?
+        
+        /**
+         Relationships between the resource and other resources
+         */
+        public let relationships: RelationshipObjects?
+        
+        /**
+         Links related to the resource
+         */
+        public let links: LinksObject?
+        
+        /**
+         Non-standard meta-information about the resource that can not be represented as an attribute or relationship
+         */
+        public let meta: Meta?
+        
+        /**
+         Constructor
+         
+         - Parameter json: JSON object from which to build the resource
+         - Throws:
+         - `DocumentError.missingKey`:  If `type` attribute is missing
+         - `DocumentError.emptyRelationshipObject`: If neither links or data or meta are set in relationship(s)
+         - `DocumentError.missingKey`:  If `id` and/or `type` attribute are missing in relationship(s) indentifier(s)
+         */
+        public init(json: JsonObject) throws {
+            self.id = json["id"] as? String
+            
+            if let type = json["type"] as? String {
+                self.type = type
+            } else {
+                throw DocumentError.missingKey(key: "type")
+            }
+            
+            self.attributes = json["attributes"] as? JsonObject
+            
+            if let relationships = json["relationships"] as? [String: JsonObject] {
+                self.relationships = RelationshipObjects(uniqueKeysWithValues: try relationships.map { try ($0.key, RelationshipObject(json: $0.value)) })
+            } else {
+                self.relationships = nil
+            }
+            
+            if let links = json["links"] as? JsonObject {
+                self.links = LinksObject(json: links)
+            } else {
+                self.links = nil
+            }
+            
+            self.meta = json["meta"] as? Meta
+        }
+        
+        /**
+         Constructor
+         
+         - Parameter id: Resource's id
+         - Parameter type: Resource's type
+         - Parameter attributes: Resource’s data
+         - Parameter relationships: Relationships between the resource and other resources
+         - Parameter links: Links related to the resource
+         - Parameter meta: Non-standard meta-information about the resource that can not be represented as an attribute or relationship
+         */
+        public init(id: String?, type: String, attributes: JsonObject?, relationships: RelationshipObjects?, links: LinksObject?, meta: Meta?) {
+            self.id = id
+            self.type = type
+            self.attributes = attributes
+            self.relationships = relationships
+            self.links = links
+            self.meta = meta
+        }
+        
+        /**
+         Serialize to JSON format
+         
+         - Returns: The  JSON representation of the instance
+         */
+        public func toJson() -> JsonObject {
+            var json: JsonObject = [:]
+            
+            if let id = self.id {
+                json["id"] = id
+            }
+            json["type"] = type
+            if let attributes = self.attributes {
+                json["attributes"] = attributes
+            }
+            if let relationships = self.relationships {
+                json["relationships"] = Dictionary(uniqueKeysWithValues: relationships.map { ($0.key, $0.value.toJson()) })
+            }
+            if let links = self.links {
+                json["links"] = links.toJson()
+            }
+            if let meta = self.meta {
+                json["meta"] = meta
+            }
+            
+            return json
+        }
+    }
+}
