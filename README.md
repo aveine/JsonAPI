@@ -2,6 +2,7 @@
 
 [![platforms](https://img.shields.io/badge/platforms-iOS-333333.svg)](https://travis-ci.org/ReactiveX/RxSwift)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![pod](https://img.shields.io/cocoapods/v/JsonAPISwift.svg)](https://cocoapods.org/pods/JsonAPISwift)
 
 JsonAPI is a Swift JSON:API standard implementation.<br>
 It has been greatly inspired from another library: [Vox](https://github.com/aronbalog/Vox).
@@ -11,6 +12,7 @@ This library allows several types of use, from framework style to "raw" JSON:API
 - [Requirements](#requirements)
 - [Installation](#installation)
     - [Carthage](#carthage)
+    - [CocoaPods](#cocoapods)
 - [Usage](#usage)
     - [Basic](#basic)
         - [Defining a resource](#defining-a-resource)
@@ -25,6 +27,7 @@ This library allows several types of use, from framework style to "raw" JSON:API
                 - [Update a resource](#update-a-resource)
                 - [Delete a resource](#delete-a-resource)
     - [Advanced](#advanced)
+        - [API Documentation](#api-documentation)
         - [Create a request without a data source](#create-a-request-without-a-data-source)
         - [Raw JSON:API object manipulation](#raw-jsonapi-object-manipulation)
 
@@ -44,6 +47,14 @@ These are currently the supported installation options:
 To integrate JsonAPI into your Xcode project using Carthage, specify it in your `Cartfile`:
 ```
 github "Aveine/JsonAPI" ~> 1.0
+```
+*For usage and installation instructions, visit their website.*
+
+### [CocoaPods](https://guides.cocoapods.org/using/using-cocoapods.html)
+
+To integrate JsonAPI into your Xcode project using CocoaPods, specify it in your `Podfile`:
+```
+pod 'JsonAPISwift', '~> 1.0'
 ```
 *For usage and installation instructions, visit their website.*
 
@@ -349,6 +360,10 @@ dataSource
 ### Advanced
 
 **!! Section in progress !!**
+
+#### API Documentation
+
+A complete API documentation can be found [here](https://aveine.github.io/JsonAPI/).
 
 #### Create a request without a data source
 
