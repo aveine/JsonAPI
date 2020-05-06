@@ -10,7 +10,7 @@ This library allows several types of use, from framework style to "raw" JSON:API
 
 - [Requirements](#requirements)
 - [Installation](#installation)
-    - [Carthage](#carthagehttpsgithubcomcarthagecarthage)
+    - [Carthage](#carthage)
 - [Usage](#usage)
     - [Basic](#basic)
         - [Defining a resource](#defining-a-resource)
