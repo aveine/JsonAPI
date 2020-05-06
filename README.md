@@ -1,6 +1,7 @@
 # JsonAPI
 
 [![platforms](https://img.shields.io/badge/platforms-iOS-333333.svg)](https://travis-ci.org/ReactiveX/RxSwift)
+[![JsonAPI CI](https://github.com/aveine/JsonAPI/workflows/JsonAPI%20CI/badge.svg?branch=master)](https://github.com/aveine/JsonAPI/actions)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![pod](https://img.shields.io/cocoapods/v/JsonAPISwift.svg)](https://cocoapods.org/pods/JsonAPISwift)
 
