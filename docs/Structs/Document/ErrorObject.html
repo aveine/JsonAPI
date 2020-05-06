@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>ErrorObject Structure Reference</title>
+    <link rel="stylesheet" type="text/css" href="../../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../../js/jquery.min.js" defer></script>
+    <script src="../../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Struct/ErrorObject" class="dashAnchor"></a>
+    <a title="ErrorObject Structure Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../../index.html">JsonAPI 1.0.0 Docs</a> (87% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../../index.html">JsonAPI Reference</a>
+        <img id="carat" src="../../img/carat.png" />
+        ErrorObject Structure Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Classes/DataSource.html">DataSource</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/DataSource/Strategy.html">– Strategy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/Request.html">Request</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/Resource.html">Resource</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/Resource.html#/s:7JsonAPI8ResourceC9SignatureV">– Signature</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/ResourceCollectionRequest.html">ResourceCollectionRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes.html#/s:7JsonAPI15ResourceRequestC">ResourceRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/ScrudRouter.html">ScrudRouter</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Enums/HttpMethod.html">HttpMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Enums/RequestError.html">RequestError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Enums/Sort.html">Sort</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Protocols/Client.html">Client</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Protocols/Router.html">Router</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Structs/Document.html">Document</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Structs/Document/PrimaryData.html">– PrimaryData</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Structs/Document/DocumentError.html">– DocumentError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Structs/Document/ErrorObject.html">– ErrorObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Structs/Document/JsonApiObject.html">– JsonApiObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Structs/Document/LinksObject.html">– LinksObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Structs/Document/RelationshipObject.html">– RelationshipObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Structs/Document/ResourceIdentifierObject.html">– ResourceIdentifierObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Structs/Document/ResourceObject.html">– ResourceObject</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Typealiases.html#/s:7JsonAPI18ClientFailureBlocka">ClientFailureBlock</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Typealiases.html#/s:7JsonAPI18ClientSuccessBlocka">ClientSuccessBlock</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>ErrorObject</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ErrorObject</span> <span class="p">:</span> <span class="kt">Error</span></code></pre>
+
+                </div>
+              </div>
+            <p>Provide additional information about problems encountered while performing an operation</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7JsonAPI8DocumentV11ErrorObjectV6SourceV"></a>
+                    <a name="//apple_ref/swift/Struct/Source" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7JsonAPI8DocumentV11ErrorObjectV6SourceV">Source</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An object containing references to the source of the error</p>
+
+                        <a href="../../Structs/Document/ErrorObject/Source.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Source</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7JsonAPI8DocumentV11ErrorObjectV2idSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/id" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7JsonAPI8DocumentV11ErrorObjectV2idSSSgvp">id</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A unique identifier for this particular occurrence of the problem</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7JsonAPI8DocumentV11ErrorObjectV5linksAC05LinksE0VSgvp"></a>
+                    <a name="//apple_ref/swift/Property/links" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7JsonAPI8DocumentV11ErrorObjectV5linksAC05LinksE0VSgvp">links</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A links object containing the following members:</p>
+
+<ul>
+<li>about: a link that leads to further details about this particular occurrence of the problem</li>
+</ul>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">links</span><span class="p">:</span> <span class="kt"><a href="../../Structs/Document/LinksObject.html">LinksObject</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7JsonAPI8DocumentV11ErrorObjectV6statusSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/status" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7JsonAPI8DocumentV11ErrorObjectV6statusSSSgvp">status</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The HTTP status code applicable to this problem</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">status</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7JsonAPI8DocumentV11ErrorObjectV4codeSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/code" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7JsonAPI8DocumentV11ErrorObjectV4codeSSSgvp">code</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An application-specific error code</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">code</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7JsonAPI8DocumentV11ErrorObjectV5titleSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/title" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7JsonAPI8DocumentV11ErrorObjectV5titleSSSgvp">title</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A short, human-readable summary of the problem that <strong>SHOULD NOT</strong> change from occurrence to occurrence of the problem, except for purposes of localization</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">title</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7JsonAPI8DocumentV11ErrorObjectV6detailSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/detail" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7JsonAPI8DocumentV11ErrorObjectV6detailSSSgvp">detail</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A human-readable explanation specific to this occurrence of the problem. Like <em>title</em>, this field’s value can be localized</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">detail</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7JsonAPI8DocumentV11ErrorObjectV6sourceAE6SourceVSgvp"></a>
+                    <a name="//apple_ref/swift/Property/source" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7JsonAPI8DocumentV11ErrorObjectV6sourceAE6SourceVSgvp">source</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An object containing references to the source of the error</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">source</span><span class="p">:</span> <span class="kt"><a href="../../Structs/Document/ErrorObject/Source.html">Source</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7JsonAPI8DocumentV11ErrorObjectV4metaSDySSypSgGSgvp"></a>
+                    <a name="//apple_ref/swift/Property/meta" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7JsonAPI8DocumentV11ErrorObjectV4metaSDySSypSgGSgvp">meta</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Non-standard meta-information about the error</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">meta</span><span class="p">:</span> <span class="kt"><a href="../../Structs/Document.html#/s:7JsonAPI8DocumentV4Metaa">Meta</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7JsonAPI8DocumentV11ErrorObjectV4jsonAESDySSypSgG_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(json:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7JsonAPI8DocumentV11ErrorObjectV4jsonAESDySSypSgG_tcfc">init(json:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Constructor</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">json</span><span class="p">:</span> <span class="kt"><a href="../../Structs/Document.html#/s:7JsonAPI8DocumentV0A6Objecta">JsonObject</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>json</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>JSON object from which to build the error</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7JsonAPI8DocumentV11ErrorObjectV2id5links6status4code5title6detail6source4metaAESSSg_AC05LinksE0VSgA4nE6SourceVSgSDySSypSgGSgtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(id:links:status:code:title:detail:source:meta:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7JsonAPI8DocumentV11ErrorObjectV2id5links6status4code5title6detail6source4metaAESSSg_AC05LinksE0VSgA4nE6SourceVSgSDySSypSgGSgtcfc">init(id:<wbr>links:<wbr>status:<wbr>code:<wbr>title:<wbr>detail:<wbr>source:<wbr>meta:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Constructor</p>
+
+<ul>
+<li>about: a link that leads to further details about this particular occurrence of the problem</li>
+</ul>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span> <span class="nv">links</span><span class="p">:</span> <span class="kt"><a href="../../Structs/Document/LinksObject.html">LinksObject</a></span><span class="p">?,</span> <span class="nv">status</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span> <span class="nv">code</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span> <span class="nv">title</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span> <span class="nv">detail</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span> <span class="nv">source</span><span class="p">:</span> <span class="kt"><a href="../../Structs/Document/ErrorObject/Source.html">Source</a></span><span class="p">?,</span> <span class="nv">meta</span><span class="p">:</span> <span class="kt"><a href="../../Structs/Document.html#/s:7JsonAPI8DocumentV4Metaa">Meta</a></span><span class="p">?)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>id</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A unique identifier for this particular occurrence of the problem</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>links</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A links object containing the following members:</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>status</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The HTTP status code applicable to this problem</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>code</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An application-specific error code</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>title</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A short, human-readable summary of the problem that <strong>SHOULD NOT</strong> change from occurrence to occurrence of the problem, except for purposes of localization</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>detail</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A human-readable explanation specific to this occurrence of the problem. Like <em>title</em>, this field’s value can be localized</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>source</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An object containing references to the source of the error</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>meta</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Non-standard meta-information about the error</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7JsonAPI8DocumentV11ErrorObjectV02toA0SDySSypSgGyF"></a>
+                    <a name="//apple_ref/swift/Method/toJson()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7JsonAPI8DocumentV11ErrorObjectV02toA0SDySSypSgGyF">toJson()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Serialize to JSON format</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">toJson</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt"><a href="../../Structs/Document.html#/s:7JsonAPI8DocumentV0A6Objecta">JsonObject</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>JSON representation of the instance</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2020 <a class="link" href="https://github.com/aveine/JsonAPI" target="_blank" rel="external">Christopher Paccard</a>. All rights reserved. (Last updated: 2020-05-06)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

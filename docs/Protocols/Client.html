@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Client Protocol Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Protocol/Client" class="dashAnchor"></a>
+    <a title="Client Protocol Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">JsonAPI 1.0.0 Docs</a> (87% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">JsonAPI Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        Client Protocol Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/DataSource.html">DataSource</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DataSource/Strategy.html">– Strategy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Request.html">Request</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Resource.html">Resource</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Resource.html#/s:7JsonAPI8ResourceC9SignatureV">– Signature</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ResourceCollectionRequest.html">ResourceCollectionRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes.html#/s:7JsonAPI15ResourceRequestC">ResourceRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ScrudRouter.html">ScrudRouter</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/HttpMethod.html">HttpMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/RequestError.html">RequestError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/Sort.html">Sort</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/Client.html">Client</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Router.html">Router</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/Document.html">Document</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Document/PrimaryData.html">– PrimaryData</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Document/DocumentError.html">– DocumentError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Document/ErrorObject.html">– ErrorObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Document/JsonApiObject.html">– JsonApiObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Document/LinksObject.html">– LinksObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Document/RelationshipObject.html">– RelationshipObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Document/ResourceIdentifierObject.html">– ResourceIdentifierObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Document/ResourceObject.html">– ResourceObject</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7JsonAPI18ClientFailureBlocka">ClientFailureBlock</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7JsonAPI18ClientSuccessBlocka">ClientSuccessBlock</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>Client</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Client</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+
+                </div>
+              </div>
+            <p>A client using the library</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7JsonAPI6ClientP14executeRequest4path6method10queryItems4body7success7failure8userInfoySS_AA10HttpMethodOSay10Foundation12URLQueryItemVGSgSDySSypSgGSgySo17NSHTTPURLResponseCSg_AN4DataVSgtcys5Error_pSg_A_tcSDySSypGSgtF"></a>
+                    <a name="//apple_ref/swift/Method/executeRequest(path:method:queryItems:body:success:failure:userInfo:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7JsonAPI6ClientP14executeRequest4path6method10queryItems4body7success7failure8userInfoySS_AA10HttpMethodOSay10Foundation12URLQueryItemVGSgSDySSypSgGSgySo17NSHTTPURLResponseCSg_AN4DataVSgtcys5Error_pSg_A_tcSDySSypGSgtF">executeRequest(path:<wbr>method:<wbr>queryItems:<wbr>body:<wbr>success:<wbr>failure:<wbr>userInfo:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">executeRequest</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">method</span><span class="p">:</span> <span class="kt"><a href="../Enums/HttpMethod.html">HttpMethod</a></span><span class="p">,</span> <span class="nv">queryItems</span><span class="p">:</span> <span class="p">[</span><span class="kt">URLQueryItem</span><span class="p">]?,</span> <span class="nv">body</span><span class="p">:</span> <span class="kt"><a href="../Structs/Document.html">Document</a></span><span class="o">.</span><span class="kt">JsonObject</span><span class="p">?,</span> <span class="nv">success</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Typealiases.html#/s:7JsonAPI18ClientSuccessBlocka">ClientSuccessBlock</a></span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Typealiases.html#/s:7JsonAPI18ClientFailureBlocka">ClientFailureBlock</a></span><span class="p">,</span> <span class="nv">userInfo</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">Any</span><span class="p">]?)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>path</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Path on which the client must execute the request</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>method</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>HTTP method the client must use to execute the request</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>queryItems</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Potential query items the client must send along with the request</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>body</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Potential body the client must send along with the request</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>success</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Success block that will be called if the request successed</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>failure</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Failure block that will be called if the request failed</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>userInfo</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Potential meta information that the user can provide to the client</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2020 <a class="link" href="https://github.com/aveine/JsonAPI" target="_blank" rel="external">Christopher Paccard</a>. All rights reserved. (Last updated: 2020-05-06)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

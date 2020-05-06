@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>JsonAPI  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a title="JsonAPI  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html">JsonAPI 1.0.0 Docs</a> (87% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html">JsonAPI Reference</a>
+        <img id="carat" src="img/carat.png" />
+        JsonAPI  Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/DataSource.html">DataSource</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/DataSource/Strategy.html">– Strategy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Request.html">Request</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Resource.html">Resource</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Resource.html#/s:7JsonAPI8ResourceC9SignatureV">– Signature</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/ResourceCollectionRequest.html">ResourceCollectionRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes.html#/s:7JsonAPI15ResourceRequestC">ResourceRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/ScrudRouter.html">ScrudRouter</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Enums/HttpMethod.html">HttpMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/RequestError.html">RequestError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/Sort.html">Sort</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols/Client.html">Client</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/Router.html">Router</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Structs/Document.html">Document</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Document/PrimaryData.html">– PrimaryData</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Document/DocumentError.html">– DocumentError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Document/ErrorObject.html">– ErrorObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Document/JsonApiObject.html">– JsonApiObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Document/LinksObject.html">– LinksObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Document/RelationshipObject.html">– RelationshipObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Document/ResourceIdentifierObject.html">– ResourceIdentifierObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Document/ResourceObject.html">– ResourceObject</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:7JsonAPI18ClientFailureBlocka">ClientFailureBlock</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:7JsonAPI18ClientSuccessBlocka">ClientSuccessBlock</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            
+            <h1 id='jsonapi' class='heading'>JsonAPI</h1>
+
+<p><a href="https://travis-ci.org/ReactiveX/RxSwift"><img src="https://img.shields.io/badge/platforms-iOS-333333.svg" alt="platforms"></a>
+<a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" alt="Carthage compatible"></a></p>
+
+<p>JsonAPI is a Swift JSON:API standard implementation.<br>
+It has been greatly inspired from another library: <a href="https://github.com/aronbalog/Vox">Vox</a>.</p>
+
+<p>This library allows several types of use, from framework style to &ldquo;raw&rdquo; JSON:API object manipulation.</p>
+
+<ul>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#installation">Installation</a>
+
+<ul>
+<li><a href="#carthage">Carthage</a></li>
+</ul></li>
+<li><a href="#usage">Usage</a>
+
+<ul>
+<li><a href="#basic">Basic</a>
+
+<ul>
+<li><a href="#defining-a-resource">Defining a resource</a></li>
+<li><a href="#networking">Networking</a>
+
+<ul>
+<li><a href="#client">Client</a></li>
+<li><a href="#data-source">Data source</a></li>
+<li><a href="#router">Router</a></li>
+<li><a href="#requests">Requests</a>
+
+<ul>
+<li><a href="#search-a-resource"></a></li>
+<li><a href="#read-a-resource"></a></li>
+<li><a href="#create-a-resource"></a></li>
+<li><a href="#update-a-resource"></a></li>
+<li><a href="#delete-a-resource"></a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><a href="#advanced">Advanced</a>
+
+<ul>
+<li><a href="#create-a-request-without-a-data-source">Create a request without a data source</a></li>
+<li><a href="#raw-jsonapi-object-manipulation">Raw JSON:API object manipulation</a></li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id='requirements' class='heading'>Requirements</h2>
+
+<ul>
+<li>Xcode 11.x</li>
+<li>Swift 5.x</li>
+</ul>
+<h2 id='installation' class='heading'>Installation</h2>
+
+<p>JsonAPI doesn&rsquo;t contain any external dependencies.</p>
+
+<p>These are currently the supported installation options:</p>
+<h3 id='a-href-https-github-com-carthage-carthage-carthage-a' class='heading'><a href="https://github.com/Carthage/Carthage">Carthage</a></h3>
+
+<p>To integrate JsonAPI into your Xcode project using Carthage, specify it in your <code>Cartfile</code>:</p>
+<pre class="highlight plaintext"><code>github "Aveine/JsonAPI" ~&gt; 1.0
+</code></pre>
+
+<p><em>For usage and installation instructions, visit their website.</em></p>
+<h2 id='usage' class='heading'>Usage</h2>
+<h3 id='basic' class='heading'>Basic</h3>
+<h4 id='defining-a-resource' class='heading'>Defining a resource</h4>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">JsonAPI</span>
+
+<span class="kd">class</span> <span class="kt">Article</span><span class="p">:</span> <span class="kt">Resource</span> <span class="p">{</span>
+
+    <span class="cm">/*--------------- Attributes ---------------*/</span>
+
+    <span class="k">var</span> <span class="nv">title</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span>
+
+    <span class="k">var</span> <span class="nv">descriptionText</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span>
+
+    <span class="k">var</span> <span class="nv">keywords</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]?</span>
+
+    <span class="k">var</span> <span class="nv">viewsCount</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">?</span>
+
+    <span class="k">var</span> <span class="nv">isFeatured</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">?</span>
+
+    <span class="k">var</span> <span class="nv">customObject</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">Any</span><span class="p">]?</span>
+
+    <span class="cm">/*------------- Relationships -------------*/</span>
+
+    <span class="k">var</span> <span class="nv">authors</span><span class="p">:</span> <span class="p">[</span><span class="kt">Person</span><span class="p">]?</span>
+
+    <span class="k">var</span> <span class="nv">editor</span><span class="p">:</span> <span class="kt">Person</span><span class="p">?</span>
+
+    <span class="cm">/*------------- Resource type -------------*/</span>
+
+    <span class="c1">// resource type should be defined, otherwise it is the class name</span>
+    <span class="k">override</span> <span class="kd">class</span> <span class="k">var</span> <span class="nv">resourceType</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="s">"articles"</span>
+    <span class="p">}</span>
+
+    <span class="cm">/*------------- Custom mechanics -------------*/</span>
+
+    <span class="cm">/**
+     Override the keys expected in the JSON API resource object's attributes to match the model's attributes
+     Format =&gt; [resourceObjectAttributeKey: modelKey]
+     */</span>
+    <span class="k">override</span> <span class="kd">class</span> <span class="k">var</span> <span class="nv">codingKeys</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">String</span><span class="p">]</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="s">"descriptionText"</span><span class="p">:</span> <span class="s">"description"</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+
+    <span class="cm">/**
+     Attributes that won't be serialized when serializing to a JSON API resource object
+     */</span>
+    <span class="k">override</span> <span class="kd">class</span> <span class="k">var</span> <span class="nv">excludedAttributes</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="s">"customObject"</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<h4 id='networking' class='heading'>Networking</h4>
+<h5 id='client' class='heading'>Client</h5>
+
+<p>Create a client that will be used to communicate with your JSON:API server and which inherit from the following protocol <code><a href="Protocols/Client.html">Client</a></code>:</p>
+<pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">ClientSuccessBlock</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span> <span class="nv">response</span><span class="p">:</span> <span class="kt">HTTPURLResponse</span><span class="p">?,</span> <span class="n">_</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span>
+<span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">ClientFailureBlock</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?,</span> <span class="n">_</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span>
+
+<span class="cm">/**
+ A client using the library
+ */</span>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Client</span><span class="p">:</span> <span class="kd">class</span> <span class="p">{</span>
+    <span class="cm">/**
+     - Parameter path: Path on which the client must execute the request
+     - Parameter method: HTTP method the client must use to execute the request
+     - Parameter queryItems: Potential query items the client must send along with the request
+     - Parameter body: Potential body the client must send along with the request
+     - Parameter success: Success block that will be called if the request successed
+     - Parameter failure: Failure block that will be called if the request failed
+     - Parameter userInfo: Potential meta information that the user can provide to the client
+     */</span>
+    <span class="kd">func</span> <span class="nf">executeRequest</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">method</span><span class="p">:</span> <span class="kt">HttpMethod</span><span class="p">,</span> <span class="nv">queryItems</span><span class="p">:</span> <span class="p">[</span><span class="kt">URLQueryItem</span><span class="p">]?,</span> <span class="nv">body</span><span class="p">:</span> <span class="kt">Document</span><span class="o">.</span><span class="kt">JsonObject</span><span class="p">?,</span> <span class="nv">success</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">ClientSuccessBlock</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">ClientFailureBlock</span><span class="p">,</span> <span class="nv">userInfo</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">Any</span><span class="p">]?)</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>Within the <code>executeRequest</code> method use any networking library that you want.</p>
+
+<p>For example with Alamofire you can create a client like this:</p>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">JsonAPI</span>
+<span class="kd">import</span> <span class="kt">Alamofire</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="kt">AlamofireClient</span><span class="p">:</span> <span class="kt">Client</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">baseUrl</span><span class="p">:</span> <span class="kt">URL</span>
+
+    <span class="kd">public</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">baseUrl</span> <span class="o">=</span> <span class="kt">URL</span><span class="p">(</span><span class="nv">string</span><span class="p">:</span> <span class="s">"https://api.com"</span><span class="p">)</span><span class="o">!</span>
+    <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="nf">getHeaders</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">HTTPHeaders</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="s">"Content-Type"</span><span class="p">:</span> <span class="s">"application/vnd.api+json"</span><span class="p">,</span>
+            <span class="s">"Accept"</span><span class="p">:</span> <span class="s">"application/vnd.api+json"</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kd">func</span> <span class="nf">executeRequest</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">method</span><span class="p">:</span> <span class="kt">HttpMethod</span><span class="p">,</span> <span class="nv">queryItems</span><span class="p">:</span> <span class="p">[</span><span class="kt">URLQueryItem</span><span class="p">]?,</span> <span class="nv">body</span><span class="p">:</span> <span class="kt">Document</span><span class="o">.</span><span class="kt">JsonObject</span><span class="p">?,</span> <span class="nv">success</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">ClientSuccessBlock</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">ClientFailureBlock</span><span class="p">,</span> <span class="nv">userInfo</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">Any</span><span class="p">]?)</span> <span class="p">{</span>
+        <span class="k">var</span> <span class="nv">urlComponents</span> <span class="o">=</span> <span class="kt">URLComponents</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="k">self</span><span class="o">.</span><span class="n">baseUrl</span><span class="o">.</span><span class="nf">appendingPathComponent</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="nv">resolvingAgainstBaseURL</span><span class="p">:</span> <span class="kc">false</span><span class="p">)</span><span class="o">!</span>
+        <span class="n">urlComponents</span><span class="o">.</span><span class="n">queryItems</span> <span class="o">=</span> <span class="n">queryItems</span>
+
+        <span class="k">let</span> <span class="nv">url</span> <span class="o">=</span> <span class="k">try!</span> <span class="n">urlComponents</span><span class="o">.</span><span class="nf">asURL</span><span class="p">()</span>
+
+        <span class="k">var</span> <span class="nv">request</span> <span class="o">=</span> <span class="kt">URLRequest</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">httpMethod</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="n">rawValue</span>
+        <span class="k">self</span><span class="o">.</span><span class="nf">getHeaders</span><span class="p">()</span><span class="o">.</span><span class="n">forEach</span> <span class="p">{</span> <span class="n">request</span><span class="o">.</span><span class="nf">setValue</span><span class="p">(</span><span class="nv">$0</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="nv">forHTTPHeaderField</span><span class="p">:</span> <span class="nv">$0</span><span class="o">.</span><span class="n">key</span><span class="p">)</span> <span class="p">}</span>
+        <span class="k">if</span> <span class="k">let</span> <span class="nv">body</span> <span class="o">=</span> <span class="n">body</span> <span class="p">{</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">httpBody</span> <span class="o">=</span> <span class="k">try!</span> <span class="kt">JSONSerialization</span><span class="o">.</span><span class="nf">data</span><span class="p">(</span><span class="nv">withJSONObject</span><span class="p">:</span> <span class="n">body</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="kt">SessionManager</span><span class="o">.</span><span class="k">default</span>
+            <span class="o">.</span><span class="nf">request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+            <span class="o">.</span><span class="nf">validate</span><span class="p">(</span><span class="nv">statusCode</span><span class="p">:</span> <span class="mi">200</span><span class="o">..&lt;</span><span class="mi">300</span><span class="p">)</span>
+            <span class="o">.</span><span class="nf">validate</span><span class="p">(</span><span class="nv">contentType</span><span class="p">:</span> <span class="p">[</span><span class="s">"application/vnd.api+json"</span><span class="p">])</span>
+            <span class="o">.</span><span class="n">responseData</span> <span class="p">{</span> <span class="p">(</span><span class="n">dataResponse</span><span class="p">)</span> <span class="k">in</span>
+                <span class="k">let</span> <span class="nv">response</span> <span class="o">=</span> <span class="n">dataResponse</span><span class="o">.</span><span class="n">response</span>
+                <span class="k">let</span> <span class="nv">data</span> <span class="o">=</span> <span class="n">dataResponse</span><span class="o">.</span><span class="n">data</span>
+                <span class="k">let</span> <span class="nv">error</span> <span class="o">=</span> <span class="n">dataResponse</span><span class="o">.</span><span class="n">error</span>
+
+                <span class="n">dataResponse</span>
+                    <span class="o">.</span><span class="n">result</span>
+                    <span class="o">.</span><span class="n">ifSuccess</span> <span class="p">{</span> <span class="nf">success</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="p">}</span>
+                    <span class="o">.</span><span class="n">ifFailure</span> <span class="p">{</span> <span class="nf">failure</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre>
+<h5 id='data-source' class='heading'>Data source</h5>
+
+<p>The most common way to interact with your resource is to define a data source:</p>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">JsonAPI</span>
+
+<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="k">let</span> <span class="nv">AlamofireClient</span><span class="p">()</span>
+
+<span class="k">let</span> <span class="nv">dataSourceRouter</span> <span class="o">=</span> <span class="kt">DataSource</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">strategy</span><span class="p">:</span> <span class="o">.</span><span class="nf">router</span><span class="p">(</span><span class="kt">ScrudRouter</span><span class="p">()))</span>
+<span class="k">let</span> <span class="nv">dataSourcePath</span> <span class="o">=</span> <span class="kt">DataSource</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">strategy</span><span class="p">:</span> <span class="o">.</span><span class="nf">path</span><span class="p">(</span><span class="s">"/&lt;type&gt;/&lt;id&gt;"</span><span class="p">))</span>
+</code></pre>
+
+<p>A data source need to have a <code>strategy</code> specified to know how to interact with your resource. The strategy can either be a router or a path.</p>
+
+<p>For the strategy <code>path</code>, <code>&lt;id&gt;</code> and <code>&lt;type&gt;</code> annotations can be used. If possible, they&rsquo;ll get replaced with adequate values.</p>
+<h5 id='router' class='heading'>Router</h5>
+
+<p>Routers allow you to define the paths to interacts with the resources.</p>
+
+<p>For example, this is the implementation of the <code><a href="Classes/ScrudRouter.html">ScrudRouter</a></code> within the library:</p>
+<pre class="highlight swift"><code><span class="cm">/**
+ Router for classical SCRUD paths architecture
+
+ - Search: resourceType
+ - Create: resourceType
+ - Read: resourceType/id
+ - Update: resourceType/id
+ - Delete: resourceType/id
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="kt">ScrudRouter</span><span class="p">:</span> <span class="kt">Router</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{}</span>
+
+    <span class="kd">public</span> <span class="kd">func</span> <span class="nf">search</span><span class="p">(</span><span class="nv">type</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">type</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kd">func</span> <span class="nf">create</span><span class="p">(</span><span class="nv">resource</span><span class="p">:</span> <span class="kt">Resource</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">resource</span><span class="o">.</span><span class="n">type</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kd">func</span> <span class="nf">read</span><span class="p">(</span><span class="nv">type</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="s">"</span><span class="se">\(</span><span class="n">type</span><span class="se">)</span><span class="s">/</span><span class="se">\(</span><span class="n">id</span><span class="se">)</span><span class="s">"</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kd">func</span> <span class="nf">update</span><span class="p">(</span><span class="nv">resource</span><span class="p">:</span> <span class="kt">Resource</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="s">"</span><span class="se">\(</span><span class="n">resource</span><span class="o">.</span><span class="n">type</span><span class="se">)</span><span class="s">/</span><span class="se">\(</span><span class="n">resource</span><span class="o">.</span><span class="n">id</span> <span class="p">??</span> <span class="s">""</span><span class="se">)</span><span class="s">"</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kd">func</span> <span class="nf">delete</span><span class="p">(</span><span class="nv">type</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="s">"</span><span class="se">\(</span><span class="n">type</span><span class="se">)</span><span class="s">/</span><span class="se">\(</span><span class="n">id</span><span class="se">)</span><span class="s">"</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kd">func</span> <span class="nf">delete</span><span class="p">(</span><span class="nv">resource</span><span class="p">:</span> <span class="kt">Resource</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="s">"</span><span class="se">\(</span><span class="n">resource</span><span class="o">.</span><span class="n">type</span><span class="se">)</span><span class="s">/</span><span class="se">\(</span><span class="n">resource</span><span class="o">.</span><span class="n">id</span> <span class="p">??</span> <span class="s">""</span><span class="se">)</span><span class="s">"</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<h5 id='requests' class='heading'>Requests</h5>
+<h6 id='search-a-resource' class='heading'>Search a resource</h6>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">JsonAPI</span>
+
+<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="k">let</span> <span class="nv">AlamofireClient</span><span class="p">()</span>
+<span class="k">let</span> <span class="nv">dataSource</span> <span class="o">=</span> <span class="kt">DataSource</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">strategy</span><span class="p">:</span> <span class="o">.</span><span class="nf">router</span><span class="p">(</span><span class="kt">ScrudRouter</span><span class="p">()))</span>
+
+<span class="n">dataSource</span>
+    <span class="o">.</span><span class="nf">search</span><span class="p">()</span>
+    <span class="o">.</span><span class="nf">result</span><span class="p">({</span> <span class="p">(</span><span class="nv">articles</span><span class="p">:</span> <span class="p">[</span><span class="kt">Article</span><span class="p">],</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">)</span> <span class="k">in</span>
+    <span class="p">},</span> <span class="p">{</span> <span class="p">(</span><span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
+    <span class="p">})</span>
+</code></pre>
+<h6 id='read-a-resource' class='heading'>Read a resource</h6>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">JsonAPI</span>
+
+<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="k">let</span> <span class="nv">AlamofireClient</span><span class="p">()</span>
+<span class="k">let</span> <span class="nv">dataSource</span> <span class="o">=</span> <span class="kt">DataSource</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">strategy</span><span class="p">:</span> <span class="o">.</span><span class="nf">router</span><span class="p">(</span><span class="kt">ScrudRouter</span><span class="p">()))</span>
+
+<span class="n">dataSource</span>
+    <span class="o">.</span><span class="nf">read</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="s">"1"</span><span class="p">)</span>
+    <span class="o">.</span><span class="nf">result</span><span class="p">({</span> <span class="p">(</span><span class="nv">article</span><span class="p">:</span> <span class="kt">Article</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
+    <span class="p">},</span> <span class="p">{</span> <span class="p">(</span><span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
+    <span class="p">})</span>
+</code></pre>
+<h6 id='create-a-resource' class='heading'>Create a resource</h6>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">JsonAPI</span>
+
+<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="k">let</span> <span class="nv">AlamofireClient</span><span class="p">()</span>
+<span class="k">let</span> <span class="nv">dataSource</span> <span class="o">=</span> <span class="kt">DataSource</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">strategy</span><span class="p">:</span> <span class="o">.</span><span class="nf">router</span><span class="p">(</span><span class="kt">ScrudRouter</span><span class="p">()))</span>
+
+<span class="k">let</span> <span class="nv">article</span> <span class="o">=</span> <span class="kt">Article</span><span class="p">()</span>
+    <span class="n">article</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="s">"1"</span>
+    <span class="n">article</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">"Title"</span>
+
+<span class="n">dataSource</span>
+    <span class="o">.</span><span class="nf">create</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
+    <span class="o">.</span><span class="nf">result</span><span class="p">({</span> <span class="p">(</span><span class="nv">article</span><span class="p">:</span> <span class="kt">Article</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
+    <span class="p">},</span> <span class="p">{</span> <span class="p">(</span><span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
+    <span class="p">})</span>
+</code></pre>
+<h6 id='update-a-resource' class='heading'>Update a resource</h6>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">JsonAPI</span>
+
+<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="k">let</span> <span class="nv">AlamofireClient</span><span class="p">()</span>
+<span class="k">let</span> <span class="nv">dataSource</span> <span class="o">=</span> <span class="kt">DataSource</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">strategy</span><span class="p">:</span> <span class="o">.</span><span class="nf">router</span><span class="p">(</span><span class="kt">ScrudRouter</span><span class="p">()))</span>
+
+<span class="k">let</span> <span class="nv">article</span> <span class="o">=</span> <span class="kt">Article</span><span class="p">()</span>
+    <span class="n">article</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="s">"1"</span>
+    <span class="n">article</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">"Another Title"</span>
+
+<span class="n">dataSource</span>
+    <span class="o">.</span><span class="nf">update</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
+    <span class="o">.</span><span class="nf">result</span><span class="p">({</span> <span class="p">(</span><span class="nv">article</span><span class="p">:</span> <span class="kt">Article</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
+    <span class="p">},</span> <span class="p">{</span> <span class="p">(</span><span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
+    <span class="p">})</span>
+</code></pre>
+<h6 id='delete-a-resource' class='heading'>Delete a resource</h6>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">JsonAPI</span>
+
+<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="k">let</span> <span class="nv">AlamofireClient</span><span class="p">()</span>
+<span class="k">let</span> <span class="nv">dataSource</span> <span class="o">=</span> <span class="kt">DataSource</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">strategy</span><span class="p">:</span> <span class="o">.</span><span class="nf">router</span><span class="p">(</span><span class="kt">ScrudRouter</span><span class="p">()))</span>
+
+<span class="k">let</span> <span class="nv">article</span> <span class="o">=</span> <span class="kt">Article</span><span class="p">()</span>
+    <span class="n">article</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="s">"1"</span>
+
+<span class="n">dataSource</span>
+    <span class="o">.</span><span class="nf">delete</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
+    <span class="o">.</span><span class="nf">result</span><span class="p">({</span> <span class="p">(</span><span class="nv">article</span><span class="p">:</span> <span class="kt">Article</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
+    <span class="p">},</span> <span class="p">{</span> <span class="p">(</span><span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
+    <span class="p">})</span>
+</code></pre>
+
+<p>Or if you don&rsquo;t have previously fetched the resource:</p>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">JsonAPI</span>
+
+<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="k">let</span> <span class="nv">AlamofireClient</span><span class="p">()</span>
+<span class="k">let</span> <span class="nv">dataSource</span> <span class="o">=</span> <span class="kt">DataSource</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">strategy</span><span class="p">:</span> <span class="o">.</span><span class="nf">router</span><span class="p">(</span><span class="kt">ScrudRouter</span><span class="p">()))</span>
+
+<span class="n">dataSource</span>
+    <span class="o">.</span><span class="nf">delete</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="s">"1"</span><span class="p">)</span>
+    <span class="o">.</span><span class="nf">result</span><span class="p">({</span> <span class="p">(</span><span class="nv">article</span><span class="p">:</span> <span class="kt">Article</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
+    <span class="p">},</span> <span class="p">{</span> <span class="p">(</span><span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
+    <span class="p">})</span>
+</code></pre>
+<h3 id='advanced' class='heading'>Advanced</h3>
+
+<p><strong>!! Section in progress !!</strong></p>
+<h4 id='create-a-request-without-a-data-source' class='heading'>Create a request without a data source</h4>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">JsonAPI</span>
+
+<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="k">let</span> <span class="nv">AlamofireClient</span><span class="p">()</span>
+<span class="k">let</span> <span class="nv">resourceRequest</span> <span class="o">=</span> <span class="kt">ResourceRequest</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="s">"/articles/1"</span><span class="p">,</span> <span class="nv">method</span><span class="p">:</span> <span class="kt">HttpMethod</span><span class="o">.</span><span class="k">get</span><span class="p">,</span> <span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">resource</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">resourceCollectionRequest</span> <span class="o">=</span> <span class="kt">ResourceCollectionRequest</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="s">"/articles"</span><span class="p">,</span> <span class="nv">method</span><span class="p">:</span> <span class="kt">HttpMethod</span><span class="o">.</span><span class="k">get</span><span class="p">,</span> <span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">resource</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+
+<span class="n">resourceRequest</span>
+    <span class="o">.</span><span class="nf">result</span><span class="p">({</span> <span class="p">(</span><span class="nv">article</span><span class="p">:</span> <span class="kt">Article</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
+    <span class="p">},</span> <span class="p">{</span> <span class="p">(</span><span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
+    <span class="p">})</span>
+
+<span class="n">resourceCollectionRequest</span>
+    <span class="o">.</span><span class="nf">result</span><span class="p">({</span> <span class="p">(</span><span class="nv">articles</span><span class="p">:</span> <span class="p">[</span><span class="kt">Article</span><span class="p">],</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">)</span> <span class="k">in</span>
+    <span class="p">},</span> <span class="p">{</span> <span class="p">(</span><span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
+    <span class="p">})</span>
+</code></pre>
+<h4 id='raw-json-api-object-manipulation' class='heading'>Raw JSON:API object manipulation</h4>
+
+<p>Coming soon</p>
+
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2020 <a class="link" href="https://github.com/aveine/JsonAPI" target="_blank" rel="external">Christopher Paccard</a>. All rights reserved. (Last updated: 2020-05-06)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

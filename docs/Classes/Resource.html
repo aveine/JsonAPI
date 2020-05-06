@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Resource Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/Resource" class="dashAnchor"></a>
+    <a title="Resource Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">JsonAPI 1.0.0 Docs</a> (87% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">JsonAPI Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        Resource Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/DataSource.html">DataSource</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DataSource/Strategy.html">– Strategy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Request.html">Request</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Resource.html">Resource</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Resource.html#/s:7JsonAPI8ResourceC9SignatureV">– Signature</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ResourceCollectionRequest.html">ResourceCollectionRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes.html#/s:7JsonAPI15ResourceRequestC">ResourceRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ScrudRouter.html">ScrudRouter</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/HttpMethod.html">HttpMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/RequestError.html">RequestError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/Sort.html">Sort</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/Client.html">Client</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Router.html">Router</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/Document.html">Document</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Document/PrimaryData.html">– PrimaryData</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Document/DocumentError.html">– DocumentError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Document/ErrorObject.html">– ErrorObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Document/JsonApiObject.html">– JsonApiObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Document/LinksObject.html">– LinksObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Document/RelationshipObject.html">– RelationshipObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Document/ResourceIdentifierObject.html">– ResourceIdentifierObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Document/ResourceObject.html">– ResourceObject</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7JsonAPI18ClientFailureBlocka">ClientFailureBlock</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7JsonAPI18ClientSuccessBlocka">ClientSuccessBlock</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>Resource</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">@objcMembers</span>
+<span class="kd">open</span> <span class="kd">class</span> <span class="kt">Resource</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                </div>
+              </div>
+            <p>Base class for all models representing a JSON API resource</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7JsonAPI8ResourceC9SignatureV"></a>
+                    <a name="//apple_ref/swift/Struct/Signature" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7JsonAPI8ResourceC9SignatureV">Signature</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Represent a unique signature for a resource
+Can be used as key in dictionnaries</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Signature</span> <span class="p">:</span> <span class="kt">Hashable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@JsonAPI@objc(cs)Resource(py)id"></a>
+                    <a name="//apple_ref/swift/Property/id" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@JsonAPI@objc(cs)Resource(py)id">id</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Resource&rsquo;s id</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7JsonAPI8ResourceC4metaSDySSypSgGSgvp"></a>
+                    <a name="//apple_ref/swift/Property/meta" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7JsonAPI8ResourceC4metaSDySSypSgGSgvp">meta</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Resource&rsquo;s meta data</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">meta</span><span class="p">:</span> <span class="kt"><a href="../Structs/Document.html">Document</a></span><span class="o">.</span><span class="kt">Meta</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7JsonAPI8ResourceC5linksAA8DocumentV11LinksObjectVSgvp"></a>
+                    <a name="//apple_ref/swift/Property/links" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7JsonAPI8ResourceC5linksAA8DocumentV11LinksObjectVSgvp">links</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Resource&rsquo;s link(s)</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">links</span><span class="p">:</span> <span class="kt"><a href="../Structs/Document.html">Document</a></span><span class="o">.</span><span class="kt">LinksObject</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@JsonAPI@objc(cs)Resource(cpy)resourceAttributesKeys"></a>
+                    <a name="//apple_ref/swift/Variable/resourceAttributesKeys" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@JsonAPI@objc(cs)Resource(cpy)resourceAttributesKeys">resourceAttributesKeys</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Override the keys expected in the JSON API resource object&rsquo;s attributes to match the model&rsquo;s attributes
+Format =&gt; [resourceObjectAttributeKey: modelKey]</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">class</span> <span class="k">var</span> <span class="nv">resourceAttributesKeys</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">String</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@JsonAPI@objc(cs)Resource(py)attributesKeys"></a>
+                    <a name="//apple_ref/swift/Property/attributesKeys" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@JsonAPI@objc(cs)Resource(py)attributesKeys">attributesKeys</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Alias of <code><a href="../Classes/Resource.html#/c:@M@JsonAPI@objc(cs)Resource(cpy)resourceAttributesKeys">resourceAttributesKeys</a></code> for an instance instead of the class type</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">private(set)</span> <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">attributesKeys</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">String</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@JsonAPI@objc(cs)Resource(cpy)resourceExcludedAttributes"></a>
+                    <a name="//apple_ref/swift/Variable/resourceExcludedAttributes" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@JsonAPI@objc(cs)Resource(cpy)resourceExcludedAttributes">resourceExcludedAttributes</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Attributes that won&rsquo;t be serialized when serializing to a JSON API resource object</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">class</span> <span class="k">var</span> <span class="nv">resourceExcludedAttributes</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@JsonAPI@objc(cs)Resource(py)excludedAttributes"></a>
+                    <a name="//apple_ref/swift/Property/excludedAttributes" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@JsonAPI@objc(cs)Resource(py)excludedAttributes">excludedAttributes</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Alias of <code><a href="../Classes/Resource.html#/c:@M@JsonAPI@objc(cs)Resource(cpy)resourceExcludedAttributes">resourceExcludedAttributes</a></code> for an instance instead of the class type</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">private(set)</span> <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">excludedAttributes</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@JsonAPI@objc(cs)Resource(cpy)resourceType"></a>
+                    <a name="//apple_ref/swift/Variable/resourceType" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@JsonAPI@objc(cs)Resource(cpy)resourceType">resourceType</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Define the resource type
+By default it is the class&rsquo; name</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">class</span> <span class="k">var</span> <span class="nv">resourceType</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@JsonAPI@objc(cs)Resource(py)type"></a>
+                    <a name="//apple_ref/swift/Property/type" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@JsonAPI@objc(cs)Resource(py)type">type</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Alias of <code><a href="../Classes/Resource.html#/c:@M@JsonAPI@objc(cs)Resource(cpy)resourceType">resourceType</a></code> for an instance instead of the class type</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">private(set)</span> <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">type</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@JsonAPI@objc(cs)Resource(im)init"></a>
+                    <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@JsonAPI@objc(cs)Resource(im)init">init()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Constructor</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">override</span> <span class="nf">init</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7JsonAPI8ResourceC14resourceObjectAcA8DocumentV0cE0V_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(resourceObject:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7JsonAPI8ResourceC14resourceObjectAcA8DocumentV0cE0V_tcfc">init(resourceObject:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Constructor</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">required</span> <span class="nf">init</span><span class="p">(</span><span class="nv">resourceObject</span><span class="p">:</span> <span class="kt"><a href="../Structs/Document.html">Document</a></span><span class="o">.</span><span class="kt">ResourceObject</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>resourceObject</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Resource object from which to build the resource</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7JsonAPI8ResourceC02toC6ObjectAA8DocumentV0cE0VyF"></a>
+                    <a name="//apple_ref/swift/Method/toResourceObject()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7JsonAPI8ResourceC02toC6ObjectAA8DocumentV0cE0VyF">toResourceObject()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Serialize to a JSON API resource object</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">toResourceObject</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/Document.html">Document</a></span><span class="o">.</span><span class="kt">ResourceObject</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>JSON API resource object representation of the instance</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7JsonAPI8ResourceC02toC16IdentifierObjectAA8DocumentV0ceF0VSgyF"></a>
+                    <a name="//apple_ref/swift/Method/toResourceIdentifierObject()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7JsonAPI8ResourceC02toC16IdentifierObjectAA8DocumentV0ceF0VSgyF">toResourceIdentifierObject()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Serialize to a JSON API resource identifier object</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">toResourceIdentifierObject</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/Document.html">Document</a></span><span class="o">.</span><span class="kt">ResourceIdentifierObject</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>JSON API resource identifier object representation of the instance if <code><a href="../Classes/Resource.html#/c:@M@JsonAPI@objc(cs)Resource(py)id">id</a></code> is set</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7JsonAPI8ResourceC20toRelationshipObjectAA8DocumentV0eF0VyF"></a>
+                    <a name="//apple_ref/swift/Method/toRelationshipObject()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7JsonAPI8ResourceC20toRelationshipObjectAA8DocumentV0eF0VyF">toRelationshipObject()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Serialize to a JSON API relationship object</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">toRelationshipObject</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/Document.html">Document</a></span><span class="o">.</span><span class="kt">RelationshipObject</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>JSON API relationship object representation of the instance</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@JsonAPI@objc(cs)Resource(im)setValue:forUndefinedKey:"></a>
+                    <a name="//apple_ref/swift/Method/setValue(_:forUndefinedKey:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@JsonAPI@objc(cs)Resource(im)setValue:forUndefinedKey:">setValue(_:<wbr>forUndefinedKey:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="k">override</span> <span class="kd">func</span> <span class="nf">setValue</span><span class="p">(</span><span class="n">_</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">,</span> <span class="n">forUndefinedKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2020 <a class="link" href="https://github.com/aveine/JsonAPI" target="_blank" rel="external">Christopher Paccard</a>. All rights reserved. (Last updated: 2020-05-06)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

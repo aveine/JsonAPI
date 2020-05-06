@@ -1,0 +1,159 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/cpaccard/Job/Aveine/iOS/jsonapi/JsonAPI/Core/Resource.swift",
+      "line": 259,
+      "symbol": "Resource.setValue(_:forUndefinedKey:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/cpaccard/Job/Aveine/iOS/jsonapi/JsonAPI/Core/json/Document.swift",
+      "line": 5,
+      "symbol": "Document.JsonObject",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/cpaccard/Job/Aveine/iOS/jsonapi/JsonAPI/Core/json/Document.swift",
+      "line": 6,
+      "symbol": "Document.RelationshipObjects",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/cpaccard/Job/Aveine/iOS/jsonapi/JsonAPI/Core/json/Document.swift",
+      "line": 7,
+      "symbol": "Document.Meta",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/cpaccard/Job/Aveine/iOS/jsonapi/JsonAPI/Core/json/Document.swift",
+      "line": 187,
+      "symbol": "Document.DocumentError.emptyDocument",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/cpaccard/Job/Aveine/iOS/jsonapi/JsonAPI/Core/json/Document.swift",
+      "line": 188,
+      "symbol": "Document.DocumentError.includedWithoutData",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/cpaccard/Job/Aveine/iOS/jsonapi/JsonAPI/Core/json/Document.swift",
+      "line": 189,
+      "symbol": "Document.DocumentError.dataAndError",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/cpaccard/Job/Aveine/iOS/jsonapi/JsonAPI/Core/json/Document.swift",
+      "line": 190,
+      "symbol": "Document.DocumentError.missingKey(key:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/cpaccard/Job/Aveine/iOS/jsonapi/JsonAPI/Core/json/Document.swift",
+      "line": 191,
+      "symbol": "Document.DocumentError.emptyRelationshipObject",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/cpaccard/Job/Aveine/iOS/jsonapi/JsonAPI/Networking/Client.swift",
+      "line": 1,
+      "symbol": "ClientSuccessBlock",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/cpaccard/Job/Aveine/iOS/jsonapi/JsonAPI/Networking/Client.swift",
+      "line": 2,
+      "symbol": "ClientFailureBlock",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/cpaccard/Job/Aveine/iOS/jsonapi/JsonAPI/Networking/DataSource.swift",
+      "line": 5,
+      "symbol": "DataSource.ResourceCollectionSuccessBlock",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/cpaccard/Job/Aveine/iOS/jsonapi/JsonAPI/Networking/DataSource.swift",
+      "line": 6,
+      "symbol": "DataSource.ResourceSuccessBlock",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/cpaccard/Job/Aveine/iOS/jsonapi/JsonAPI/Networking/HttpMethod.swift",
+      "line": 5,
+      "symbol": "HttpMethod.get",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/cpaccard/Job/Aveine/iOS/jsonapi/JsonAPI/Networking/HttpMethod.swift",
+      "line": 6,
+      "symbol": "HttpMethod.post",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/cpaccard/Job/Aveine/iOS/jsonapi/JsonAPI/Networking/HttpMethod.swift",
+      "line": 7,
+      "symbol": "HttpMethod.patch",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/cpaccard/Job/Aveine/iOS/jsonapi/JsonAPI/Networking/HttpMethod.swift",
+      "line": 8,
+      "symbol": "HttpMethod.delete",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/cpaccard/Job/Aveine/iOS/jsonapi/JsonAPI/Networking/Request.swift",
+      "line": 269,
+      "symbol": "RequestError.unknownResponse",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/cpaccard/Job/Aveine/iOS/jsonapi/JsonAPI/Networking/Request.swift",
+      "line": 270,
+      "symbol": "RequestError.emptyResponse",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/cpaccard/Job/Aveine/iOS/jsonapi/JsonAPI/Networking/Request.swift",
+      "line": 271,
+      "symbol": "RequestError.noData",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/cpaccard/Job/Aveine/iOS/jsonapi/JsonAPI/Networking/Request.swift",
+      "line": 272,
+      "symbol": "RequestError.notCollectionData",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/cpaccard/Job/Aveine/iOS/jsonapi/JsonAPI/Networking/Request.swift",
+      "line": 273,
+      "symbol": "RequestError.notSingleData",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/cpaccard/Job/Aveine/iOS/jsonapi"
+}
