@@ -13,7 +13,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Build
-      run: swift build -v
-    - name: Run tests
-      run: swift test -v
+    - name: Test
+      run: set -o pipefail && xcodebuild -project "JsonAPI.xcodeproj" -scheme "JsonAPI" -destination "platform=iOS Simulator,OS=13.4,name=iPhone 11 Pro" clean test | xcpretty
