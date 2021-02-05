@@ -103,7 +103,7 @@ class Article: Resource {
      Override the keys expected in the JSON API resource object's attributes to match the model's attributes
      Format => [resourceObjectAttributeKey: modelKey]
      */
-    override class var codingKeys: [String : String] {
+    override class var resourceAttributesKeys: [String : String] {
         return [
             "descriptionText": "description"
         ]
@@ -112,7 +112,7 @@ class Article: Resource {
     /**
      Attributes that won't be serialized when serializing to a JSON API resource object
      */
-    override class var excludedAttributes: [String] {
+    override class var resourceExcludedAttributes: [String] {
         return [
             "customObject"
         ]
