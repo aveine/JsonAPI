@@ -13,7 +13,7 @@
     <a title="JsonAPI  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">JsonAPI 1.0.0 Docs</a> (87% documented)</p>
+        <p><a href="index.html">JsonAPI 1.0.1 Docs</a> (87% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -132,7 +132,9 @@
             <h1 id='jsonapi' class='heading'>JsonAPI</h1>
 
 <p><a href="https://travis-ci.org/ReactiveX/RxSwift"><img src="https://img.shields.io/badge/platforms-iOS-333333.svg" alt="platforms"></a>
-<a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" alt="Carthage compatible"></a></p>
+<a href="https://github.com/aveine/JsonAPI/actions"><img src="https://github.com/aveine/JsonAPI/workflows/JsonAPI%20CI/badge.svg?branch=master" alt="JsonAPI CI"></a>
+<a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" alt="Carthage compatible"></a>
+<a href="https://cocoapods.org/pods/JsonAPISwift"><img src="https://img.shields.io/cocoapods/v/JsonAPISwift.svg" alt="pod"></a></p>
 
 <p>JsonAPI is a Swift JSON:API standard implementation.<br>
 It has been greatly inspired from another library: <a href="https://github.com/aronbalog/Vox">Vox</a>.</p>
@@ -145,6 +147,7 @@ It has been greatly inspired from another library: <a href="https://github.com/a
 
 <ul>
 <li><a href="#carthage">Carthage</a></li>
+<li><a href="#cocoapods">CocoaPods</a></li>
 </ul></li>
 <li><a href="#usage">Usage</a>
 
@@ -173,6 +176,7 @@ It has been greatly inspired from another library: <a href="https://github.com/a
 <li><a href="#advanced">Advanced</a>
 
 <ul>
+<li><a href="#api-documentation">API Documentation</a></li>
 <li><a href="#create-a-request-without-a-data-source">Create a request without a data source</a></li>
 <li><a href="#raw-jsonapi-object-manipulation">Raw JSON:API object manipulation</a></li>
 </ul></li>
@@ -193,6 +197,13 @@ It has been greatly inspired from another library: <a href="https://github.com/a
 
 <p>To integrate JsonAPI into your Xcode project using Carthage, specify it in your <code>Cartfile</code>:</p>
 <pre class="highlight plaintext"><code>github "Aveine/JsonAPI" ~&gt; 1.0
+</code></pre>
+
+<p><em>For usage and installation instructions, visit their website.</em></p>
+<h3 id='a-href-https-guides-cocoapods-org-using-using-cocoapods-html-cocoapods-a' class='heading'><a href="https://guides.cocoapods.org/using/using-cocoapods.html">CocoaPods</a></h3>
+
+<p>To integrate JsonAPI into your Xcode project using CocoaPods, specify it in your <code>Podfile</code>:</p>
+<pre class="highlight plaintext"><code>pod 'JsonAPISwift', '~&gt; 1.0'
 </code></pre>
 
 <p><em>For usage and installation instructions, visit their website.</em></p>
@@ -236,7 +247,7 @@ It has been greatly inspired from another library: <a href="https://github.com/a
      Override the keys expected in the JSON API resource object's attributes to match the model's attributes
      Format =&gt; [resourceObjectAttributeKey: modelKey]
      */</span>
-    <span class="k">override</span> <span class="kd">class</span> <span class="k">var</span> <span class="nv">codingKeys</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">String</span><span class="p">]</span> <span class="p">{</span>
+    <span class="k">override</span> <span class="kd">class</span> <span class="k">var</span> <span class="nv">resourceAttributesKeys</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">String</span><span class="p">]</span> <span class="p">{</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="s">"descriptionText"</span><span class="p">:</span> <span class="s">"description"</span>
         <span class="p">]</span>
@@ -245,7 +256,7 @@ It has been greatly inspired from another library: <a href="https://github.com/a
     <span class="cm">/**
      Attributes that won't be serialized when serializing to a JSON API resource object
      */</span>
-    <span class="k">override</span> <span class="kd">class</span> <span class="k">var</span> <span class="nv">excludedAttributes</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span> <span class="p">{</span>
+    <span class="k">override</span> <span class="kd">class</span> <span class="k">var</span> <span class="nv">resourceExcludedAttributes</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span> <span class="p">{</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="s">"customObject"</span>
         <span class="p">]</span>
@@ -471,6 +482,9 @@ It has been greatly inspired from another library: <a href="https://github.com/a
 <h3 id='advanced' class='heading'>Advanced</h3>
 
 <p><strong>!! Section in progress !!</strong></p>
+<h4 id='api-documentation' class='heading'>API Documentation</h4>
+
+<p>A complete API documentation can be found <a href="https://aveine.github.io/JsonAPI/">here</a>.</p>
 <h4 id='create-a-request-without-a-data-source' class='heading'>Create a request without a data source</h4>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">JsonAPI</span>
 
@@ -495,7 +509,7 @@ It has been greatly inspired from another library: <a href="https://github.com/a
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2020 <a class="link" href="https://github.com/aveine/JsonAPI" target="_blank" rel="external">Christopher Paccard</a>. All rights reserved. (Last updated: 2020-05-06)</p>
+          <p>&copy; 2021 <a class="link" href="https://github.com/aveine/JsonAPI" target="_blank" rel="external">Christopher Paccard</a>. All rights reserved. (Last updated: 2021-02-07)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
