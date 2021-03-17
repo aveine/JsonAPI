@@ -1,3 +1,5 @@
+import Foundation
+
 /**
  Register all the `Resource` classes
  */

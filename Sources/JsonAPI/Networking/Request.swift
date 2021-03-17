@@ -1,3 +1,5 @@
+import Foundation
+
 /**
  Generic request for a resource or a resource collection
  */

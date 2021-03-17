@@ -1,3 +1,5 @@
+import Foundation
+
 /**
  Base class for all models representing a JSON API resource
  */

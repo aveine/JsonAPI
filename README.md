@@ -59,6 +59,16 @@ pod 'JsonAPISwift', '~> 1.0'
 ```
 *For usage and installation instructions, visit their website.*
 
+### [Swift Package Manager](https://swift.org/package-manager/)
+
+To integrate JsonAPI into your Xcode project using Swift Package Manager, specify it in your `Package.swift`:
+```swift
+dependencies: [
+    .package(url: "https://github.com/aveine/JsonAPI.git", .upToNextMajor(from: "1.0.2"))
+]
+```
+*For usage and installation instructions, visit their website.*
+
 ## Usage
 
 ### Basic
