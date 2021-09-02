@@ -214,7 +214,7 @@ The most common way to interact with your resource is to define a data source:
 ```swift
 import JsonAPI
 
-let client = let AlamofireClient()
+let client = AlamofireClient()
 
 let dataSourceRouter = DataSource<Article>(client: client, strategy: .router(ScrudRouter()))
 let dataSourcePath = DataSource<Article>(client: client, strategy: .path("/<type>/<id>"))
@@ -273,7 +273,7 @@ public class ScrudRouter: Router {
 ```swift
 import JsonAPI
 
-let client = let AlamofireClient()
+let client = AlamofireClient()
 let dataSource = DataSource<Article>(client: client, strategy: .router(ScrudRouter()))
 
 dataSource
@@ -288,7 +288,7 @@ dataSource
 ```swift
 import JsonAPI
 
-let client = let AlamofireClient()
+let client = AlamofireClient()
 let dataSource = DataSource<Article>(client: client, strategy: .router(ScrudRouter()))
 
 dataSource
@@ -303,7 +303,7 @@ dataSource
 ```swift
 import JsonAPI
 
-let client = let AlamofireClient()
+let client = AlamofireClient()
 let dataSource = DataSource<Article>(client: client, strategy: .router(ScrudRouter()))
 
 let article = Article()
@@ -322,7 +322,7 @@ dataSource
 ```swift
 import JsonAPI
 
-let client = let AlamofireClient()
+let client = AlamofireClient()
 let dataSource = DataSource<Article>(client: client, strategy: .router(ScrudRouter()))
 
 let article = Article()
@@ -341,7 +341,7 @@ dataSource
 ```swift
 import JsonAPI
 
-let client = let AlamofireClient()
+let client = AlamofireClient()
 let dataSource = DataSource<Article>(client: client, strategy: .router(ScrudRouter()))
 
 let article = Article()
@@ -358,7 +358,7 @@ Or if you don't have previously fetched the resource:
 ```swift
 import JsonAPI
 
-let client = let AlamofireClient()
+let client = AlamofireClient()
 let dataSource = DataSource<Article>(client: client, strategy: .router(ScrudRouter()))
 
 dataSource
@@ -381,7 +381,7 @@ A complete API documentation can be found [here](https://aveine.github.io/JsonAP
 ```swift
 import JsonAPI
 
-let client = let AlamofireClient()
+let client = AlamofireClient()
 let resourceRequest = ResourceRequest<Article>(path: "/articles/1", method: HttpMethod.get, client: client, resource: nil)
 let resourceCollectionRequest = ResourceCollectionRequest<Article>(path: "/articles", method: HttpMethod.get, client: client, resource: nil)
 

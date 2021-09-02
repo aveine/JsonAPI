@@ -6,7 +6,7 @@ public typealias ClientFailureBlock = (_ error: Error?, _ data: Data?) -> Void
 /**
  A client using the library
  */
-public protocol Client: class {
+public protocol Client: AnyObject {
     /**
      - Parameter path: Path on which the client must execute the request
      - Parameter method: HTTP method the client must use to execute the request
