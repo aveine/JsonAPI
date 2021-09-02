@@ -4,7 +4,7 @@ import Foundation
  Base class for all models representing a JSON API resource
  */
 @objcMembers
-open class Resource : NSObject {
+open class Resource : NSObject, Identifiable {
     /**
      Represent a unique signature for a resource
      Can be used as key in dictionnaries
