@@ -123,3 +123,22 @@ class Person: Resource {
         "persons"
     }
 }
+
+class Contact: Person {
+
+  var email: String?
+
+  override class var resourceType: String {
+    "contacts"
+  }
+}
+
+class ContactList: Resource {
+  var name: String?
+
+  var contacts: [Contact]?
+
+  override class var resourceType: String {
+    "contactlists"
+  }
+}
