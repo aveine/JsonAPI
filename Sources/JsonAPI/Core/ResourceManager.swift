@@ -22,10 +22,18 @@ class ResourceManager {
         var count = UInt32(0)
         if let classListPointer = objc_copyClassList(&count) {
             UnsafeBufferPointer(start: classListPointer, count: Int(count)).forEach { classInfo in
-                if (class_getSuperclass(classInfo) == Resource.self), let resourceClass = classInfo as? Resource.Type {
+              if class_hasSuperclass(classInfo, Resource.self), let resourceClass = classInfo as? Resource.Type {
                     self.resourceClasses[resourceClass.resourceType] = resourceClass
                 }
             }
         }
     }
+
+  private func class_hasSuperclass( _ cls: AnyClass?, _ target: AnyClass? ) -> Bool {
+    let superCls: AnyClass? = class_getSuperclass(cls)
+    if superCls == target { return true }
+    if superCls == nil { return false }
+    return class_hasSuperclass(superCls, target)
+  }
+
 }
