@@ -44,8 +44,8 @@
 
 /* Begin PBXFileReference section */
 		9E13310226027CF1003DB39F /* ScrudRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrudRouterTests.swift; sourceTree = "<group>"; };
-		9E13310326027CF1003DB39F /* RequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestTests.swift; sourceTree = "<group>"; };
-		9E13310426027CF1003DB39F /* ResourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceTests.swift; sourceTree = "<group>"; };
+		9E13310326027CF1003DB39F /* RequestTests.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = RequestTests.swift; sourceTree = "<group>"; };
+		9E13310426027CF1003DB39F /* ResourceTests.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = ResourceTests.swift; sourceTree = "<group>"; tabWidth = 4; };
 		9E13310526027CF1003DB39F /* DataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceTests.swift; sourceTree = "<group>"; };
 		9E13310626027CF1003DB39F /* TestClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestClasses.swift; sourceTree = "<group>"; };
 		9E13310726027CF1003DB39F /* DocumentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentTests.swift; sourceTree = "<group>"; };

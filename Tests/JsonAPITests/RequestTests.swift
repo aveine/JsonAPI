@@ -200,6 +200,37 @@ class RequestTests: XCTestCase {
         ]
         
         static let randomData: Data = Data.init(repeating: 10, count: 10)
+
+        static let resourceWithIncludedInheritedResourceDocument: Document.JsonObject = [
+            "data": [
+                "id": "1",
+                "type": "contactlists",
+                "attributes": [
+                    "name": "List"
+                ],
+                "relationships": [
+                    "contacts": [
+                        "data": [
+                            [
+                                "id":"2",
+                                "type": "contacts"
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            "included": [
+                [
+                    "id": "2",
+                    "type": "contacts",
+                    "attributes": [
+                        "name": "Contact",
+                        "email": "Email"
+                    ]
+
+                ]
+            ]
+        ];
         
         func executeRequest(path: String, method: HttpMethod, queryItems: [URLQueryItem]?, body: Document.JsonObject?, success: @escaping ClientSuccessBlock, failure: @escaping ClientFailureBlock, userInfo: [String : Any]?) {
             if queryItems?.contains(URLQueryItem(name: "error", value: "true")) ?? false {
@@ -230,6 +261,8 @@ class RequestTests: XCTestCase {
                 success(nil, try! JSONSerialization.data(withJSONObject: MockClient.noDataDocument))
             } else if queryItems?.contains(URLQueryItem(name: "emptyDocument", value: "true")) ?? false {
                 success(nil, try! JSONSerialization.data(withJSONObject: []))
+            } else if queryItems?.contains(URLQueryItem(name: "includeInherited", value: "true")) ?? false {
+                success(nil, try! JSONSerialization.data(withJSONObject: MockClient.resourceWithIncludedInheritedResourceDocument))
             }
         }
     }
@@ -712,4 +745,34 @@ class RequestTests: XCTestCase {
         
         wait(for: [expectation], timeout: 1.0)
     }
+
+    func testResourceRequestInheritedIncluded() {
+        let expectation = XCTestExpectation(description: "Answer from the mock client")
+
+        ResourceRequest<ContactList>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
+            .queryItems([URLQueryItem(name: "includeInherited", value: "true")])
+            .result({ (list: ContactList?, document: Document?) in
+                expectation.fulfill()
+
+                    // ContactList
+                XCTAssertEqual(list?.id, "1")
+                XCTAssertEqual(list?.type, "contactlists")
+                XCTAssertEqual(list?.name, "List")
+
+                    // First list contact
+                let firstContact: Contact? = list?.contacts?.first
+                XCTAssertEqual(firstContact?.id, "2")
+                XCTAssertEqual(firstContact?.type, "contacts")
+                XCTAssertEqual(firstContact?.name, "Contact")
+                XCTAssertEqual(firstContact?.email, "Email")
+
+            }, { (_, _) in
+                expectation.fulfill()
+                XCTFail("Mock client should not fail this request")
+            })
+
+        wait(for: [expectation], timeout: 1.0)
+    }
+
+
 }
