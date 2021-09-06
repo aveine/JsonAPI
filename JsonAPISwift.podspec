@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = "JsonAPISwift"
-  spec.version      = "1.0.2"
+  spec.version      = "1.0.3"
   spec.summary      = "A Swift JSON:API standard implementation."
   spec.description  = <<-DESC
 JsonAPI is a Swift JSON:API standard implementation.<br>

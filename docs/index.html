@@ -8,12 +8,20 @@
     <script src="js/jquery.min.js" defer></script>
     <script src="js/jazzy.js" defer></script>
     
+    <script src="js/lunr.min.js" defer></script>
+    <script src="js/typeahead.jquery.js" defer></script>
+    <script src="js/jazzy.search.js" defer></script>
   </head>
   <body>
     <a title="JsonAPI  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">JsonAPI 1.0.1 Docs</a> (87% documented)</p>
+        <p><a href="index.html">JsonAPI 1.0.3 Docs</a> (87% documented)</p>
+        <p class="header-right">
+          <form role="search" action="search.json">
+            <input type="text" placeholder="Search documentation" data-typeahead>
+          </form>
+        </p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -207,6 +215,15 @@ It has been greatly inspired from another library: <a href="https://github.com/a
 </code></pre>
 
 <p><em>For usage and installation instructions, visit their website.</em></p>
+<h3 id='a-href-https-swift-org-package-manager-swift-package-manager-a' class='heading'><a href="https://swift.org/package-manager/">Swift Package Manager</a></h3>
+
+<p>To integrate JsonAPI into your Xcode project using Swift Package Manager, specify it in your <code>Package.swift</code>:</p>
+<pre class="highlight swift"><code><span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
+    <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/aveine/JsonAPI.git"</span><span class="p">,</span> <span class="o">.</span><span class="nf">upToNextMajor</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="s">"1.0.2"</span><span class="p">))</span>
+<span class="p">]</span>
+</code></pre>
+
+<p><em>For usage and installation instructions, visit their website.</em></p>
 <h2 id='usage' class='heading'>Usage</h2>
 <h3 id='basic' class='heading'>Basic</h3>
 <h4 id='defining-a-resource' class='heading'>Defining a resource</h4>
@@ -343,7 +360,7 @@ It has been greatly inspired from another library: <a href="https://github.com/a
 <p>The most common way to interact with your resource is to define a data source:</p>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">JsonAPI</span>
 
-<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="k">let</span> <span class="nv">AlamofireClient</span><span class="p">()</span>
+<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">AlamofireClient</span><span class="p">()</span>
 
 <span class="k">let</span> <span class="nv">dataSourceRouter</span> <span class="o">=</span> <span class="kt">DataSource</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">strategy</span><span class="p">:</span> <span class="o">.</span><span class="nf">router</span><span class="p">(</span><span class="kt">ScrudRouter</span><span class="p">()))</span>
 <span class="k">let</span> <span class="nv">dataSourcePath</span> <span class="o">=</span> <span class="kt">DataSource</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">strategy</span><span class="p">:</span> <span class="o">.</span><span class="nf">path</span><span class="p">(</span><span class="s">"/&lt;type&gt;/&lt;id&gt;"</span><span class="p">))</span>
@@ -398,7 +415,7 @@ It has been greatly inspired from another library: <a href="https://github.com/a
 <h6 id='search-a-resource' class='heading'>Search a resource</h6>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">JsonAPI</span>
 
-<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="k">let</span> <span class="nv">AlamofireClient</span><span class="p">()</span>
+<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">AlamofireClient</span><span class="p">()</span>
 <span class="k">let</span> <span class="nv">dataSource</span> <span class="o">=</span> <span class="kt">DataSource</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">strategy</span><span class="p">:</span> <span class="o">.</span><span class="nf">router</span><span class="p">(</span><span class="kt">ScrudRouter</span><span class="p">()))</span>
 
 <span class="n">dataSource</span>
@@ -410,7 +427,7 @@ It has been greatly inspired from another library: <a href="https://github.com/a
 <h6 id='read-a-resource' class='heading'>Read a resource</h6>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">JsonAPI</span>
 
-<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="k">let</span> <span class="nv">AlamofireClient</span><span class="p">()</span>
+<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">AlamofireClient</span><span class="p">()</span>
 <span class="k">let</span> <span class="nv">dataSource</span> <span class="o">=</span> <span class="kt">DataSource</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">strategy</span><span class="p">:</span> <span class="o">.</span><span class="nf">router</span><span class="p">(</span><span class="kt">ScrudRouter</span><span class="p">()))</span>
 
 <span class="n">dataSource</span>
@@ -422,7 +439,7 @@ It has been greatly inspired from another library: <a href="https://github.com/a
 <h6 id='create-a-resource' class='heading'>Create a resource</h6>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">JsonAPI</span>
 
-<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="k">let</span> <span class="nv">AlamofireClient</span><span class="p">()</span>
+<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">AlamofireClient</span><span class="p">()</span>
 <span class="k">let</span> <span class="nv">dataSource</span> <span class="o">=</span> <span class="kt">DataSource</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">strategy</span><span class="p">:</span> <span class="o">.</span><span class="nf">router</span><span class="p">(</span><span class="kt">ScrudRouter</span><span class="p">()))</span>
 
 <span class="k">let</span> <span class="nv">article</span> <span class="o">=</span> <span class="kt">Article</span><span class="p">()</span>
@@ -438,7 +455,7 @@ It has been greatly inspired from another library: <a href="https://github.com/a
 <h6 id='update-a-resource' class='heading'>Update a resource</h6>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">JsonAPI</span>
 
-<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="k">let</span> <span class="nv">AlamofireClient</span><span class="p">()</span>
+<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">AlamofireClient</span><span class="p">()</span>
 <span class="k">let</span> <span class="nv">dataSource</span> <span class="o">=</span> <span class="kt">DataSource</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">strategy</span><span class="p">:</span> <span class="o">.</span><span class="nf">router</span><span class="p">(</span><span class="kt">ScrudRouter</span><span class="p">()))</span>
 
 <span class="k">let</span> <span class="nv">article</span> <span class="o">=</span> <span class="kt">Article</span><span class="p">()</span>
@@ -454,7 +471,7 @@ It has been greatly inspired from another library: <a href="https://github.com/a
 <h6 id='delete-a-resource' class='heading'>Delete a resource</h6>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">JsonAPI</span>
 
-<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="k">let</span> <span class="nv">AlamofireClient</span><span class="p">()</span>
+<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">AlamofireClient</span><span class="p">()</span>
 <span class="k">let</span> <span class="nv">dataSource</span> <span class="o">=</span> <span class="kt">DataSource</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">strategy</span><span class="p">:</span> <span class="o">.</span><span class="nf">router</span><span class="p">(</span><span class="kt">ScrudRouter</span><span class="p">()))</span>
 
 <span class="k">let</span> <span class="nv">article</span> <span class="o">=</span> <span class="kt">Article</span><span class="p">()</span>
@@ -470,7 +487,7 @@ It has been greatly inspired from another library: <a href="https://github.com/a
 <p>Or if you don&rsquo;t have previously fetched the resource:</p>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">JsonAPI</span>
 
-<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="k">let</span> <span class="nv">AlamofireClient</span><span class="p">()</span>
+<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">AlamofireClient</span><span class="p">()</span>
 <span class="k">let</span> <span class="nv">dataSource</span> <span class="o">=</span> <span class="kt">DataSource</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">strategy</span><span class="p">:</span> <span class="o">.</span><span class="nf">router</span><span class="p">(</span><span class="kt">ScrudRouter</span><span class="p">()))</span>
 
 <span class="n">dataSource</span>
@@ -488,7 +505,7 @@ It has been greatly inspired from another library: <a href="https://github.com/a
 <h4 id='create-a-request-without-a-data-source' class='heading'>Create a request without a data source</h4>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">JsonAPI</span>
 
-<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="k">let</span> <span class="nv">AlamofireClient</span><span class="p">()</span>
+<span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">AlamofireClient</span><span class="p">()</span>
 <span class="k">let</span> <span class="nv">resourceRequest</span> <span class="o">=</span> <span class="kt">ResourceRequest</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="s">"/articles/1"</span><span class="p">,</span> <span class="nv">method</span><span class="p">:</span> <span class="kt">HttpMethod</span><span class="o">.</span><span class="k">get</span><span class="p">,</span> <span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">resource</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
 <span class="k">let</span> <span class="nv">resourceCollectionRequest</span> <span class="o">=</span> <span class="kt">ResourceCollectionRequest</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="s">"/articles"</span><span class="p">,</span> <span class="nv">method</span><span class="p">:</span> <span class="kt">HttpMethod</span><span class="o">.</span><span class="k">get</span><span class="p">,</span> <span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">resource</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
 
@@ -509,8 +526,8 @@ It has been greatly inspired from another library: <a href="https://github.com/a
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2021 <a class="link" href="https://github.com/aveine/JsonAPI" target="_blank" rel="external">Christopher Paccard</a>. All rights reserved. (Last updated: 2021-02-07)</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>&copy; 2021 <a class="link" href="https://github.com/aveine/JsonAPI" target="_blank" rel="noopener" rel="external">Christopher Paccard</a>. All rights reserved. (Last updated: 2021-09-06)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="noopener" rel="external">jazzy ♪♫ v0.14.0</a>, a <a class="link" href="https://realm.io" target="_blank" rel="noopener" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>
