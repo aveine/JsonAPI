@@ -368,6 +368,57 @@ dataSource
     })
 ```
 
+##### Extensions
+###### Implementing pagination and filtering helpers
+
+Since Pagination and Filtering can vary by server implementation, here is an example of how the library can be extended to support them.
+
+```swift
+extension ResourceCollectionRequest {
+  /**
+   Append the given filters to the request's query items
+
+   - Parameter filters: Filters to append
+   - Returns: The request with the filters query appended
+   */
+  public func filters( _ filters: [ String: [ String ] ] ) -> Self {
+    var queryItems: [ URLQueryItem ] = []
+    for filter in filters {
+      queryItems.append( URLQueryItem( name: "filter[\(filter.key)]", value: filter.value.joined( separator: "," ) ) )
+    }
+    return self.queryItems( queryItems )
+  }
+
+  /**
+   Append the given filters to the request's query items
+
+   - Parameter key: Key of filter to append
+   - Parameter value: Value(s) of filter to append
+   - Returns: The request with the filters query appended
+   */
+  public func filter( _ key: String, _ value: String...) -> Self {
+    return self.filters( [ key: value ] )
+  }
+
+  /**
+   Append the given paging parameters to the request's query items
+
+   - Parameter size: Maximum number of items to return
+   - Parameter number: Page number to return
+   - Returns: The request with the page query appended
+   */
+  public func page( _ size: Int, number: Int? = nil ) -> Self {
+    var queryItems: [ URLQueryItem ] = [
+      URLQueryItem( name: "page[size]", value: String( size ) )
+    ]
+    if let number = number {
+      queryItems.append( URLQueryItem( name: "page[number]", value: String( number ) ) )
+    }
+    return self.queryItems( queryItems )
+  }
+}
+```
+
 ### Advanced
 
 **!! Section in progress !!**
