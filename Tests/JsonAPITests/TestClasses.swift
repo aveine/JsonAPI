@@ -126,11 +126,29 @@ class Person: Resource {
 
 class Contact: Person {
 
+  struct Address {
+    var street: String?
+    var city: String?
+    var country: String?
+    var coordinates: [ Double ]?
+  }
+
   var email: String?
+
+  var address: Address?
+  var addresses: [ Address ]?
 
   override class var resourceType: String {
     "contacts"
   }
+
+  override class var resourceAttributesKeys: [String : String] {
+    return [
+      "address.city": "town",
+      "addresses.city": "town",
+    ]
+  }
+
 }
 
 class ContactList: Resource {

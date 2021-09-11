@@ -231,7 +231,65 @@ class RequestTests: XCTestCase {
                 ]
             ]
         ];
-        
+
+        static let resourceWithNestedAttributesDocument: Document.JsonObject = [
+            "data": [
+                "id": "2",
+                "type": "contacts",
+                "attributes": [
+                    "name": "Contact",
+                    "email": "Email",
+                    "address": [
+                        "street": "Street",
+                        "town": "City",
+                        "country": "Country",
+                        "coordinates": [ 1, -1 ]
+                    ],
+                    "addresses": [
+                        [
+                            "street": "Street 1",
+                            "town": "City 1",
+                            "country": "Country 1",
+                            "coordinates": [ 2, 1 ]
+                        ],
+                        [
+                            "street": "Street 2",
+                            "town": "City 2",
+                            "country": "Country 2",
+                            "coordinates": [ 2, 2 ]
+                        ],
+                    ]
+                ]
+            ]
+        ];
+
+        static let resourceWithCollectionNestedAttributesDocument: Document.JsonObject = [
+            "data": [ resourceWithNestedAttributesDocument[ "data" ] ]
+        ];
+
+        static let resourceWithIncludedNestedAttributesDocument: Document.JsonObject = [
+            "data": [
+                "id": "1",
+                "type": "contactlists",
+                "attributes": [
+                    "name": "List"
+                ],
+                "relationships": [
+                    "contacts": [
+                        "data": [
+                            [
+                                "id":"2",
+                                "type": "contacts"
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            "included": [
+                resourceWithNestedAttributesDocument[ "data" ]
+            ]
+        ];
+
         func executeRequest(path: String, method: HttpMethod, queryItems: [URLQueryItem]?, body: Document.JsonObject?, success: @escaping ClientSuccessBlock, failure: @escaping ClientFailureBlock, userInfo: [String : Any]?) {
             if queryItems?.contains(URLQueryItem(name: "error", value: "true")) ?? false {
                 if queryItems?.contains(URLQueryItem(name: "notJsonFormat", value: "true")) ?? false {
@@ -263,6 +321,12 @@ class RequestTests: XCTestCase {
                 success(nil, try! JSONSerialization.data(withJSONObject: []))
             } else if queryItems?.contains(URLQueryItem(name: "includeInherited", value: "true")) ?? false {
                 success(nil, try! JSONSerialization.data(withJSONObject: MockClient.resourceWithIncludedInheritedResourceDocument))
+            } else if queryItems?.contains(URLQueryItem(name: "resourceNested", value: "true")) ?? false {
+                success(nil, try! JSONSerialization.data(withJSONObject: MockClient.resourceWithNestedAttributesDocument))
+            } else if queryItems?.contains(URLQueryItem(name: "resourcesNested", value: "true")) ?? false {
+                success(nil, try! JSONSerialization.data(withJSONObject: MockClient.resourceWithCollectionNestedAttributesDocument))
+            } else if queryItems?.contains(URLQueryItem(name: "includeNested", value: "true")) ?? false {
+                success(nil, try! JSONSerialization.data(withJSONObject: MockClient.resourceWithIncludedNestedAttributesDocument))
             }
         }
     }
@@ -766,6 +830,112 @@ class RequestTests: XCTestCase {
                 XCTAssertEqual(firstContact?.name, "Contact")
                 XCTAssertEqual(firstContact?.email, "Email")
 
+            }, { (_, _) in
+                expectation.fulfill()
+                XCTFail("Mock client should not fail this request")
+            })
+
+        wait(for: [expectation], timeout: 1.0)
+    }
+
+    func testResourceRequestNestedAttributes() {
+        let expectation = XCTestExpectation(description: "Answer from the mock client")
+
+        ResourceRequest<Contact>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
+            .queryItems([URLQueryItem(name: "resourceNested", value: "true")])
+            .result({ (contact: Contact?, document: Document?) in
+                expectation.fulfill()
+
+                    // ContactList
+                XCTAssertEqual(contact?.id, "2")
+                XCTAssertEqual(contact?.type, "contacts")
+                XCTAssertEqual(contact?.name, "Contact")
+                XCTAssertEqual(contact?.email, "Email")
+
+                    // Nested attributes object
+                XCTAssertEqual(contact?.address?.street, "Street")
+                XCTAssertEqual(contact?.address?.city, "City")
+                XCTAssertEqual(contact?.address?.coordinates?.count ?? 0, 2)
+                XCTAssertEqual(contact?.address?.coordinates?.first ?? 0, Double(1))
+
+                    // Nested attributes collection
+                XCTAssertEqual(contact?.addresses?.first?.street, "Street")
+                XCTAssertEqual(contact?.addresses?.first?.city, "City")
+                XCTAssertEqual(contact?.addresses?.first?.coordinates?.count ?? 0, 2)
+                XCTAssertEqual(contact?.addresses?.first?.coordinates?.first ?? 0, Double(2))
+            }, { (_, _) in
+                expectation.fulfill()
+                XCTFail("Mock client should not fail this request")
+            })
+
+        wait(for: [expectation], timeout: 1.0)
+    }
+
+    func testResourceRequestCollectionNestedAttributes() {
+        let expectation = XCTestExpectation(description: "Answer from the mock client")
+
+        ResourceCollectionRequest<Contact>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
+            .queryItems([URLQueryItem(name: "resourcesNested", value: "true")])
+            .result({ (contacts: [Contact], document: Document?) in
+                expectation.fulfill()
+
+                    // ContactList
+                let contact: Contact? = contacts.first
+                XCTAssertEqual(contact?.id, "2")
+                XCTAssertEqual(contact?.type, "contacts")
+                XCTAssertEqual(contact?.name, "Contact")
+                XCTAssertEqual(contact?.email, "Email")
+
+                    // Nested attributes object
+                XCTAssertEqual(contact?.address?.street, "Street")
+                XCTAssertEqual(contact?.address?.city, "City")
+                XCTAssertEqual(contact?.address?.coordinates?.count ?? 0, 2)
+                XCTAssertEqual(contact?.address?.coordinates?.first ?? 0, Double(1))
+
+                    // Nested attributes collection
+                XCTAssertEqual(contact?.addresses?.first?.street, "Street")
+                XCTAssertEqual(contact?.addresses?.first?.city, "City")
+                XCTAssertEqual(contact?.addresses?.first?.coordinates?.count ?? 0, 2)
+                XCTAssertEqual(contact?.addresses?.first?.coordinates?.first ?? 0, Double(2))
+            }, { (_, _) in
+                expectation.fulfill()
+                XCTFail("Mock client should not fail this request")
+            })
+
+        wait(for: [expectation], timeout: 1.0)
+    }
+
+    func testResourceRequestIncludedNestedAttributes() {
+        let expectation = XCTestExpectation(description: "Answer from the mock client")
+
+        ResourceRequest<ContactList>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
+            .queryItems([URLQueryItem(name: "includeNested", value: "true")])
+            .result({ (list: ContactList?, document: Document?) in
+                expectation.fulfill()
+
+                    // ContactList
+                XCTAssertEqual(list?.id, "1")
+                XCTAssertEqual(list?.type, "contactlists")
+                XCTAssertEqual(list?.name, "List")
+
+                    // First list contact
+                let firstContact: Contact? = list?.contacts?.first
+                XCTAssertEqual(firstContact?.id, "2")
+                XCTAssertEqual(firstContact?.type, "contacts")
+                XCTAssertEqual(firstContact?.name, "Contact")
+                XCTAssertEqual(firstContact?.email, "Email")
+
+                    // Nested attributes object
+                XCTAssertEqual(firstContact?.address?.street, "Street")
+                XCTAssertEqual(firstContact?.address?.city, "City")
+                XCTAssertEqual(firstContact?.address?.coordinates?.count ?? 0, 2)
+                XCTAssertEqual(firstContact?.address?.coordinates?.first ?? 0, Double(1))
+
+                    // Nested attributes collection
+                XCTAssertEqual(firstContact?.addresses?.first?.street, "Street")
+                XCTAssertEqual(firstContact?.addresses?.first?.city, "City")
+                XCTAssertEqual(firstContact?.addresses?.first?.coordinates?.count ?? 0, 2)
+                XCTAssertEqual(firstContact?.addresses?.first?.coordinates?.first ?? 0, Double(2))
             }, { (_, _) in
                 expectation.fulfill()
                 XCTFail("Mock client should not fail this request")
