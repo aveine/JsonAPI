@@ -127,6 +127,7 @@ class Person: Resource {
 class Contact: Person {
 
   struct Address {
+    var number: Double?
     var street: String?
     var city: String?
     var country: String?
@@ -137,6 +138,9 @@ class Contact: Person {
 
   var address: Address?
   var addresses: [ Address ]?
+
+  var count: Int?
+  var rating: Double?
 
   override class var resourceType: String {
     "contacts"

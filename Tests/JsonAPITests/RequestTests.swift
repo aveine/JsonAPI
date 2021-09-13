@@ -239,7 +239,10 @@ class RequestTests: XCTestCase {
                 "attributes": [
                     "name": "Contact",
                     "email": "Email",
+                    "count": 42,
+                    "rating": 4.2,
                     "address": [
+                        "number": 123,
                         "street": "Street",
                         "town": "City",
                         "country": "Country",
@@ -247,12 +250,14 @@ class RequestTests: XCTestCase {
                     ],
                     "addresses": [
                         [
+                            "number": 100,
                             "street": "Street 1",
                             "town": "City 1",
                             "country": "Country 1",
                             "coordinates": [ 2, 1 ]
                         ],
                         [
+                            "number": 200,
                             "street": "Street 2",
                             "town": "City 2",
                             "country": "Country 2",
@@ -851,18 +856,22 @@ class RequestTests: XCTestCase {
                 XCTAssertEqual(contact?.type, "contacts")
                 XCTAssertEqual(contact?.name, "Contact")
                 XCTAssertEqual(contact?.email, "Email")
+                XCTAssertEqual(contact?.count, 42)
+                XCTAssertEqual(contact?.rating, 4.2)
 
                     // Nested attributes object
                 XCTAssertEqual(contact?.address?.street, "Street")
                 XCTAssertEqual(contact?.address?.city, "City")
                 XCTAssertEqual(contact?.address?.coordinates?.count ?? 0, 2)
                 XCTAssertEqual(contact?.address?.coordinates?.first ?? 0, Double(1))
+                XCTAssertEqual(contact?.address?.number, 123)
 
                     // Nested attributes collection
-                XCTAssertEqual(contact?.addresses?.first?.street, "Street")
-                XCTAssertEqual(contact?.addresses?.first?.city, "City")
+                XCTAssertEqual(contact?.addresses?.first?.street, "Street 1")
+                XCTAssertEqual(contact?.addresses?.first?.city, "City 1")
                 XCTAssertEqual(contact?.addresses?.first?.coordinates?.count ?? 0, 2)
                 XCTAssertEqual(contact?.addresses?.first?.coordinates?.first ?? 0, Double(2))
+                XCTAssertEqual(contact?.addresses?.first?.number, 100)
             }, { (_, _) in
                 expectation.fulfill()
                 XCTFail("Mock client should not fail this request")
@@ -885,18 +894,22 @@ class RequestTests: XCTestCase {
                 XCTAssertEqual(contact?.type, "contacts")
                 XCTAssertEqual(contact?.name, "Contact")
                 XCTAssertEqual(contact?.email, "Email")
+                XCTAssertEqual(contact?.count, 42)
+                XCTAssertEqual(contact?.rating, 4.2)
 
                     // Nested attributes object
                 XCTAssertEqual(contact?.address?.street, "Street")
                 XCTAssertEqual(contact?.address?.city, "City")
                 XCTAssertEqual(contact?.address?.coordinates?.count ?? 0, 2)
                 XCTAssertEqual(contact?.address?.coordinates?.first ?? 0, Double(1))
+                XCTAssertEqual(contact?.address?.number, 123)
 
                     // Nested attributes collection
-                XCTAssertEqual(contact?.addresses?.first?.street, "Street")
-                XCTAssertEqual(contact?.addresses?.first?.city, "City")
+                XCTAssertEqual(contact?.addresses?.first?.street, "Street 1")
+                XCTAssertEqual(contact?.addresses?.first?.city, "City 1")
                 XCTAssertEqual(contact?.addresses?.first?.coordinates?.count ?? 0, 2)
                 XCTAssertEqual(contact?.addresses?.first?.coordinates?.first ?? 0, Double(2))
+                XCTAssertEqual(contact?.addresses?.first?.number, 100)
             }, { (_, _) in
                 expectation.fulfill()
                 XCTFail("Mock client should not fail this request")
@@ -924,18 +937,22 @@ class RequestTests: XCTestCase {
                 XCTAssertEqual(firstContact?.type, "contacts")
                 XCTAssertEqual(firstContact?.name, "Contact")
                 XCTAssertEqual(firstContact?.email, "Email")
+                XCTAssertEqual(firstContact?.count, 42)
+                XCTAssertEqual(firstContact?.rating, 4.2)
 
                     // Nested attributes object
                 XCTAssertEqual(firstContact?.address?.street, "Street")
                 XCTAssertEqual(firstContact?.address?.city, "City")
                 XCTAssertEqual(firstContact?.address?.coordinates?.count ?? 0, 2)
                 XCTAssertEqual(firstContact?.address?.coordinates?.first ?? 0, Double(1))
+                XCTAssertEqual(firstContact?.address?.number, 123)
 
                     // Nested attributes collection
                 XCTAssertEqual(firstContact?.addresses?.first?.street, "Street")
                 XCTAssertEqual(firstContact?.addresses?.first?.city, "City")
                 XCTAssertEqual(firstContact?.addresses?.first?.coordinates?.count ?? 0, 2)
                 XCTAssertEqual(firstContact?.addresses?.first?.coordinates?.first ?? 0, Double(2))
+                XCTAssertEqual(firstContact?.addresses?.first?.number, 100)
             }, { (_, _) in
                 expectation.fulfill()
                 XCTFail("Mock client should not fail this request")
