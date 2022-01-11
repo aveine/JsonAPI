@@ -5,15 +5,9 @@ class AResource: Resource {}
 class ComplexResource: Resource {
     var optionalString: String?
     
-    var optionalNumber: NSNumber?
-    
-    /**
-     Optional bool can't work due to the Objective-C layout use by the library for `Resource`
-     See: https://stackoverflow.com/questions/30722448/how-to-represent-an-optional-bool-bool-in-objective-c
-     
-     However it will correctly un/serialize to a bool if a bool and not a number value is set
-     */
-    var optionalBool: NSNumber?
+    var optionalNumber: Double?    
+
+    var optionalBool: Bool?
     
     var optionalArray: [Any]?
     
@@ -25,7 +19,7 @@ class ComplexResource: Resource {
     
     var string: String = "string"
     
-    var number: NSNumber = 42
+    var number: Int = 42
     
     var bool: Bool = true
     

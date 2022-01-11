@@ -1,10 +1,10 @@
 import Foundation
+import Runtime
 
 /**
  Base class for all models representing a JSON API resource
  */
-@objcMembers
-open class Resource : NSObject, Identifiable {
+open class Resource : Identifiable, Equatable {
     /**
      Represent a unique signature for a resource
      Can be used as key in dictionnaries
@@ -43,6 +43,11 @@ open class Resource : NSObject, Identifiable {
     }
     
     /**
+     Current type information for Runtime reflection library
+     */
+    private lazy var runtimeTypeInfo = try! typeInfo(of: Swift.type(of: self))
+    
+    /**
      Alias of `resourceAttributesKeys` for an instance instead of the class type
      */
     public private(set) lazy var attributesKeys: [String: String] = Swift.type(of: self).resourceAttributesKeys
@@ -75,8 +80,7 @@ open class Resource : NSObject, Identifiable {
     /**
      Constructor
      */
-    public override init() {
-        super.init()
+    public required init() {
     }
     
     /**
@@ -85,7 +89,7 @@ open class Resource : NSObject, Identifiable {
      - Parameter resourceObject: Resource object from which to build the resource
      */
     public required init(resourceObject: Document.ResourceObject) {
-        super.init()
+        var mutableSelf = self
         self.id = resourceObject.id
         self.meta = resourceObject.meta
         self.links = resourceObject.links
@@ -93,20 +97,22 @@ open class Resource : NSObject, Identifiable {
         if let attributes = resourceObject.attributes {
             for (attributeKey, attributeValue) in attributes {
                 let key = self.attributesKeys[attributeKey] ?? attributeKey
-                self.setValue(attributeValue, forKey: key)
+                if let property = try? runtimeTypeInfo.property(named: key) {
+                    try? property.set(value: attributeValue as Any, on: &mutableSelf)
+                }
             }
         }
         
         if let relationships = resourceObject.relationships {
             for (relationshipKey, relationship) in relationships {
                 let key = self.attributesKeys[relationshipKey] ?? relationshipKey
-                if let data = relationship.data {
+                if let data = relationship.data, let property = try? runtimeTypeInfo.property(named: key) {
                     switch data {
                     case .single(let identifier):
                         if let identifier = identifier {
                             if let classType = self.resourceManager.resourceClasses[identifier.type] {
                                 let resourceObject = try! Document.ResourceObject(json: ["id": identifier.id, "type": identifier.type, "meta": identifier.meta as Any])
-                                self.setValue(classType.init(resourceObject: resourceObject), forKey: key)
+                                try? property.set(value: classType.init(resourceObject: resourceObject), on: &mutableSelf)
                             }
                         }
                     case .collection(let identifiers):
@@ -117,7 +123,7 @@ open class Resource : NSObject, Identifiable {
                             }
                             return nil
                         }
-                        self.setValue(resources, forKey: key)
+                        try? property.set(value: resources, on: &mutableSelf)
                     }
                 }
             }
@@ -229,37 +235,43 @@ open class Resource : NSObject, Identifiable {
      - Parameter resourceStore: Resource store containing all the resources received in the response (data and included)
      */
     func resolveRelationships(relationships: Document.RelationshipObjects, resourceStore: [Signature: (resource: Resource, relationships: Document.RelationshipObjects?)]) {
+        var mutableSelf = self
         relationships.forEach { relationship in
             let key = self.attributesKeys[relationship.key] ?? relationship.key
-            switch relationship.value.data {
-            case .single(let identifier):
-                if let identifier = identifier {
-                    if let value = resourceStore[Signature(id: identifier.id, type: identifier.type)]?.resource {
-                        self.setValue(value, forKey: key)
-                    } else if let classType = self.resourceManager.resourceClasses[identifier.type] {
-                        let resourceObject = try! Document.ResourceObject(json: ["id": identifier.id, "type": identifier.type, "meta": identifier.meta as Any])
-                        self.setValue(classType.init(resourceObject: resourceObject), forKey: key)
+            if let property = try? runtimeTypeInfo.property(named: key) {
+                switch relationship.value.data {
+                case .single(let identifier):
+                    if let identifier = identifier {
+                        if let value = resourceStore[Signature(id: identifier.id, type: identifier.type)]?.resource {
+                            try? property.set(value: value, on: &mutableSelf)
+                        } else if let classType = self.resourceManager.resourceClasses[identifier.type] {
+                            let resourceObject = try! Document.ResourceObject(json: ["id": identifier.id, "type": identifier.type, "meta": identifier.meta as Any])
+                            try? property.set(value: classType.init(resourceObject: resourceObject), on: &mutableSelf)
+                        }
                     }
-                }
-            case .collection(let identifiers):
-                let values: [Resource] = identifiers.compactMap { identifier in
-                    if let value = resourceStore[Signature(id: identifier.id, type: identifier.type)]?.resource {
-                        return value
-                    } else if let classType = self.resourceManager.resourceClasses[identifier.type] {
-                        let resourceObject = try! Document.ResourceObject(json: ["id": identifier.id, "type": identifier.type, "meta": identifier.meta as Any])
-                        return classType.init(resourceObject: resourceObject)
+                case .collection(let identifiers):
+                    let values: [Resource] = identifiers.compactMap { identifier in
+                        if let value = resourceStore[Signature(id: identifier.id, type: identifier.type)]?.resource {
+                            return value
+                        } else if let classType = self.resourceManager.resourceClasses[identifier.type] {
+                            let resourceObject = try! Document.ResourceObject(json: ["id": identifier.id, "type": identifier.type, "meta": identifier.meta as Any])
+                            return classType.init(resourceObject: resourceObject)
+                        }
+                        return nil
                     }
-                    return nil
+                    try? property.set(value: values, on: &mutableSelf)
+                case .none:
+                    break
                 }
-                self.setValue(values, forKey: key)
-            case .none:
-                break
             }
         }
     }
     
-    open override func setValue(_ value: Any!, forUndefinedKey key: String) {
-        // We ignore any values that were not defined in our model
+    /**
+     Equality is based on the `ResourceObject` representation
+     */
+    public static func == (lhs: Resource, rhs: Resource) -> Bool {
+        return lhs.toResourceObject() == rhs.toResourceObject()
     }
 }
 

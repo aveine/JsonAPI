@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -30,6 +30,7 @@
 		9E13313F26027D65003DB39F /* TestClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E13310626027CF1003DB39F /* TestClasses.swift */; };
 		9E13314026027D65003DB39F /* DocumentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E13310726027CF1003DB39F /* DocumentTests.swift */; };
 		9E69BADC227A0CE4008393C1 /* JsonAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E69BAD2227A0CE4008393C1 /* JsonAPI.framework */; };
+		9EA47689278DBD13007D54AA /* Runtime in Frameworks */ = {isa = PBXBuildFile; productRef = 9EA47688278DBD13007D54AA /* Runtime */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9EA47689278DBD13007D54AA /* Runtime in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -216,6 +218,9 @@
 			dependencies = (
 			);
 			name = JsonAPI;
+			packageProductDependencies = (
+				9EA47688278DBD13007D54AA /* Runtime */,
+			);
 			productName = JsonAPI;
 			productReference = 9E69BAD2227A0CE4008393C1 /* JsonAPI.framework */;
 			productType = "com.apple.product-type.framework";
@@ -266,6 +271,9 @@
 				Base,
 			);
 			mainGroup = 9E69BAC8227A0CE3008393C1;
+			packageReferences = (
+				9EA47687278DBD13007D54AA /* XCRemoteSwiftPackageReference "Runtime" */,
+			);
 			productRefGroup = 9E69BAD3227A0CE4008393C1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -590,6 +598,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9EA47687278DBD13007D54AA /* XCRemoteSwiftPackageReference "Runtime" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/wickwirew/Runtime.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9EA47688278DBD13007D54AA /* Runtime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9EA47687278DBD13007D54AA /* XCRemoteSwiftPackageReference "Runtime" */;
+			productName = Runtime;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		9E13311E26027CF1003DB39F /* Test.xcdatamodeld */ = {

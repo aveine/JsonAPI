@@ -2,11 +2,11 @@ extension Document {
     /**
      Identifies a relationship
      */
-    public struct RelationshipObject {
+    public struct RelationshipObject: Equatable {
         /**
          Allows a client to link together all of the included resource objects
          */
-        public enum ResourceLinkage {
+        public enum ResourceLinkage: Equatable {
             /**
              To-one relationship
              
@@ -19,7 +19,18 @@ extension Document {
              
              - Parameter identifiers: Collection of identifiers for the to-many relationships
              */
-            case collection(identifiers: [ResourceIdentifierObject])
+            case collection(identifiers: [ResourceIdentifierObject])            
+            
+            public static func == (lhs: Document.RelationshipObject.ResourceLinkage, rhs: Document.RelationshipObject.ResourceLinkage) -> Bool {
+                switch (lhs, rhs) {
+                case (.single(let lhsIdentifier), .single(let rhsIdentifier)):
+                    return lhsIdentifier == rhsIdentifier
+                case (.collection(let lhsIdentifiers), .collection(let rhsIdentifiers)) :
+                    return lhsIdentifiers == rhsIdentifiers
+                default:
+                    return false
+                }
+            }
         }
         
         /**
@@ -121,6 +132,13 @@ extension Document {
             }
             
             return json
+        }
+        
+        /**
+         Equality is based on `data`
+         */
+        public static func == (lhs: Document.RelationshipObject, rhs: Document.RelationshipObject) -> Bool {
+            return lhs.data == rhs.data
         }
     }
 }

@@ -2,7 +2,7 @@ extension Document {
     /**
      Identifies an individual resource
      */
-    public struct ResourceIdentifierObject {
+    public struct ResourceIdentifierObject: Equatable {
         /**
          Resource's id
          */
@@ -68,6 +68,13 @@ extension Document {
             }
             
             return json
+        }
+        
+        /**
+         Equality is based on `id` and `type`
+         */
+        public static func == (lhs: Document.ResourceIdentifierObject, rhs: Document.ResourceIdentifierObject) -> Bool {
+            return lhs.id == rhs.id && lhs.type == rhs.type
         }
     }
 }
