@@ -220,7 +220,7 @@ class ResourceTests: XCTestCase {
             "type": "ComplexResource",
             "attributes": [
                 "optionalString": "string",
-                "optionalNumber": 42,
+                "optionalNumber": 42.0,
                 "optionalBool": true,
                 "optionalArray": [
                     "string",

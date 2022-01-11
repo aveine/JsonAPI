@@ -88,9 +88,9 @@ class Article: Resource {
 
     var keywords: [String]?
     
-    var viewsCount: NSNumber?
+    var viewsCount: Int?
     
-    var isFeatured: NSNumber?
+    var isFeatured: Bool?
     
     var customObject: [String: Any]?
     

@@ -2,7 +2,7 @@ extension Document {
     /**
      Represent a resource
      */
-    public struct ResourceObject {
+    public struct ResourceObject: Equatable {
         /**
          Resource's id
          */
@@ -113,6 +113,31 @@ extension Document {
             }
             
             return json
+        }
+        
+        /**
+         Equality is based on `id`,  `type`, `attributes` and `relationships`
+         */
+        public static func == (lhs: Document.ResourceObject, rhs: Document.ResourceObject) -> Bool {
+            let idEquals: Bool = {
+                return lhs.id == rhs.id
+            }()
+            
+            let typeEquals: Bool = {
+                return lhs.type == rhs.type
+            }()
+            let attributesEquals: Bool = {
+                let lhsAttributes = lhs.attributes ?? [:]
+                let rhsAttributes = rhs.attributes ?? [:]
+                
+                return NSDictionary(dictionary: lhsAttributes as [AnyHashable : Any]) == NSDictionary(dictionary: rhsAttributes as [AnyHashable : Any])
+            }()
+            
+            let relationshipsEquals: Bool = {
+                return lhs.relationships == rhs.relationships
+            }()
+            
+            return idEquals && typeEquals && attributesEquals && relationshipsEquals
         }
     }
 }
