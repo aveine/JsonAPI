@@ -1,13 +1,6 @@
 {
   "warnings": [
     {
-      "file": "/Users/cpaccard/Jobs/Aveine/iOS/JsonAPI/Sources/JsonAPI/Core/Resource.swift",
-      "line": 261,
-      "symbol": "Resource.setValue(_:forUndefinedKey:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
       "file": "/Users/cpaccard/Jobs/Aveine/iOS/JsonAPI/Sources/JsonAPI/Core/json/Document.swift",
       "line": 5,
       "symbol": "Document.JsonObject",
