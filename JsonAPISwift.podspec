@@ -16,6 +16,8 @@ This library allows several types of use, from framework style to "raw" JSON:API
   spec.source_files = "Sources/JsonAPI/**/*.swift"
   spec.module_name  = "JsonAPI"
 
+  spec.dependency 'Runtime', '~> 2.2.2'
+
   spec.swift_version = '5.1'
-  spec.ios.deployment_target = '11.0'
+  spec.ios.deployment_target = '13.4'
 end
