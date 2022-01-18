@@ -1,3 +1,5 @@
+import Foundation
+
 extension Document {
     /**
      Represent a resource
