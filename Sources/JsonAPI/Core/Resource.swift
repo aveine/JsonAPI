@@ -268,10 +268,14 @@ open class Resource : Identifiable, Equatable {
     }
     
     /**
-     Equality is based on the `ResourceObject` representation
+     By default equality is based on the `ResourceObject` representation
      */
+    open func equals(rhs: Resource) -> Bool {
+        return self.toResourceObject() == rhs.toResourceObject()
+    }
+
     public static func == (lhs: Resource, rhs: Resource) -> Bool {
-        return lhs.toResourceObject() == rhs.toResourceObject()
+        return lhs.equals(rhs: rhs)
     }
 }
 
