@@ -93,6 +93,38 @@ class Article: Resource {
     var isFeatured: Bool?
     
     var customObject: [String: Any]?
+
+    /*----------- Nested Attributes ------------*/
+
+    struct Tag: ResourceNestedAttribute {
+        var name: String?
+
+        var meta: [String: Any]?
+
+        /*---------- Custom mechanics ----------*/
+
+        /**
+	 Override the keys expected in the JSON API resource object's attributes to match the nested object's attributes
+	 Format => [resourceObjectAttributeKey: nestedObjectKey]
+         */
+         override class var nestedAttributesKeys: [String : String] {
+            return [
+                "tagName": "name"
+            ]
+        }
+
+        /**
+         Attributes that won't be serialized when serializing to a JSON API resource object
+         */
+        override class var nestedExcludedAttributes: [String] {
+            return [
+                "meta"
+            ]
+        }
+    }
+
+    var mainTag: Tag?
+    var tags: [Tag]?
     
     /*------------- Relationships -------------*/
         
@@ -115,7 +147,7 @@ class Article: Resource {
      */
     override class var resourceAttributesKeys: [String : String] {
         return [
-            "descriptionText": "description"
+            "description": "descriptionText"
         ]
     }
 

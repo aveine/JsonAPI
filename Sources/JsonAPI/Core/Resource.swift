@@ -35,17 +35,17 @@ open class Resource : Identifiable, Equatable {
     public var links: Document.LinksObject?
     
     /**
+     Current type information for Runtime reflection library
+     */
+    private lazy var runtimeTypeInfo = try! typeInfo(of: Swift.type(of: self))
+
+    /**
      Override the keys expected in the JSON API resource object's attributes to match the model's attributes
      Format => [resourceObjectAttributeKey: modelKey]
      */
     open class var resourceAttributesKeys: [String: String] {
         return [:]
     }
-    
-    /**
-     Current type information for Runtime reflection library
-     */
-    private lazy var runtimeTypeInfo = try! typeInfo(of: Swift.type(of: self))
     
     /**
      Alias of `resourceAttributesKeys` for an instance instead of the class type
@@ -95,12 +95,7 @@ open class Resource : Identifiable, Equatable {
         self.links = resourceObject.links
         
         if let attributes = resourceObject.attributes {
-            for (attributeKey, attributeValue) in attributes {
-                let key = self.attributesKeys[attributeKey] ?? attributeKey
-                if let property = try? runtimeTypeInfo.property(named: key) {
-                    try? property.set(value: attributeValue as Any, on: &mutableSelf)
-                }
-            }
+            let _ = initObject(object: self, objectTypeInfo: self.runtimeTypeInfo, attributes: attributes, attributesKeys: self.attributesKeys)
         }
         
         if let relationships = resourceObject.relationships {
@@ -131,6 +126,70 @@ open class Resource : Identifiable, Equatable {
     }
     
     /**
+     Initalize the given object with the given attributes
+
+     - Parameter object: The object to initialize with the given attributes
+     - Parameter objectTypeInfo: Object type information for Runtime reflection library
+     - Parameter attributes: Attributes that will be used to initialized the given object
+     - Parameter attributesKeys: Keys expected in the JSON API resource object's attributes to match the object's attributes
+     - Returns: The initalized object
+     */
+    private func initObject(object: Any, objectTypeInfo: TypeInfo, attributes: Document.JsonObject, attributesKeys: [String: String]) -> Any {
+        var mutableObject = object
+        for (attributeKey, attributeValue) in attributes {
+            let key = attributesKeys[attributeKey] ?? attributeKey
+            if let property = try? objectTypeInfo.property(named: key) {
+                let originalValue = try! property.get(from: object)
+                var value = attributeValue
+
+                if let optionalValue = originalValue as? OptionalProtocol {
+                    let optionalValueWrappedType = optionalValue.wrappedType()
+                    if let nestedAttributeType = optionalValueWrappedType as? ResourceNestedAttribute.Type {
+                        if let nestedAttributes = attributeValue as? Document.JsonObject {
+                            let nestedTypeInfo = try! typeInfo(of: optionalValueWrappedType)
+                            let nestedObject = try! createInstance(of: nestedTypeInfo.type, constructor: nil)
+                            value = initObject(object: nestedObject, objectTypeInfo: nestedTypeInfo, attributes: nestedAttributes, attributesKeys: nestedAttributeType.nestedAttributesKeys)
+                        }
+                    } else if let optionalCollectionValue = optionalValue as? OptionalCollectionProtocol {
+                        let optionalCollectionValueWrappedElementType = optionalCollectionValue.wrappedElementType()
+                        if let nestedAttributeType = optionalCollectionValueWrappedElementType as? ResourceNestedAttribute.Type {
+                            if let collectionNestedAttributes = attributeValue as? [Document.JsonObject] {
+                                let nestedTypeInfo = try! typeInfo(of: optionalCollectionValueWrappedElementType)
+                                value = collectionNestedAttributes.map { nestedAttributes -> Any in
+                                    let nestedObject = try! createInstance(of: nestedTypeInfo.type, constructor: nil)
+                                    return initObject(object: nestedObject, objectTypeInfo: nestedTypeInfo, attributes: nestedAttributes, attributesKeys: nestedAttributeType.nestedAttributesKeys)
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    if originalValue is ResourceNestedAttribute {
+                        if let nestedAttributes = attributeValue as? Document.JsonObject {
+                            let nestedTypeInfo = try! typeInfo(of: Swift.type(of: originalValue))
+                            let nestedAttributeType = nestedTypeInfo.type as! ResourceNestedAttribute.Type
+                            value = initObject(object: originalValue, objectTypeInfo: nestedTypeInfo, attributes: nestedAttributes, attributesKeys: nestedAttributeType.nestedAttributesKeys)
+                        }
+                    } else if let collectionValue = originalValue as? CollectionProtocol {
+                        let collectionValueWrappedElementType = collectionValue.wrappedElementType()
+                        if let nestedAttributeType = collectionValueWrappedElementType as? ResourceNestedAttribute.Type {
+                            if let collectionNestedAttributes = attributeValue as? [Document.JsonObject] {
+                                let nestedTypeInfo = try! typeInfo(of: collectionValueWrappedElementType)
+                                value = collectionNestedAttributes.map { nestedAttributes -> Any in
+                                    let nestedObject = try! createInstance(of: nestedTypeInfo.type, constructor: nil)
+                                    return initObject(object: nestedObject, objectTypeInfo: nestedTypeInfo, attributes: nestedAttributes, attributesKeys: nestedAttributeType.nestedAttributesKeys)
+                                }
+                            }
+                        }
+                    }
+                }
+
+                try? property.set(value: value as Any, on: &mutableObject)
+            }
+        }
+        return object
+    }
+
+    /**
      Serialize to a JSON API resource object
      
      - Returns: JSON API resource object representation of the instance
@@ -139,35 +198,60 @@ open class Resource : Identifiable, Equatable {
         var attributes: Document.JsonObject = [:]
         var relationships: Document.RelationshipObjects = [:]
         
-        let mirror = Mirror(reflecting: self)
-        for child in mirror.children {
-            if let label = child.label {
+        var mirror: Mirror? = Mirror(reflecting: self)
+        var properties: [Mirror.Child] = []
+        repeat {
+            for property in mirror!.children {
+                properties.append(property)
+            }
+            mirror = mirror?.superclassMirror
+        } while mirror != nil && mirror?.subjectType != Resource.self
+
+        for property in properties {
+            if let label = property.label {
                 let key: String = self.attributesKeys.first { $1 == label }?.key ?? label
                 if self.excludedAttributes.contains(key) {
                     continue
                 }
-                
-                if let optionalValue = child.value as? OptionalProtocol {
-                    if optionalValue.wrappedType() is Resource.Type {
-                        relationships[key] = self.resourceToRelationshipObject(resource: child.value as? Resource)
+
+                if let optionalValue = property.value as? OptionalProtocol {
+                    let optionalValueWrappedType = optionalValue.wrappedType()
+                    if optionalValueWrappedType is Resource.Type {
+                        relationships[key] = self.resourceToRelationshipObject(resource: property.value as? Resource)
                     } else if let optionalCollectionValue = optionalValue as? OptionalCollectionProtocol {
-                        if optionalCollectionValue.wrappedElementType() is Resource.Type {
-                            relationships[key] = self.resourcesToRelationshipObject(resources: child.value as? [Resource])
+                        let optionalCollectionValueWrappedElementType = optionalCollectionValue.wrappedElementType()
+                        if optionalCollectionValueWrappedElementType is Resource.Type {
+                            relationships[key] = self.resourcesToRelationshipObject(resources: property.value as? [Resource])
                         } else {
-                            attributes[key] = child.value
+                            var value: Any? = property.value
+                            if let collectionNestedAttribute = value as? [ResourceNestedAttribute] {
+                                value = collectionNestedAttribute.map { nestedAttribute -> Document.JsonObject in
+                                    serializeNestedAttribute(nestedAttribute: nestedAttribute)
+                                }
+                            }
+                            attributes[key] = value
                         }
-                    }
-                    else {
-                        attributes[key] = child.value
+                    } else {
+                        var value: Any? = property.value
+                        if let nestedAttribute = value as? ResourceNestedAttribute {
+                            value = serializeNestedAttribute(nestedAttribute: nestedAttribute)
+                        }
+                        attributes[key] = value
                     }
                 } else {
-                    switch child.value {
+                    switch property.value {
                     case let resource as Resource:
                         relationships[key] = resource.toRelationshipObject()
                     case let resources as [Resource]:
                         relationships[key] = self.resourcesToRelationshipObject(resources: resources)
+                    case let nestedAttribute as ResourceNestedAttribute:
+                        attributes[key] = serializeNestedAttribute(nestedAttribute: nestedAttribute)
+                    case let nestedAttributes as [ResourceNestedAttribute]:
+                        attributes[key] = nestedAttributes.map { nestedAttribute -> Document.JsonObject in
+                            serializeNestedAttribute(nestedAttribute: nestedAttribute)
+                        }
                     default:
-                        attributes[key] = child.value
+                        attributes[key] = property.value
                     }
                 }
             }
@@ -183,6 +267,37 @@ open class Resource : Identifiable, Equatable {
         )
     }
     
+    /**
+     Serialize the given nested attribute into a JSON object
+
+     - Parameter nestedAttribute: The nested attribute to serialize
+     - Returns: The serialized nested attribute as a JSON object
+     */
+    private func serializeNestedAttribute(nestedAttribute: ResourceNestedAttribute) -> Document.JsonObject {
+        var attributes: Document.JsonObject = [:]
+
+        let nestedTypeInfo = try! typeInfo(of: Swift.type(of: nestedAttribute))
+        nestedTypeInfo.properties.forEach { property in
+            let key: String = nestedAttribute.attributesKeys.first { $1 == property.name }?.key ?? property.name
+            if nestedAttribute.excludedAttributes.contains(key) == false {
+                let originalValue = try! property.get(from: nestedAttribute)
+
+                switch originalValue {
+                case let nestedAttribute as ResourceNestedAttribute:
+                    attributes[key] = serializeNestedAttribute(nestedAttribute: nestedAttribute)
+                case let nestedAttributes as [ResourceNestedAttribute]:
+                    attributes[key] = nestedAttributes.map { nestedAttribute -> Document.JsonObject in
+                        serializeNestedAttribute(nestedAttribute: nestedAttribute)
+                    }
+                default:
+                    attributes[key] = originalValue
+                }
+            }
+        }
+
+        return attributes
+    }
+
     /**
      Serialize to a JSON API resource identifier object
      
@@ -276,6 +391,68 @@ open class Resource : Identifiable, Equatable {
 
     public static func == (lhs: Resource, rhs: Resource) -> Bool {
         return lhs.equals(rhs: rhs)
+    }
+}
+
+/**
+ Protcol to implement for serialization/deserialization of nested attributes inside a `Resource`
+ */
+public protocol ResourceNestedAttribute {
+    /**
+     Override the keys expected in the JSON API resource object's attributes to match the nested object's attributes
+     Format => [resourceObjectAttributeKey: nestedObjectKey]
+     */
+    static var nestedAttributesKeys: [String: String] { get }
+
+    /**
+     Attributes that won't be serialized when serializing to a JSON API resource object
+     */
+    static var nestedExcludedAttributes: [String] { get }
+}
+
+/**
+ Default implementations
+ */
+public extension ResourceNestedAttribute {
+    static var nestedAttributesKeys: [String: String] {
+        return [:]
+    }
+
+    /**
+     Alias of `nestedAttributesKeys` for an instance instead of the type
+     */
+    var attributesKeys: [String: String] {
+        get {
+            return Swift.type(of: self).nestedAttributesKeys
+        }
+    }
+
+    static var nestedExcludedAttributes: [String] {
+        return []
+    }
+
+    /**
+     Alias of `nestedExcludedAttributes` for an instance instead of the type
+     */
+    var excludedAttributes: [String] {
+        get {
+            return Swift.type(of: self).nestedExcludedAttributes
+        }
+    }
+}
+
+/**
+ The protocol and extension below are only used for the serialization part
+ They allow to get the real type of the element inside an `Array`
+ */
+
+protocol CollectionProtocol {
+    func wrappedElementType() -> Any.Type
+}
+
+extension Array : CollectionProtocol {
+    func wrappedElementType() -> Any.Type {
+        return Element.self
     }
 }
 

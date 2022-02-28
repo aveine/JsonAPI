@@ -5,8 +5,8 @@ class AResource: Resource {}
 class ComplexResource: Resource {
     var optionalString: String?
     
-    var optionalNumber: Double?    
-
+    var optionalNumber: Double?
+    
     var optionalBool: Bool?
     
     var optionalArray: [Any]?
@@ -119,20 +119,46 @@ class Person: Resource {
 }
 
 class Contact: Person {
-
-  var email: String?
-
-  override class var resourceType: String {
-    "contacts"
-  }
+    struct Address: ResourceNestedAttribute {
+        struct SpatialInformation: ResourceNestedAttribute {
+            var id: String?
+            var latitude: Double?
+            var longitude: Double?
+            
+            static var nestedExcludedAttributes: [String] = ["id"]
+        }
+        
+        var street: String?
+        var city: String?
+        var country: String?
+        var coordinates: SpatialInformation
+        var geometricArea: [SpatialInformation]
+        
+        static var nestedAttributesKeys: [String : String] {
+            return [
+                "town": "city"
+            ]
+        }
+    }
+    
+    var email: String?
+    var count: Int?
+    var rating: Double?
+    
+    var mainAddress: Address?
+    var addresses: [Address]?
+    
+    override class var resourceType: String {
+        "contacts"
+    }
 }
 
 class ContactList: Resource {
-  var name: String?
-
-  var contacts: [Contact]?
-
-  override class var resourceType: String {
-    "contactlists"
-  }
+    var name: String?
+    
+    var contacts: [Contact]?
+    
+    override class var resourceType: String {
+        "contactlists"
+    }
 }
