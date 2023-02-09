@@ -3,7 +3,8 @@ import JsonAPI
 
 class DataSourceTests: XCTestCase {
     class AClient: Client {
-        func executeRequest(path: String, method: HttpMethod, queryItems: [URLQueryItem]?, body: Document.JsonObject?, success: @escaping ClientSuccessBlock, failure: @escaping ClientFailureBlock, userInfo: [String : Any]?) {
+        func executeRequest(path: String, method: HttpMethod, queryItems: [URLQueryItem]?, body: Document.JsonObject?, userInfo: [String : Any]?) async throws -> ClientSuccessResponse {
+            return ClientSuccessResponse(nil, nil)
         }
     }
     static let client = AClient()

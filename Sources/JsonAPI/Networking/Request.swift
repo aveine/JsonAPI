@@ -3,7 +3,7 @@ import Foundation
 /**
  Generic request for a resource or a resource collection
  */
-public class Request<ResourceType: Resource, SuccessCallbackType> {
+public class Request<ResourceType: Resource, SuccessType> {
     /**
      Resource manager to access all  the `Resource` classes
      */
@@ -56,108 +56,111 @@ public class Request<ResourceType: Resource, SuccessCallbackType> {
     /**
      Execute the request
      
-     - Parameter success: Success block that will be called if the request successed
-     - Parameter failure: Failure block that will be called if the request failed
+     - Returns: The adapted resource response depending on the request  (either a `ResourceResponse` or a `ResourceCollectionResponse`)
      */
-    public func result(_ success: SuccessCallbackType, _ failure: @escaping ((Error?, Document?) -> Void)) {
+    public func result() async throws -> SuccessType {
         let body: Document.JsonObject? = {
             if let resourceObject = self.resource?.toResourceObject().toJson() {
                 return ["data": resourceObject]
             }
             return nil
         }()
-        
-        client.executeRequest(path: path,
-                              method: method,
-                              queryItems: queryItems,
-                              body: body,
-                              success: { (response, data) in
-                                var document: Document? = nil
-                                var resourceStore: [Resource.Signature: (resource: Resource, relationships: Document.RelationshipObjects?)] = [:]
-                                
-                                if let data = data, !data.isEmpty {
-                                    do {
-                                        if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] {
-                                            document = try Document(json: json)
-                                            if let included = document?.included {
-                                                resourceStore = self.createResourceStore(resourceObjects: included)
-                                            }
-                                        }
-                                    } catch let error {
-                                        failure(error, document)
-                                        return
-                                    }
-                                }
-                                
-                                if let success = success as? DataSource<ResourceType>.ResourceSuccessBlock {
-                                    if let document = document {
-                                        switch document.data {
-                                        case .single(let resourceObject):
-                                            let resource = ResourceType(resourceObject: resourceObject)
-                                            if let resourceId = resource.id {
-                                                resourceStore[Resource.Signature(id: resourceId, type: resource.type)] = (resource, resourceObject.relationships)
-                                            }
-                                            
-                                            resourceStore.forEach {
-                                                if let relationships = $0.value.relationships {
-                                                    $0.value.resource.resolveRelationships(relationships: relationships, resourceStore: resourceStore)
-                                                }
-                                            }
-                                            
-                                            success(resource, document)
-                                        case .collection(_):
-                                            failure(RequestError.notSingleData, document)
-                                        case .none:
-                                            success(nil, document)
-                                        }
-                                    } else {
-                                        success(nil, nil)
-                                    }
-                                } else if let success = success as? DataSource<ResourceType>.ResourceCollectionSuccessBlock {
-                                    if let document = document {
-                                        switch document.data {
-                                        case .single(_):
-                                            failure(RequestError.notCollectionData, document)
-                                        case .collection(let resourceObjects):
-                                            let resources: [ResourceType] = resourceObjects.map { resourceObject in
-                                                let resource = ResourceType(resourceObject: resourceObject)
-                                                if let resourceId = resource.id {
-                                                    resourceStore[Resource.Signature(id: resourceId, type: resource.type)] = (resource, resourceObject.relationships)
-                                                }
-                                                return resource
-                                            }
-                                            
-                                            resourceStore.forEach {
-                                                if let relationships = $0.value.relationships {
-                                                    $0.value.resource.resolveRelationships(relationships: relationships, resourceStore: resourceStore)
-                                                }
-                                            }
-                                            
-                                            success(resources, document)
-                                        case .none:
-                                            failure(RequestError.noData, document)
-                                        }
-                                    } else {
-                                        failure(RequestError.emptyResponse, nil)
-                                    }
-                                } else {
-                                    failure(RequestError.unknownResponse, document) // Should never happened
-                                }
-        },
-                              failure: { (error, data) in
-                                if let data = data {
-                                    do {
-                                        let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
-                                        let document: Document = try Document(json: json!)
-                                        failure(error, document)
-                                    } catch let error {
-                                        failure(error, nil)
-                                    }
-                                } else {
-                                    failure(error, nil)
-                                }
-        },
-                              userInfo: userInfo)
+
+        do {
+            let response = try await client.executeRequest(path: path, method: method, queryItems: queryItems, body: body, userInfo: userInfo)
+
+            var document: Document? = nil
+            var resourceStore: [Resource.Signature: (resource: Resource, relationships: Document.RelationshipObjects?)] = [:]
+
+            if let data = response.data, !data.isEmpty {
+                do {
+                    if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                        document = try Document(json: json)
+                        if let included = document?.included {
+                            resourceStore = self.createResourceStore(resourceObjects: included)
+                        }
+                    }
+                } catch let error {
+                    throw RequestError.failure(error, document)
+                }
+            }
+
+            if SuccessType.self is DataSource<ResourceType>.ResourceResponse.Type {
+                if let document = document {
+                    switch document.data {
+                    case .single(let resourceObject):
+                        let resource = ResourceType(resourceObject: resourceObject)
+                        if let resourceId = resource.id {
+                            resourceStore[Resource.Signature(id: resourceId, type: resource.type)] = (resource, resourceObject.relationships)
+                        }
+
+                        resourceStore.forEach {
+                            if let relationships = $0.value.relationships {
+                                $0.value.resource.resolveRelationships(relationships: relationships, resourceStore: resourceStore)
+                            }
+                        }
+
+                        return DataSource<ResourceType>.ResourceResponse(document, resource) as! SuccessType
+                    case .collection(_):
+                        throw RequestError.failure(RequestError.notSingleData, document)
+                    case .none:
+                        return DataSource<ResourceType>.ResourceResponse(document, nil) as! SuccessType
+                    }
+                } else {
+                    return DataSource<ResourceType>.ResourceResponse(nil, nil) as! SuccessType
+                }
+            } else if SuccessType.self is DataSource<ResourceType>.ResourceCollectionResponse.Type {
+                if let document = document {
+                    switch document.data {
+                    case .single(_):
+                        throw RequestError.failure(RequestError.notCollectionData, document)
+                    case .collection(let resourceObjects):
+                        let resources: [ResourceType] = resourceObjects.map { resourceObject in
+                            let resource = ResourceType(resourceObject: resourceObject)
+                            if let resourceId = resource.id {
+                                resourceStore[Resource.Signature(id: resourceId, type: resource.type)] = (resource, resourceObject.relationships)
+                            }
+                            return resource
+                        }
+
+                        resourceStore.forEach {
+                            if let relationships = $0.value.relationships {
+                                $0.value.resource.resolveRelationships(relationships: relationships, resourceStore: resourceStore)
+                            }
+                        }
+
+                        return DataSource<ResourceType>.ResourceCollectionResponse(document, resources) as! SuccessType
+                    case .none:
+                        throw RequestError.failure(RequestError.noData, document)
+                    }
+                } else {
+                    throw RequestError.failure(RequestError.emptyResponse, nil)
+                }
+            } else {
+                throw RequestError.failure(RequestError.unknownResponse, document) // Should never happened
+            }
+        } catch let error {
+            switch error {
+            case ClientError.failure(_, let data):
+                if let data = data {
+                    let json: [String: Any]?
+                    let document: Document?
+                    do {
+                        json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
+                        document = try Document(json: json!)
+                    } catch let error {
+                        throw RequestError.failure(error, nil)
+                    }
+                    throw RequestError.failure(error, document)
+                } else {
+                    throw RequestError.failure(error, nil)
+                }
+            case RequestError.failure:
+                throw error
+            default:
+                throw RequestError.failure(error, nil)
+            }
+        }
     }
     
     /**
@@ -218,12 +221,12 @@ public class Request<ResourceType: Resource, SuccessCallbackType> {
 /**
 Request for a resource
 */
-public class ResourceRequest<ResourceType: Resource>: Request<ResourceType, DataSource<ResourceType>.ResourceSuccessBlock> {}
+public class ResourceRequest<ResourceType: Resource>: Request<ResourceType, DataSource<ResourceType>.ResourceResponse> {}
 
 /**
  Request for a resource collection
  */
-public class ResourceCollectionRequest<ResourceType: Resource>: Request<ResourceType, DataSource<ResourceType>.ResourceCollectionSuccessBlock> {
+public class ResourceCollectionRequest<ResourceType: Resource>: Request<ResourceType, DataSource<ResourceType>.ResourceCollectionResponse> {
     /**
      Append the given sort query to the request's query items
      
@@ -268,6 +271,13 @@ public enum Sort {
  Different errors that can be returned for a request
  */
 public enum RequestError: Error {
+    /**
+     Allow to correlate an error with a response document
+
+     - Parameter error The error generating the failure
+     - Parameter document The response document related to the error
+     */
+    case failure(_ error: Error, _ document: Document?)
     case unknownResponse
     case emptyResponse
     case noData
