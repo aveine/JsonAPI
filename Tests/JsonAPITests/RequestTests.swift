@@ -232,37 +232,39 @@ class RequestTests: XCTestCase {
             ]
         ];
         
-        func executeRequest(path: String, method: HttpMethod, queryItems: [URLQueryItem]?, body: Document.JsonObject?, success: @escaping ClientSuccessBlock, failure: @escaping ClientFailureBlock, userInfo: [String : Any]?) {
+        func executeRequest(path: String, method: HttpMethod, queryItems: [URLQueryItem]?, body: Document.JsonObject?, userInfo: [String : Any]?) async throws -> ClientSuccessResponse {
             if queryItems?.contains(URLQueryItem(name: "error", value: "true")) ?? false {
                 if queryItems?.contains(URLQueryItem(name: "notJsonFormat", value: "true")) ?? false {
-                    failure(nil, MockClient.randomData)
+                    throw ClientError.failure(nil, MockClient.randomData)
                 } else if queryItems?.contains(URLQueryItem(name: "noResult", value: "true")) ?? false {
-                    failure(nil, nil)
+                    throw ClientError.failure(nil, nil)
                 } else {
-                    failure(nil, try! JSONSerialization.data(withJSONObject: MockClient.errorDocument))
+                    throw ClientError.failure(nil, try! JSONSerialization.data(withJSONObject: MockClient.errorDocument))
                 }
             } else if queryItems?.contains(URLQueryItem(name: "notJsonFormat", value: "true")) ?? false {
-                success(nil, MockClient.randomData)
+                return ClientSuccessResponse(nil, MockClient.randomData)
             } else if queryItems?.contains(URLQueryItem(name: "resourceSerialization", value: "true")) ?? false {
-                success(nil, try! JSONSerialization.data(withJSONObject: body!))
+                return ClientSuccessResponse(nil, try! JSONSerialization.data(withJSONObject: body!))
             } else if queryItems?.contains(URLQueryItem(name: "resource", value: "true")) ?? false {
                 if queryItems?.contains(URLQueryItem(name: "include", value: "author.favoriteArticle")) ?? false {
-                    success(nil, try! JSONSerialization.data(withJSONObject: MockClient.resourceWithIncludedDocument))
+                    return ClientSuccessResponse(nil, try! JSONSerialization.data(withJSONObject: MockClient.resourceWithIncludedDocument))
                 } else {
-                    success(nil, try! JSONSerialization.data(withJSONObject: MockClient.resourceDocument))
+                    return ClientSuccessResponse(nil, try! JSONSerialization.data(withJSONObject: MockClient.resourceDocument))
                 }
             } else if queryItems?.contains(URLQueryItem(name: "resources", value: "true")) ?? false {
                 if queryItems?.contains(URLQueryItem(name: "include", value: "author.favoriteArticle")) ?? false {
-                    success(nil, try! JSONSerialization.data(withJSONObject: MockClient.resourcesWithIncludedDocument))
+                    return ClientSuccessResponse(nil, try! JSONSerialization.data(withJSONObject: MockClient.resourcesWithIncludedDocument))
                 } else {
-                    success(nil, try! JSONSerialization.data(withJSONObject: MockClient.resourcesDocument))
+                    return ClientSuccessResponse(nil, try! JSONSerialization.data(withJSONObject: MockClient.resourcesDocument))
                 }
             } else if queryItems?.contains(URLQueryItem(name: "noData", value: "true")) ?? false {
-                success(nil, try! JSONSerialization.data(withJSONObject: MockClient.noDataDocument))
+                return ClientSuccessResponse(nil, try! JSONSerialization.data(withJSONObject: MockClient.noDataDocument))
             } else if queryItems?.contains(URLQueryItem(name: "emptyDocument", value: "true")) ?? false {
-                success(nil, try! JSONSerialization.data(withJSONObject: []))
+                return ClientSuccessResponse(nil, try! JSONSerialization.data(withJSONObject: []))
             } else if queryItems?.contains(URLQueryItem(name: "includeInherited", value: "true")) ?? false {
-                success(nil, try! JSONSerialization.data(withJSONObject: MockClient.resourceWithIncludedInheritedResourceDocument))
+                return ClientSuccessResponse(nil, try! JSONSerialization.data(withJSONObject: MockClient.resourceWithIncludedInheritedResourceDocument))
+            } else {
+                throw ClientError.failure(nil, nil)
             }
         }
     }
@@ -336,442 +338,357 @@ class RequestTests: XCTestCase {
     }
     
     
-    func testResourceRequestResource() {
-        let expectation = XCTestExpectation(description: "Answer from the mock client")
-        
-        ResourceRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
+    func testResourceRequestResource() async throws {
+        let response = try await ResourceRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
             .queryItems([URLQueryItem(name: "resource", value: "true")])
-            .result({ (resource, document) in
-                expectation.fulfill()
-                
-                guard let resource = resource else {
-                    XCTFail("Resource should not be empty")
-                    return
-                }
-                guard let document = document else {
-                    XCTFail("Document should not be empty")
-                    return
-                }
-                
-                XCTAssertEqual(resource.toResourceObject().toJson() as NSDictionary, MockClient.resourceDocument["data"] as? NSDictionary)
-                XCTAssertEqual(document.toJson() as NSDictionary, MockClient.resourceDocument as NSDictionary)
-            }, { (_, _) in
-                expectation.fulfill()
-                XCTFail("Request should not fail")
-            })
+            .result()
+
+        guard let resource = response.resource else {
+            XCTFail("Resource should not be empty")
+            return
+        }
+        guard let document = response.document else {
+            XCTFail("Document should not be empty")
+            return
+        }
         
-        wait(for: [expectation], timeout: 1.0)
+        XCTAssertEqual(resource.toResourceObject().toJson() as NSDictionary, MockClient.resourceDocument["data"] as? NSDictionary)
+        XCTAssertEqual(document.toJson() as NSDictionary, MockClient.resourceDocument as NSDictionary)
     }
     
-    func testResourceRequestResources() {
-        let expectation = XCTestExpectation(description: "Answer from the mock client")
-        
-        ResourceRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
-            .queryItems([URLQueryItem(name: "resources", value: "true")])
-            .result({ (resource, document) in
-                expectation.fulfill()
-                XCTFail("Request should fail")
-            }, { (error, document) in
-                expectation.fulfill()
-                
-                guard let error = error else {
-                    XCTFail("Error should not be empty")
-                    return
-                }
+    func testResourceRequestResources() async throws {
+        do {
+            let _ = try await ResourceRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
+                .queryItems([URLQueryItem(name: "resources", value: "true")])
+                .result()
+            XCTFail("Request should fail")
+        } catch let error {
+            switch error {
+            case RequestError.failure(let error, let document):
                 guard let document = document else {
                     XCTFail("Document should not be empty")
                     return
                 }
-                
-                if let error = error as? RequestError, error != RequestError.notSingleData {
+
+                guard case RequestError.notSingleData = error else {
                     XCTFail("Not the expected error")
+                    return
                 }
                 XCTAssertEqual(document.toJson() as NSDictionary, MockClient.resourcesDocument as NSDictionary)
-            })
-        
-        wait(for: [expectation], timeout: 1.0)
+            default:
+                XCTFail("Not the expected error")
+            }
+        }
     }
     
-    func testResourceRequestNoData() {
-        let expectation = XCTestExpectation(description: "Answer from the mock client")
-        
-        ResourceRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
+    func testResourceRequestNoData() async throws {
+        let response = try await ResourceRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
             .queryItems([URLQueryItem(name: "noData", value: "true")])
-            .result({ (resource, document) in
-                expectation.fulfill()
-                
-                XCTAssertNil(resource)
-                guard let document = document else {
-                    XCTFail("Document should not be empty")
-                    return
-                }
-                
-                XCTAssertEqual(document.toJson() as NSDictionary, MockClient.noDataDocument as NSDictionary)
-            }, { (_, _) in
-                expectation.fulfill()
-                XCTFail("Request should not fail")
-            })
+            .result()
+
+        XCTAssertNil(response.resource)
+        guard let document = response.document else {
+            XCTFail("Document should not be empty")
+            return
+        }
         
-        wait(for: [expectation], timeout: 1.0)
+        XCTAssertEqual(document.toJson() as NSDictionary, MockClient.noDataDocument as NSDictionary)
     }
     
-    func testResourceRequestEmptyDocument() {
-        let expectation = XCTestExpectation(description: "Answer from the mock client")
-        
-        ResourceRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
+    func testResourceRequestEmptyDocument() async throws {
+        let response = try await ResourceRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
             .queryItems([URLQueryItem(name: "emptyDocument", value: "true")])
-            .result({ (resource, document) in
-                expectation.fulfill()
-                
-                XCTAssertNil(resource)
-                XCTAssertNil(document)
-            }, { (_, _) in
-                expectation.fulfill()
-                XCTFail("Request should not fail")
-            })
+            .result()
         
-        wait(for: [expectation], timeout: 1.0)
+        XCTAssertNil(response.resource)
+        XCTAssertNil(response.document)
     }
     
     
-    func testResourcesRequestResource() {
-        let expectation = XCTestExpectation(description: "Answer from the mock client")
-        
-        ResourceCollectionRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
-            .queryItems([URLQueryItem(name: "resource", value: "true")])
-            .result({ (_, _) in
-                expectation.fulfill()
-                XCTFail("Request should fail")
-            }, { (error, document) in
-                expectation.fulfill()
-                
-                guard let error = error else {
-                    XCTFail("Error should not be empty")
-                    return
-                }
+    func testResourcesRequestResource() async throws {
+        do {
+            let _ = try await ResourceCollectionRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
+                .queryItems([URLQueryItem(name: "resource", value: "true")])
+                .result()
+            XCTFail("Request should fail")
+        } catch let error {
+            switch error {
+            case RequestError.failure(let error, let document):
                 guard let document = document else {
                     XCTFail("Document should not be empty")
                     return
                 }
                 
-                if let error = error as? RequestError, error != RequestError.notCollectionData {
+                guard case RequestError.notCollectionData = error else {
                     XCTFail("Not the expected error")
+                    return
                 }
                 XCTAssertEqual(document.toJson() as NSDictionary, MockClient.resourceDocument as NSDictionary)
-            })
-        
-        wait(for: [expectation], timeout: 1.0)
+            default:
+                XCTFail("Not the expected error")
+            }
+        }
     }
     
-    func testResourcesRequestResources() {
-        let expectation = XCTestExpectation(description: "Answer from the mock client")
-        
-        ResourceCollectionRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
+    func testResourcesRequestResources() async throws {
+        let _ = try await ResourceCollectionRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
             .queryItems([URLQueryItem(name: "resources", value: "true")])
-            .result({ (resources, document) in
-                expectation.fulfill()
-            }, { (_, _) in
-                expectation.fulfill()
-                XCTFail("Request should not fail")
-            })
-        
-        wait(for: [expectation], timeout: 1.0)
+            .result()
     }
     
-    func testResourcesRequestNoData() {
-        let expectation = XCTestExpectation(description: "Answer from the mock client")
-        
-        ResourceCollectionRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
-            .queryItems([URLQueryItem(name: "noData", value: "true")])
-            .result({ (_, _) in
-                expectation.fulfill()
-                XCTFail("Request should fail")
-            }, { (error, document) in
-                expectation.fulfill()
-                
-                guard let error = error else {
-                    XCTFail("Error should not be empty")
-                    return
-                }
+    func testResourcesRequestNoData() async throws {
+        do {
+            let _ = try await ResourceCollectionRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
+                .queryItems([URLQueryItem(name: "noData", value: "true")])
+                .result()
+            XCTFail("Request should fail")
+        } catch let error {
+            switch error {
+            case RequestError.failure(let error, let document):
                 guard let document = document else {
                     XCTFail("Document should not be empty")
                     return
                 }
                 
-                if let error = error as? RequestError, error != RequestError.noData {
+                guard case RequestError.noData = error else {
                     XCTFail("Not the expected error")
+                    return
                 }
                 XCTAssertEqual(document.toJson() as NSDictionary, MockClient.noDataDocument as NSDictionary)
-            })
-        
-        wait(for: [expectation], timeout: 1.0)
+            default:
+                XCTFail("Not the expected error")
+            }
+        }
     }
     
-    func testResourcesRequestEmptyDocument() {
-        let expectation = XCTestExpectation(description: "Answer from the mock client")
-        
-        ResourceCollectionRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
-            .queryItems([URLQueryItem(name: "emptyDocument", value: "true")])
-            .result({ (_, _) in
-                expectation.fulfill()
-                XCTFail("Request should fail")
-            }, { (error, document) in
-                expectation.fulfill()
-                
-                guard let error = error else {
-                    XCTFail("Error should not be empty")
-                    return
-                }
+    func testResourcesRequestEmptyDocument() async throws {
+        do {
+            let _ = try await ResourceCollectionRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
+                .queryItems([URLQueryItem(name: "emptyDocument", value: "true")])
+                .result()
+            XCTFail("Request should fail")
+        } catch let error {
+            switch error {
+            case RequestError.failure(let error, let document):
                 XCTAssertNil(document)
                 
-                if let error = error as? RequestError, error != RequestError.emptyResponse {
+                guard case RequestError.emptyResponse = error else {
                     XCTFail("Not the expected error")
+                    return
                 }
-            })
-        
-        wait(for: [expectation], timeout: 1.0)
+            default:
+                XCTFail("Not the expected error")
+            }
+        }
     }
     
     
-    func testResourceRequestIncluded() {
-        let expectation = XCTestExpectation(description: "Answer from the mock client")
-        
-        ResourceRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
+    func testResourceRequestIncluded() async throws {
+        let response = try await ResourceRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
             .queryItems([URLQueryItem(name: "resource", value: "true")])
             .include(["author.favoriteArticle"])
-            .result({ (article: Article?, document: Document?) in
-                expectation.fulfill()
-                
-                // Article
-                XCTAssertEqual(article?.id, "1")
-                XCTAssertEqual(article?.type, "articles")
-                XCTAssertEqual(article?.title, "Title")
-                XCTAssertEqual(article?.body, "Body")
-                
-                // Article author
-                let author: Person? = article?.author
-                XCTAssertEqual(author?.id, "1")
-                XCTAssertEqual(author?.type, "persons")
-                XCTAssertEqual(author?.name, "Aron")
-                XCTAssertEqual(author?.favoriteArticle, article)
-                XCTAssertEqual(author?.favoriteArticle?.author, article?.author) // Bidirectionnel
-                
-                // First article coAuthor
-                let firstCoAuthor: Person? = article?.coAuthors?.first
-                XCTAssertEqual(firstCoAuthor?.id, "2")
-                XCTAssertEqual(firstCoAuthor?.type, "persons")
-                XCTAssertEqual(firstCoAuthor?.name, "Glupan")
-                XCTAssert((firstCoAuthor?.favoriteArticle?.coAuthors?.contains(firstCoAuthor!))!) // Bidirectionnel
-                XCTAssertEqual(firstCoAuthor?.favoriteArticle, article)
-                
-                // Last article coAuthor
-                let lastCoAuthor: Person? = article?.coAuthors?.last
-                XCTAssertEqual(lastCoAuthor?.id, "3")
-                XCTAssertEqual(lastCoAuthor?.type, "persons")
-                XCTAssertEqual(lastCoAuthor?.name, "Debil")
-                
-                // Last article coAuthor favorite article
-                let lastCoAuthorFavoriteArticle = lastCoAuthor?.favoriteArticle
-                XCTAssertEqual(lastCoAuthorFavoriteArticle?.id, "2")
-                XCTAssertEqual(lastCoAuthorFavoriteArticle?.type, "articles")
-            }, { (_, _) in
-                expectation.fulfill()
-                XCTFail("Mock client should not fail this request")
-            })
-        
-        wait(for: [expectation], timeout: 1.0)
+            .result()
+
+        let article = response.resource
+
+        // Article
+        XCTAssertEqual(article?.id, "1")
+        XCTAssertEqual(article?.type, "articles")
+        XCTAssertEqual(article?.title, "Title")
+        XCTAssertEqual(article?.body, "Body")
+
+        // Article author
+        let author: Person? = article?.author
+        XCTAssertEqual(author?.id, "1")
+        XCTAssertEqual(author?.type, "persons")
+        XCTAssertEqual(author?.name, "Aron")
+        XCTAssertEqual(author?.favoriteArticle, article)
+        XCTAssertEqual(author?.favoriteArticle?.author, article?.author) // Bidirectionnel
+
+        // First article coAuthor
+        let firstCoAuthor: Person? = article?.coAuthors?.first
+        XCTAssertEqual(firstCoAuthor?.id, "2")
+        XCTAssertEqual(firstCoAuthor?.type, "persons")
+        XCTAssertEqual(firstCoAuthor?.name, "Glupan")
+        XCTAssert((firstCoAuthor?.favoriteArticle?.coAuthors?.contains(firstCoAuthor!))!) // Bidirectionnel
+        XCTAssertEqual(firstCoAuthor?.favoriteArticle, article)
+
+        // Last article coAuthor
+        let lastCoAuthor: Person? = article?.coAuthors?.last
+        XCTAssertEqual(lastCoAuthor?.id, "3")
+        XCTAssertEqual(lastCoAuthor?.type, "persons")
+        XCTAssertEqual(lastCoAuthor?.name, "Debil")
+
+        // Last article coAuthor favorite article
+        let lastCoAuthorFavoriteArticle = lastCoAuthor?.favoriteArticle
+        XCTAssertEqual(lastCoAuthorFavoriteArticle?.id, "2")
+        XCTAssertEqual(lastCoAuthorFavoriteArticle?.type, "articles")
     }
     
-    func testResourcesRequestIncluded() {
-        let expectation = XCTestExpectation(description: "Answer from the mock client")
-        
-        ResourceCollectionRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
+    func testResourcesRequestIncluded() async throws {
+        let response = try await ResourceCollectionRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
             .queryItems([URLQueryItem(name: "resources", value: "true")])
             .include(["author.favoriteArticle"])
-            .result({ (articles: [Article], document: Document?) in
-                expectation.fulfill()
-                
-                for article in articles {
-                    // Article author
-                    let author: Person? = article.author
-                    XCTAssertEqual(author?.id, "1")
-                    XCTAssertEqual(author?.type, "persons")
-                    XCTAssertEqual(author?.name, "Aron")
-                    XCTAssertEqual(author?.favoriteArticle?.id, "1")
-                    XCTAssertEqual(author?.favoriteArticle?.author, article.author) // Bidirectionnel
-                    
-                    // First article coAuthor
-                    let firstCoAuthor: Person? = article.coAuthors?.first
-                    XCTAssertEqual(firstCoAuthor?.id, "2")
-                    XCTAssertEqual(firstCoAuthor?.type, "persons")
-                    XCTAssertEqual(firstCoAuthor?.name, "Glupan")
-                    XCTAssert((firstCoAuthor?.favoriteArticle?.coAuthors?.contains(firstCoAuthor!))!) // Bidirectionnel
-                    XCTAssertEqual(firstCoAuthor?.favoriteArticle?.id, "1")
-                    
-                    // Last article coAuthor
-                    let lastCoAuthor: Person? = article.coAuthors?.last
-                    XCTAssertEqual(lastCoAuthor?.id, "3")
-                    XCTAssertEqual(lastCoAuthor?.type, "persons")
-                    XCTAssertEqual(lastCoAuthor?.name, "Debil")
-                    
-                    // Last article coAuthor favorite article
-                    let lastCoAuthorFavoriteArticle = lastCoAuthor?.favoriteArticle
-                    XCTAssertEqual(lastCoAuthorFavoriteArticle?.id, "2")
-                    XCTAssertEqual(lastCoAuthorFavoriteArticle?.type, "articles")
-                    XCTAssertEqual(lastCoAuthorFavoriteArticle?.title, "Another Title")
-                    XCTAssertEqual(lastCoAuthorFavoriteArticle?.body, "Another Body")
-                    XCTAssertEqual(lastCoAuthorFavoriteArticle?.author?.id, "1")
-                }
-            }, { (_, _) in
-                expectation.fulfill()
-                XCTFail("Mock client should not fail this request")
-            })
-        
-        wait(for: [expectation], timeout: 1.0)
+            .result()
+
+        for article in response.resources {
+            // Article author
+            let author: Person? = article.author
+            XCTAssertEqual(author?.id, "1")
+            XCTAssertEqual(author?.type, "persons")
+            XCTAssertEqual(author?.name, "Aron")
+            XCTAssertEqual(author?.favoriteArticle?.id, "1")
+            XCTAssertEqual(author?.favoriteArticle?.author, article.author) // Bidirectionnel
+
+            // First article coAuthor
+            let firstCoAuthor: Person? = article.coAuthors?.first
+            XCTAssertEqual(firstCoAuthor?.id, "2")
+            XCTAssertEqual(firstCoAuthor?.type, "persons")
+            XCTAssertEqual(firstCoAuthor?.name, "Glupan")
+            XCTAssert((firstCoAuthor?.favoriteArticle?.coAuthors?.contains(firstCoAuthor!))!) // Bidirectionnel
+            XCTAssertEqual(firstCoAuthor?.favoriteArticle?.id, "1")
+
+            // Last article coAuthor
+            let lastCoAuthor: Person? = article.coAuthors?.last
+            XCTAssertEqual(lastCoAuthor?.id, "3")
+            XCTAssertEqual(lastCoAuthor?.type, "persons")
+            XCTAssertEqual(lastCoAuthor?.name, "Debil")
+
+            // Last article coAuthor favorite article
+            let lastCoAuthorFavoriteArticle = lastCoAuthor?.favoriteArticle
+            XCTAssertEqual(lastCoAuthorFavoriteArticle?.id, "2")
+            XCTAssertEqual(lastCoAuthorFavoriteArticle?.type, "articles")
+            XCTAssertEqual(lastCoAuthorFavoriteArticle?.title, "Another Title")
+            XCTAssertEqual(lastCoAuthorFavoriteArticle?.body, "Another Body")
+            XCTAssertEqual(lastCoAuthorFavoriteArticle?.author?.id, "1")
+        }
     }
     
-    func testResourceSerialization() {
+    func testResourceSerialization() async throws {
         let article = Article()
         article.id = "serialization"
-        
-        let expectation = XCTestExpectation(description: "Answer from the mock client")
-        
-        ResourceRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: article)
+
+        let response = try await ResourceRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: article)
             .queryItems([URLQueryItem(name: "resourceSerialization", value: "true")])
-            .result({ (resource, document) in
-                expectation.fulfill()
-                
-                guard let resource = resource else {
-                    XCTFail("Resource should not be empty")
-                    return
-                }
-                guard let document = document else {
-                    XCTFail("Document should not be empty")
-                    return
-                }
-                
-                XCTAssertEqual(resource.id, article.id)
-                XCTAssertEqual(["data": resource.toResourceObject().toJson()] as NSDictionary, document.toJson() as NSDictionary)
-            }, { (_, _) in
-                expectation.fulfill()
-                XCTFail("Request should not fail")
-            })
-        wait(for: [expectation], timeout: 1.0)
+            .result()
+
+        guard let resource = response.resource else {
+            XCTFail("Resource should not be empty")
+            return
+        }
+        guard let document = response.document else {
+            XCTFail("Document should not be empty")
+            return
+        }
+
+        XCTAssertEqual(resource.id, article.id)
+        XCTAssertEqual(["data": resource.toResourceObject().toJson()] as NSDictionary, document.toJson() as NSDictionary)
     }
     
     
-    func testNotJsonFormat() {
-        let expectation = XCTestExpectation(description: "Answer from the mock client")
-        
-        ResourceRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
-            .queryItems([URLQueryItem(name: "notJsonFormat", value: "true")])
-            .result({ (_, _) in
-                expectation.fulfill()
-                XCTFail("Request should fail")
-            }, { (error, document) in
-                expectation.fulfill()
-                
+    func testNotJsonFormat() async throws {
+        do {
+            let _ = try await ResourceRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
+                .queryItems([URLQueryItem(name: "notJsonFormat", value: "true")])
+                .result()
+            XCTFail("Request should fail")
+        } catch let error {
+            switch error {
+            case RequestError.failure(let error, let document):
                 if let error = error as NSError?, error.code != 3840 {
                     XCTFail("Not the expected error")
                 }
                 XCTAssertNil(document)
-            })
-        
-        wait(for: [expectation], timeout: 1.0)
+            default:
+                XCTFail("Not the expected error")
+            }
+        }
     }
     
-    func testError() {
-        let expectation = XCTestExpectation(description: "Answer from the mock client")
-        
-        ResourceRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
-            .queryItems([URLQueryItem(name: "error", value: "true")])
-            .result({ (_, _) in
-                expectation.fulfill()
-                XCTFail("Request should fail")
-            }, { (error, document) in
-                expectation.fulfill()
-                
-                XCTAssertNil(error)
+    func testError() async throws {
+        do {
+            let _ = try await ResourceRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
+                .queryItems([URLQueryItem(name: "error", value: "true")])
+                .result()
+            XCTFail("Request should fail")
+        } catch let error {
+            switch error {
+            case RequestError.failure(let error, let document):
+                guard case is ClientError = error else {
+                    XCTFail("Not the expected error")
+                    return
+                }
+
                 guard let document = document else {
                     XCTFail("Document should not be empty")
                     return
                 }
                 
                 XCTAssertEqual(document.toJson() as NSDictionary, MockClient.errorDocument as NSDictionary?)
-            })
-        
-        wait(for: [expectation], timeout: 1.0)
+            default:
+                XCTFail("Not the expected error")
+            }
+        }
     }
     
-    func testErrorNoResult() {
-        let expectation = XCTestExpectation(description: "Answer from the mock client")
-        
-        ResourceRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
-            .queryItems([URLQueryItem(name: "error", value: "true"), URLQueryItem(name: "noResult", value: "true")])
-            .result({ (_, _) in
-                expectation.fulfill()
-                XCTFail("Request should fail")
-            }, { (error, document) in
-                expectation.fulfill()
-                
-                XCTAssertNil(error)
-                XCTAssertNil(document)
-            })
-        
-        wait(for: [expectation], timeout: 1.0)
-    }
-    
-    func testErrorNotJsonFormat() {
-        let expectation = XCTestExpectation(description: "Answer from the mock client")
-        
-        ResourceRequest<Article>(path: "", method: HttpMethod.get, client: client, resource: nil)
-            .queryItems([URLQueryItem(name: "error", value: "true"), URLQueryItem(name: "notJsonFormat", value: "true")])
-            .result({ (_, _) in
-                expectation.fulfill()
-                XCTFail("Request should fail")
-            }, { (error, document) in
-                expectation.fulfill()
-                
-                guard let error = error else {
-                    XCTFail("Error should not be empty")
+    func testErrorNoResult() async throws {
+        do {
+            let _ = try await ResourceRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
+                .queryItems([URLQueryItem(name: "error", value: "true"), URLQueryItem(name: "noResult", value: "true")])
+                .result()
+            XCTFail("Request should fail")
+        } catch let error {
+            switch error {
+            case RequestError.failure(let error, let document):
+                guard case is ClientError = error else {
+                    XCTFail("Not the expected error")
                     return
                 }
+
+                XCTAssertNil(document)
+            default:
+                XCTFail("Not the expected error")
+            }
+        }
+    }
+    
+    func testErrorNotJsonFormat() async throws {
+        do {
+            let _ = try await ResourceRequest<Article>(path: "", method: HttpMethod.get, client: client, resource: nil)
+                .queryItems([URLQueryItem(name: "error", value: "true"), URLQueryItem(name: "notJsonFormat", value: "true")])
+                .result()
+            XCTFail("Request should fail")
+        } catch let error {
+            switch error {
+            case RequestError.failure(let error, let document):
                 XCTAssertNil(document)
                 
                 if let error = error as NSError?, error.code != 3840 {
                     XCTFail("Not the expected error")
                 }
-            })
-        
-        wait(for: [expectation], timeout: 1.0)
+            default:
+                XCTFail("Not the expected error")
+            }
+        }
     }
 
-    func testResourceRequestInheritedIncluded() {
-        let expectation = XCTestExpectation(description: "Answer from the mock client")
-
-        ResourceRequest<ContactList>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
+    func testResourceRequestInheritedIncluded() async throws {
+        let response = try await ResourceRequest<ContactList>(path: "", method: HttpMethod.get, client: self.client, resource: nil)
             .queryItems([URLQueryItem(name: "includeInherited", value: "true")])
-            .result({ (list: ContactList?, document: Document?) in
-                expectation.fulfill()
+            .result()
 
-                    // ContactList
-                XCTAssertEqual(list?.id, "1")
-                XCTAssertEqual(list?.type, "contactlists")
-                XCTAssertEqual(list?.name, "List")
+        let list = response.resource
 
-                    // First list contact
-                let firstContact: Contact? = list?.contacts?.first
-                XCTAssertEqual(firstContact?.id, "2")
-                XCTAssertEqual(firstContact?.type, "contacts")
-                XCTAssertEqual(firstContact?.name, "Contact")
-                XCTAssertEqual(firstContact?.email, "Email")
+        XCTAssertEqual(list?.id, "1")
+        XCTAssertEqual(list?.type, "contactlists")
+        XCTAssertEqual(list?.name, "List")
 
-            }, { (_, _) in
-                expectation.fulfill()
-                XCTFail("Mock client should not fail this request")
-            })
-
-        wait(for: [expectation], timeout: 1.0)
+        // First list contact
+        let firstContact: Contact? = list?.contacts?.first
+        XCTAssertEqual(firstContact?.id, "2")
+        XCTAssertEqual(firstContact?.type, "contacts")
+        XCTAssertEqual(firstContact?.name, "Contact")
+        XCTAssertEqual(firstContact?.email, "Email")
     }
 
 

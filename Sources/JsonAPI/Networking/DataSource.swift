@@ -2,8 +2,58 @@
  Define the different operations for a resource
  */
 public class DataSource<ResourceType: Resource> {
-    public typealias ResourceCollectionSuccessBlock = (_ resources: [ResourceType], _ document: Document) -> Void
-    public typealias ResourceSuccessBlock = (_ resource: ResourceType?, _ document: Document?) -> Void
+    /**
+     Represent a response for multiple resources
+     */
+    public struct ResourceCollectionResponse {
+        /**
+         Document of the response
+         */
+        public let document: Document
+
+        /**
+         Deserialized resources of the response
+         */
+        public let resources: [ResourceType]
+
+        /**
+         Constructor
+
+         - Parameter document: The document of the response
+         - Parameter resources: The deserialized resources of the response
+         */
+        public init(_ document: Document, _ resources: [ResourceType]) {
+            self.document = document
+            self.resources = resources
+        }
+    }
+
+    /**
+     Represent a response for a single resource
+     */
+    public struct ResourceResponse {
+        /**
+         Document of the response
+         */
+        public let document: Document?
+
+        /**
+         Deserialized resource of the response
+         */
+        public let resource: ResourceType?
+
+        /**
+         Constructor
+
+         - Parameter document: The document of the response
+         - Parameter resource: The deserialized resource of the response
+         */
+        public init(_ document: Document?, _ resource: ResourceType?) {
+            self.document = document
+            self.resource = resource
+        }
+    }
+
     
     /**
      Represent the different strategies that can be use to generate urls in a datasource
