@@ -34,12 +34,10 @@ This library allows several types of use, from framework style to "raw" JSON:API
 
 ## Requirements
 
-* Xcode 11.x
-* Swift 5.x
+* Xcode 13.x
+* Swift 5.5
 
 ## Installation
-
-JsonAPI doesn't contain any external dependencies.
 
 These are currently the supported installation options:
 
@@ -47,7 +45,7 @@ These are currently the supported installation options:
 
 To integrate JsonAPI into your Xcode project using Carthage, specify it in your `Cartfile`:
 ```
-github "Aveine/JsonAPI" ~> 1.0
+github "Aveine/JsonAPI" ~> 2.0
 ```
 *For usage and installation instructions, visit their website.*
 
@@ -55,7 +53,7 @@ github "Aveine/JsonAPI" ~> 1.0
 
 To integrate JsonAPI into your Xcode project using CocoaPods, specify it in your `Podfile`:
 ```
-pod 'JsonAPISwift', '~> 1.0'
+pod 'JsonAPISwift', '~> 2.0'
 ```
 *For usage and installation instructions, visit their website.*
 
@@ -64,7 +62,7 @@ pod 'JsonAPISwift', '~> 1.0'
 To integrate JsonAPI into your Xcode project using Swift Package Manager, specify it in your `Package.swift`:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/aveine/JsonAPI.git", .upToNextMajor(from: "1.0.2"))
+    .package(url: "https://github.com/aveine/JsonAPI.git", .upToNextMajor(from: "2.0.0"))
 ]
 ```
 *For usage and installation instructions, visit their website.*
@@ -168,23 +166,60 @@ class Article: Resource {
 
 Create a client that will be used to communicate with your JSON:API server and which inherit from the following protocol `Client`:
 ```swift
-public typealias ClientSuccessBlock = (_ response: HTTPURLResponse?, _ data: Data?) -> Void
-public typealias ClientFailureBlock = (_ error: Error?, _ data: Data?) -> Void
-
 /**
  A client using the library
  */
-public protocol Client: class {
+public protocol Client: AnyObject {
     /**
+     Execute the request with the given parameters
+
      - Parameter path: Path on which the client must execute the request
      - Parameter method: HTTP method the client must use to execute the request
      - Parameter queryItems: Potential query items the client must send along with the request
      - Parameter body: Potential body the client must send along with the request
-     - Parameter success: Success block that will be called if the request successed
-     - Parameter failure: Failure block that will be called if the request failed
      - Parameter userInfo: Potential meta information that the user can provide to the client
+     - Returns The response of the executed request
      */
-    func executeRequest(path: String, method: HttpMethod, queryItems: [URLQueryItem]?, body: Document.JsonObject?, success: @escaping ClientSuccessBlock, failure: @escaping ClientFailureBlock, userInfo: [String: Any]?)
+    func executeRequest(path: String, method: HttpMethod, queryItems: [URLQueryItem]?, body: Document.JsonObject?, userInfo: [String: Any]?) async throws -> ClientSuccessResponse
+}
+
+/**
+ Represent a client success response
+ */
+public struct ClientSuccessResponse {
+    /**
+     HTTP metadata associated with the response
+     */
+    public let response: HTTPURLResponse?
+
+    /**
+     Raw data present in the response from the HTTP request
+     */
+    public let data: Data?
+
+    /**
+     Constructor
+
+     - Parameter response: The HTTP metadata associated with the response
+     - Parameter data: The raw data present in the response from the HTTP request
+     */
+    public init(_ response: HTTPURLResponse?, _ data: Data?) {
+        self.response = response
+        self.data = data
+    }
+}
+
+/**
+ Different errors that can be returned by a client
+ */
+public enum ClientError: Error {
+    /**
+     Allow to correlate an error with raw response data from the HTTP request
+
+     - Parameter error The error generating the failure
+     - Parameter data The raw response data from the HTTP request related to the error
+     */
+    case failure(_ error: Error?, _ data: Data?)
 }
 ```
 Within the `executeRequest` method use any networking library that you want.
@@ -208,7 +243,7 @@ public class AlamofireClient: Client {
         ]
     }
     
-    public func executeRequest(path: String, method: HttpMethod, queryItems: [URLQueryItem]?, body: Document.JsonObject?, success: @escaping ClientSuccessBlock, failure: @escaping ClientFailureBlock, userInfo: [String: Any]?) {
+    public func executeRequest(path: String, method: HttpMethod, queryItems: [URLQueryItem]?, body: Document.JsonObject?, userInfo: [String: Any]?) async throws -> ClientSuccessResponse {
         var urlComponents = URLComponents.init(url: self.baseUrl.appendingPathComponent(path), resolvingAgainstBaseURL: false)!
         urlComponents.queryItems = queryItems
         
@@ -216,28 +251,25 @@ public class AlamofireClient: Client {
         
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
-        self.getHeaders().forEach { request.setValue($0.value, forHTTPHeaderField: $0.key) }
+        self.getHeaders().forEach { request.setValue($0.value, forHTTPHeaderField: $0.name) }
         if let body = body {
             request.httpBody = try! JSONSerialization.data(withJSONObject: body)
         }
         
-        SessionManager.default
+        let response = await AF
             .request(request)
             .validate(statusCode: 200..<300)
             .validate(contentType: ["application/vnd.api+json"])
-            .responseData { (dataResponse) in
-                let response = dataResponse.response
-                let data = dataResponse.data
-                let error = dataResponse.error
-                
-                dataResponse
-                    .result
-                    .ifSuccess { success(response, data) }
-                    .ifFailure { failure(error, data) }
+            .serializingData()
+            .response
+
+        if let error = response.error {
+            throw ClientError.failure(error, response.data)
+        } else {
+            return ClientSuccessResponse(response.response, response.value)
         }
     }
 }
-
 ```
 
 ##### Data source
@@ -308,11 +340,9 @@ import JsonAPI
 let client = AlamofireClient()
 let dataSource = DataSource<Article>(client: client, strategy: .router(ScrudRouter()))
 
-dataSource
+let articles = try await dataSource
     .search()
-    .result({ (articles: [Article], document: Document) in
-    }, { (error: Error?, document: Document?) in
-    })
+    .result()
 ```
 
 ###### Read a resource
@@ -323,11 +353,9 @@ import JsonAPI
 let client = AlamofireClient()
 let dataSource = DataSource<Article>(client: client, strategy: .router(ScrudRouter()))
 
-dataSource
+let article = try await dataSource
     .read(id: "1")
-    .result({ (article: Article?, document: Document?) in
-    }, { (error: Error?, document: Document?) in
-    })
+    .result()
 ```
 
 ###### Create a resource
@@ -342,11 +370,9 @@ let article = Article()
     article.id = "1"
     article.title = "Title"
 
-dataSource
+let createdArticle try await dataSource
     .create(article)
-    .result({ (article: Article?, document: Document?) in
-    }, { (error: Error?, document: Document?) in
-    })
+    .result()
 ```
 
 ###### Update a resource
@@ -361,11 +387,9 @@ let article = Article()
     article.id = "1"
     article.title = "Another Title"
 
-dataSource
+let updatedArticle = try await dataSource
     .update(article)
-    .result({ (article: Article?, document: Document?) in
-    }, { (error: Error?, document: Document?) in
-    })
+    .result()
 ```
 
 ###### Delete a resource
@@ -379,11 +403,9 @@ let dataSource = DataSource<Article>(client: client, strategy: .router(ScrudRout
 let article = Article()
     article.id = "1"
 
-dataSource
+let deletedArticle = try await dataSource
     .delete(article)
-    .result({ (article: Article?, document: Document?) in
-    }, { (error: Error?, document: Document?) in
-    })
+    .result()
 ```
 
 Or if you don't have previously fetched the resource:
@@ -393,11 +415,9 @@ import JsonAPI
 let client = AlamofireClient()
 let dataSource = DataSource<Article>(client: client, strategy: .router(ScrudRouter()))
 
-dataSource
+let deletedArticle = try await dataSource
     .delete(id: "1")
-    .result({ (article: Article?, document: Document?) in
-    }, { (error: Error?, document: Document?) in
-    })
+    .result()
 ```
 
 ##### Extensions
@@ -468,15 +488,9 @@ let client = AlamofireClient()
 let resourceRequest = ResourceRequest<Article>(path: "/articles/1", method: HttpMethod.get, client: client, resource: nil)
 let resourceCollectionRequest = ResourceCollectionRequest<Article>(path: "/articles", method: HttpMethod.get, client: client, resource: nil)
 
-resourceRequest
-    .result({ (article: Article?, document: Document?) in
-    }, { (error: Error?, document: Document?) in
-    })
+let article = try await resourceRequest.result()
 
-resourceCollectionRequest
-    .result({ (articles: [Article], document: Document) in
-    }, { (error: Error?, document: Document?) in
-    })
+let articles = try await resourceCollectionRequest.result()
 ```
 
 #### Raw JSON:API object manipulation
