@@ -16,7 +16,7 @@
     <a title="JsonAPI  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">JsonAPI 1.2.0 Docs</a> (88% documented)</p>
+        <p><a href="index.html">JsonAPI 2.0.0 Docs</a> (0% documented)</p>
         <div class="header-right">
           <form role="search" action="search.json">
             <input type="text" placeholder="Search documentation" data-typeahead>
@@ -41,6 +41,12 @@
                 <a href="Classes/DataSource.html">DataSource</a>
               </li>
               <li class="nav-group-task">
+                <a href="Classes/DataSource/ResourceCollectionResponse.html">– ResourceCollectionResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/DataSource/ResourceResponse.html">– ResourceResponse</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Classes/DataSource/Strategy.html">– Strategy</a>
               </li>
               <li class="nav-group-task">
@@ -50,13 +56,13 @@
                 <a href="Classes/Resource.html">Resource</a>
               </li>
               <li class="nav-group-task">
-                <a href="Classes/Resource.html#/s:7JsonAPI8ResourceC9SignatureV">– Signature</a>
+                <a href="Classes/Resource.html#/Signature">– Signature</a>
               </li>
               <li class="nav-group-task">
                 <a href="Classes/ResourceCollectionRequest.html">ResourceCollectionRequest</a>
               </li>
               <li class="nav-group-task">
-                <a href="Classes.html#/s:7JsonAPI15ResourceRequestC">ResourceRequest</a>
+                <a href="Classes.html#/ResourceRequest">ResourceRequest</a>
               </li>
               <li class="nav-group-task">
                 <a href="Classes/ScrudRouter.html">ScrudRouter</a>
@@ -66,6 +72,9 @@
           <li class="nav-group-name">
             <a href="Enums.html">Enumerations</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Enums/ClientError.html">ClientError</a>
+              </li>
               <li class="nav-group-task">
                 <a href="Enums/HttpMethod.html">HttpMethod</a>
               </li>
@@ -95,6 +104,9 @@
             <a href="Structs.html">Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="Structs/ClientSuccessResponse.html">ClientSuccessResponse</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Structs/Document.html">Document</a>
               </li>
               <li class="nav-group-task">
@@ -120,17 +132,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="Structs/Document/ResourceObject.html">– ResourceObject</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="Typealiases.html">Type Aliases</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Typealiases.html#/s:7JsonAPI18ClientFailureBlocka">ClientFailureBlock</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Typealiases.html#/s:7JsonAPI18ClientSuccessBlocka">ClientSuccessBlock</a>
               </li>
             </ul>
           </li>
@@ -196,25 +197,23 @@ It has been greatly inspired from another library: <a href="https://github.com/a
 <h2 id='requirements' class='heading'>Requirements</h2>
 
 <ul>
-<li>Xcode 11.x</li>
-<li>Swift 5.x</li>
+<li>Xcode 13.x</li>
+<li>Swift 5.5</li>
 </ul>
 <h2 id='installation' class='heading'>Installation</h2>
-
-<p>JsonAPI doesn&rsquo;t contain any external dependencies.</p>
 
 <p>These are currently the supported installation options:</p>
 <h3 id='a-href-https-github-com-carthage-carthage-carthage-a' class='heading'><a href="https://github.com/Carthage/Carthage">Carthage</a></h3>
 
 <p>To integrate JsonAPI into your Xcode project using Carthage, specify it in your <code>Cartfile</code>:</p>
-<pre class="highlight plaintext"><code>github "Aveine/JsonAPI" ~&gt; 1.0
+<pre class="highlight plaintext"><code>github "Aveine/JsonAPI" ~&gt; 2.0
 </code></pre>
 
 <p><em>For usage and installation instructions, visit their website.</em></p>
 <h3 id='a-href-https-guides-cocoapods-org-using-using-cocoapods-html-cocoapods-a' class='heading'><a href="https://guides.cocoapods.org/using/using-cocoapods.html">CocoaPods</a></h3>
 
 <p>To integrate JsonAPI into your Xcode project using CocoaPods, specify it in your <code>Podfile</code>:</p>
-<pre class="highlight plaintext"><code>pod 'JsonAPISwift', '~&gt; 1.0'
+<pre class="highlight plaintext"><code>pod 'JsonAPISwift', '~&gt; 2.0'
 </code></pre>
 
 <p><em>For usage and installation instructions, visit their website.</em></p>
@@ -222,7 +221,7 @@ It has been greatly inspired from another library: <a href="https://github.com/a
 
 <p>To integrate JsonAPI into your Xcode project using Swift Package Manager, specify it in your <code>Package.swift</code>:</p>
 <pre class="highlight swift"><code><span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
-    <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/aveine/JsonAPI.git"</span><span class="p">,</span> <span class="o">.</span><span class="nf">upToNextMajor</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="s">"1.0.2"</span><span class="p">))</span>
+    <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/aveine/JsonAPI.git"</span><span class="p">,</span> <span class="o">.</span><span class="nf">upToNextMajor</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="s">"2.0.0"</span><span class="p">))</span>
 <span class="p">]</span>
 </code></pre>
 
@@ -319,23 +318,60 @@ It has been greatly inspired from another library: <a href="https://github.com/a
 <h5 id='client' class='heading'>Client</h5>
 
 <p>Create a client that will be used to communicate with your JSON:API server and which inherit from the following protocol <code><a href="Protocols/Client.html">Client</a></code>:</p>
-<pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">ClientSuccessBlock</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span> <span class="nv">response</span><span class="p">:</span> <span class="kt">HTTPURLResponse</span><span class="p">?,</span> <span class="n">_</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span>
-<span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">ClientFailureBlock</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?,</span> <span class="n">_</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span>
-
-<span class="cm">/**
+<pre class="highlight swift"><code><span class="cm">/**
  A client using the library
  */</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Client</span><span class="p">:</span> <span class="kd">class</span> <span class="p">{</span>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Client</span><span class="p">:</span> <span class="kt">AnyObject</span> <span class="p">{</span>
     <span class="cm">/**
+     Execute the request with the given parameters
+
      - Parameter path: Path on which the client must execute the request
      - Parameter method: HTTP method the client must use to execute the request
      - Parameter queryItems: Potential query items the client must send along with the request
      - Parameter body: Potential body the client must send along with the request
-     - Parameter success: Success block that will be called if the request successed
-     - Parameter failure: Failure block that will be called if the request failed
      - Parameter userInfo: Potential meta information that the user can provide to the client
+     - Returns The response of the executed request
      */</span>
-    <span class="kd">func</span> <span class="nf">executeRequest</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">method</span><span class="p">:</span> <span class="kt">HttpMethod</span><span class="p">,</span> <span class="nv">queryItems</span><span class="p">:</span> <span class="p">[</span><span class="kt">URLQueryItem</span><span class="p">]?,</span> <span class="nv">body</span><span class="p">:</span> <span class="kt">Document</span><span class="o">.</span><span class="kt">JsonObject</span><span class="p">?,</span> <span class="nv">success</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">ClientSuccessBlock</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">ClientFailureBlock</span><span class="p">,</span> <span class="nv">userInfo</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">Any</span><span class="p">]?)</span>
+    <span class="kd">func</span> <span class="nf">executeRequest</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">method</span><span class="p">:</span> <span class="kt">HttpMethod</span><span class="p">,</span> <span class="nv">queryItems</span><span class="p">:</span> <span class="p">[</span><span class="kt">URLQueryItem</span><span class="p">]?,</span> <span class="nv">body</span><span class="p">:</span> <span class="kt">Document</span><span class="o">.</span><span class="kt">JsonObject</span><span class="p">?,</span> <span class="nv">userInfo</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">Any</span><span class="p">]?)</span> <span class="n">async</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">ClientSuccessResponse</span>
+<span class="p">}</span>
+
+<span class="cm">/**
+ Represent a client success response
+ */</span>
+<span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ClientSuccessResponse</span> <span class="p">{</span>
+    <span class="cm">/**
+     HTTP metadata associated with the response
+     */</span>
+    <span class="kd">public</span> <span class="k">let</span> <span class="nv">response</span><span class="p">:</span> <span class="kt">HTTPURLResponse</span><span class="p">?</span>
+
+    <span class="cm">/**
+     Raw data present in the response from the HTTP request
+     */</span>
+    <span class="kd">public</span> <span class="k">let</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">?</span>
+
+    <span class="cm">/**
+     Constructor
+
+     - Parameter response: The HTTP metadata associated with the response
+     - Parameter data: The raw data present in the response from the HTTP request
+     */</span>
+    <span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">_</span> <span class="nv">response</span><span class="p">:</span> <span class="kt">HTTPURLResponse</span><span class="p">?,</span> <span class="n">_</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="n">response</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cm">/**
+ Different errors that can be returned by a client
+ */</span>
+<span class="kd">public</span> <span class="kd">enum</span> <span class="kt">ClientError</span><span class="p">:</span> <span class="kt">Error</span> <span class="p">{</span>
+    <span class="cm">/**
+     Allow to correlate an error with raw response data from the HTTP request
+
+     - Parameter error The error generating the failure
+     - Parameter data The raw response data from the HTTP request related to the error
+     */</span>
+    <span class="k">case</span> <span class="nf">failure</span><span class="p">(</span><span class="n">_</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?,</span> <span class="n">_</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">?)</span>
 <span class="p">}</span>
 </code></pre>
 
@@ -359,7 +395,7 @@ It has been greatly inspired from another library: <a href="https://github.com/a
         <span class="p">]</span>
     <span class="p">}</span>
 
-    <span class="kd">public</span> <span class="kd">func</span> <span class="nf">executeRequest</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">method</span><span class="p">:</span> <span class="kt">HttpMethod</span><span class="p">,</span> <span class="nv">queryItems</span><span class="p">:</span> <span class="p">[</span><span class="kt">URLQueryItem</span><span class="p">]?,</span> <span class="nv">body</span><span class="p">:</span> <span class="kt">Document</span><span class="o">.</span><span class="kt">JsonObject</span><span class="p">?,</span> <span class="nv">success</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">ClientSuccessBlock</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">ClientFailureBlock</span><span class="p">,</span> <span class="nv">userInfo</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">Any</span><span class="p">]?)</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="kd">func</span> <span class="nf">executeRequest</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">method</span><span class="p">:</span> <span class="kt">HttpMethod</span><span class="p">,</span> <span class="nv">queryItems</span><span class="p">:</span> <span class="p">[</span><span class="kt">URLQueryItem</span><span class="p">]?,</span> <span class="nv">body</span><span class="p">:</span> <span class="kt">Document</span><span class="o">.</span><span class="kt">JsonObject</span><span class="p">?,</span> <span class="nv">userInfo</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">Any</span><span class="p">]?)</span> <span class="n">async</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">ClientSuccessResponse</span> <span class="p">{</span>
         <span class="k">var</span> <span class="nv">urlComponents</span> <span class="o">=</span> <span class="kt">URLComponents</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="k">self</span><span class="o">.</span><span class="n">baseUrl</span><span class="o">.</span><span class="nf">appendingPathComponent</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="nv">resolvingAgainstBaseURL</span><span class="p">:</span> <span class="kc">false</span><span class="p">)</span><span class="o">!</span>
         <span class="n">urlComponents</span><span class="o">.</span><span class="n">queryItems</span> <span class="o">=</span> <span class="n">queryItems</span>
 
@@ -367,28 +403,25 @@ It has been greatly inspired from another library: <a href="https://github.com/a
 
         <span class="k">var</span> <span class="nv">request</span> <span class="o">=</span> <span class="kt">URLRequest</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span>
         <span class="n">request</span><span class="o">.</span><span class="n">httpMethod</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="n">rawValue</span>
-        <span class="k">self</span><span class="o">.</span><span class="nf">getHeaders</span><span class="p">()</span><span class="o">.</span><span class="n">forEach</span> <span class="p">{</span> <span class="n">request</span><span class="o">.</span><span class="nf">setValue</span><span class="p">(</span><span class="nv">$0</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="nv">forHTTPHeaderField</span><span class="p">:</span> <span class="nv">$0</span><span class="o">.</span><span class="n">key</span><span class="p">)</span> <span class="p">}</span>
+        <span class="k">self</span><span class="o">.</span><span class="nf">getHeaders</span><span class="p">()</span><span class="o">.</span><span class="n">forEach</span> <span class="p">{</span> <span class="n">request</span><span class="o">.</span><span class="nf">setValue</span><span class="p">(</span><span class="nv">$0</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="nv">forHTTPHeaderField</span><span class="p">:</span> <span class="nv">$0</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="p">}</span>
         <span class="k">if</span> <span class="k">let</span> <span class="nv">body</span> <span class="o">=</span> <span class="n">body</span> <span class="p">{</span>
             <span class="n">request</span><span class="o">.</span><span class="n">httpBody</span> <span class="o">=</span> <span class="k">try!</span> <span class="kt">JSONSerialization</span><span class="o">.</span><span class="nf">data</span><span class="p">(</span><span class="nv">withJSONObject</span><span class="p">:</span> <span class="n">body</span><span class="p">)</span>
         <span class="p">}</span>
 
-        <span class="kt">SessionManager</span><span class="o">.</span><span class="k">default</span>
+        <span class="k">let</span> <span class="nv">response</span> <span class="o">=</span> <span class="n">await</span> <span class="kt">AF</span>
             <span class="o">.</span><span class="nf">request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
             <span class="o">.</span><span class="nf">validate</span><span class="p">(</span><span class="nv">statusCode</span><span class="p">:</span> <span class="mi">200</span><span class="o">..&lt;</span><span class="mi">300</span><span class="p">)</span>
             <span class="o">.</span><span class="nf">validate</span><span class="p">(</span><span class="nv">contentType</span><span class="p">:</span> <span class="p">[</span><span class="s">"application/vnd.api+json"</span><span class="p">])</span>
-            <span class="o">.</span><span class="n">responseData</span> <span class="p">{</span> <span class="p">(</span><span class="n">dataResponse</span><span class="p">)</span> <span class="k">in</span>
-                <span class="k">let</span> <span class="nv">response</span> <span class="o">=</span> <span class="n">dataResponse</span><span class="o">.</span><span class="n">response</span>
-                <span class="k">let</span> <span class="nv">data</span> <span class="o">=</span> <span class="n">dataResponse</span><span class="o">.</span><span class="n">data</span>
-                <span class="k">let</span> <span class="nv">error</span> <span class="o">=</span> <span class="n">dataResponse</span><span class="o">.</span><span class="n">error</span>
+            <span class="o">.</span><span class="nf">serializingData</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">response</span>
 
-                <span class="n">dataResponse</span>
-                    <span class="o">.</span><span class="n">result</span>
-                    <span class="o">.</span><span class="n">ifSuccess</span> <span class="p">{</span> <span class="nf">success</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="p">}</span>
-                    <span class="o">.</span><span class="n">ifFailure</span> <span class="p">{</span> <span class="nf">failure</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="p">}</span>
+        <span class="k">if</span> <span class="k">let</span> <span class="nv">error</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">error</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="kt">ClientError</span><span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kt">ClientSuccessResponse</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">response</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
         <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">}</span>
-
 </code></pre>
 <h5 id='data-source' class='heading'>Data source</h5>
 
@@ -453,11 +486,9 @@ It has been greatly inspired from another library: <a href="https://github.com/a
 <span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">AlamofireClient</span><span class="p">()</span>
 <span class="k">let</span> <span class="nv">dataSource</span> <span class="o">=</span> <span class="kt">DataSource</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">strategy</span><span class="p">:</span> <span class="o">.</span><span class="nf">router</span><span class="p">(</span><span class="kt">ScrudRouter</span><span class="p">()))</span>
 
-<span class="n">dataSource</span>
+<span class="k">let</span> <span class="nv">articles</span> <span class="o">=</span> <span class="k">try</span> <span class="n">await</span> <span class="n">dataSource</span>
     <span class="o">.</span><span class="nf">search</span><span class="p">()</span>
-    <span class="o">.</span><span class="nf">result</span><span class="p">({</span> <span class="p">(</span><span class="nv">articles</span><span class="p">:</span> <span class="p">[</span><span class="kt">Article</span><span class="p">],</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">)</span> <span class="k">in</span>
-    <span class="p">},</span> <span class="p">{</span> <span class="p">(</span><span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
-    <span class="p">})</span>
+    <span class="o">.</span><span class="nf">result</span><span class="p">()</span>
 </code></pre>
 <h6 id='read-a-resource' class='heading'>Read a resource</h6>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">JsonAPI</span>
@@ -465,11 +496,9 @@ It has been greatly inspired from another library: <a href="https://github.com/a
 <span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">AlamofireClient</span><span class="p">()</span>
 <span class="k">let</span> <span class="nv">dataSource</span> <span class="o">=</span> <span class="kt">DataSource</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">strategy</span><span class="p">:</span> <span class="o">.</span><span class="nf">router</span><span class="p">(</span><span class="kt">ScrudRouter</span><span class="p">()))</span>
 
-<span class="n">dataSource</span>
+<span class="k">let</span> <span class="nv">article</span> <span class="o">=</span> <span class="k">try</span> <span class="n">await</span> <span class="n">dataSource</span>
     <span class="o">.</span><span class="nf">read</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="s">"1"</span><span class="p">)</span>
-    <span class="o">.</span><span class="nf">result</span><span class="p">({</span> <span class="p">(</span><span class="nv">article</span><span class="p">:</span> <span class="kt">Article</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
-    <span class="p">},</span> <span class="p">{</span> <span class="p">(</span><span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
-    <span class="p">})</span>
+    <span class="o">.</span><span class="nf">result</span><span class="p">()</span>
 </code></pre>
 <h6 id='create-a-resource' class='heading'>Create a resource</h6>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">JsonAPI</span>
@@ -481,11 +510,9 @@ It has been greatly inspired from another library: <a href="https://github.com/a
     <span class="n">article</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="s">"1"</span>
     <span class="n">article</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">"Title"</span>
 
-<span class="n">dataSource</span>
+<span class="k">let</span> <span class="nv">createdArticle</span> <span class="k">try</span> <span class="n">await</span> <span class="n">dataSource</span>
     <span class="o">.</span><span class="nf">create</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
-    <span class="o">.</span><span class="nf">result</span><span class="p">({</span> <span class="p">(</span><span class="nv">article</span><span class="p">:</span> <span class="kt">Article</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
-    <span class="p">},</span> <span class="p">{</span> <span class="p">(</span><span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
-    <span class="p">})</span>
+    <span class="o">.</span><span class="nf">result</span><span class="p">()</span>
 </code></pre>
 <h6 id='update-a-resource' class='heading'>Update a resource</h6>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">JsonAPI</span>
@@ -497,11 +524,9 @@ It has been greatly inspired from another library: <a href="https://github.com/a
     <span class="n">article</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="s">"1"</span>
     <span class="n">article</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">"Another Title"</span>
 
-<span class="n">dataSource</span>
+<span class="k">let</span> <span class="nv">updatedArticle</span> <span class="o">=</span> <span class="k">try</span> <span class="n">await</span> <span class="n">dataSource</span>
     <span class="o">.</span><span class="nf">update</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
-    <span class="o">.</span><span class="nf">result</span><span class="p">({</span> <span class="p">(</span><span class="nv">article</span><span class="p">:</span> <span class="kt">Article</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
-    <span class="p">},</span> <span class="p">{</span> <span class="p">(</span><span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
-    <span class="p">})</span>
+    <span class="o">.</span><span class="nf">result</span><span class="p">()</span>
 </code></pre>
 <h6 id='delete-a-resource' class='heading'>Delete a resource</h6>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">JsonAPI</span>
@@ -512,11 +537,9 @@ It has been greatly inspired from another library: <a href="https://github.com/a
 <span class="k">let</span> <span class="nv">article</span> <span class="o">=</span> <span class="kt">Article</span><span class="p">()</span>
     <span class="n">article</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="s">"1"</span>
 
-<span class="n">dataSource</span>
+<span class="k">let</span> <span class="nv">deletedArticle</span> <span class="o">=</span> <span class="k">try</span> <span class="n">await</span> <span class="n">dataSource</span>
     <span class="o">.</span><span class="nf">delete</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
-    <span class="o">.</span><span class="nf">result</span><span class="p">({</span> <span class="p">(</span><span class="nv">article</span><span class="p">:</span> <span class="kt">Article</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
-    <span class="p">},</span> <span class="p">{</span> <span class="p">(</span><span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
-    <span class="p">})</span>
+    <span class="o">.</span><span class="nf">result</span><span class="p">()</span>
 </code></pre>
 
 <p>Or if you don&rsquo;t have previously fetched the resource:</p>
@@ -525,11 +548,9 @@ It has been greatly inspired from another library: <a href="https://github.com/a
 <span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">AlamofireClient</span><span class="p">()</span>
 <span class="k">let</span> <span class="nv">dataSource</span> <span class="o">=</span> <span class="kt">DataSource</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">strategy</span><span class="p">:</span> <span class="o">.</span><span class="nf">router</span><span class="p">(</span><span class="kt">ScrudRouter</span><span class="p">()))</span>
 
-<span class="n">dataSource</span>
+<span class="k">let</span> <span class="nv">deletedArticle</span> <span class="o">=</span> <span class="k">try</span> <span class="n">await</span> <span class="n">dataSource</span>
     <span class="o">.</span><span class="nf">delete</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="s">"1"</span><span class="p">)</span>
-    <span class="o">.</span><span class="nf">result</span><span class="p">({</span> <span class="p">(</span><span class="nv">article</span><span class="p">:</span> <span class="kt">Article</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
-    <span class="p">},</span> <span class="p">{</span> <span class="p">(</span><span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
-    <span class="p">})</span>
+    <span class="o">.</span><span class="nf">result</span><span class="p">()</span>
 </code></pre>
 <h5 id='extensions' class='heading'>Extensions</h5>
 <h6 id='implementing-pagination-and-filtering-helpers' class='heading'>Implementing pagination and filtering helpers</h6>
@@ -592,15 +613,9 @@ It has been greatly inspired from another library: <a href="https://github.com/a
 <span class="k">let</span> <span class="nv">resourceRequest</span> <span class="o">=</span> <span class="kt">ResourceRequest</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="s">"/articles/1"</span><span class="p">,</span> <span class="nv">method</span><span class="p">:</span> <span class="kt">HttpMethod</span><span class="o">.</span><span class="k">get</span><span class="p">,</span> <span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">resource</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
 <span class="k">let</span> <span class="nv">resourceCollectionRequest</span> <span class="o">=</span> <span class="kt">ResourceCollectionRequest</span><span class="o">&lt;</span><span class="kt">Article</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="s">"/articles"</span><span class="p">,</span> <span class="nv">method</span><span class="p">:</span> <span class="kt">HttpMethod</span><span class="o">.</span><span class="k">get</span><span class="p">,</span> <span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span> <span class="nv">resource</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
 
-<span class="n">resourceRequest</span>
-    <span class="o">.</span><span class="nf">result</span><span class="p">({</span> <span class="p">(</span><span class="nv">article</span><span class="p">:</span> <span class="kt">Article</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
-    <span class="p">},</span> <span class="p">{</span> <span class="p">(</span><span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
-    <span class="p">})</span>
+<span class="k">let</span> <span class="nv">article</span> <span class="o">=</span> <span class="k">try</span> <span class="n">await</span> <span class="n">resourceRequest</span><span class="o">.</span><span class="nf">result</span><span class="p">()</span>
 
-<span class="n">resourceCollectionRequest</span>
-    <span class="o">.</span><span class="nf">result</span><span class="p">({</span> <span class="p">(</span><span class="nv">articles</span><span class="p">:</span> <span class="p">[</span><span class="kt">Article</span><span class="p">],</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">)</span> <span class="k">in</span>
-    <span class="p">},</span> <span class="p">{</span> <span class="p">(</span><span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?,</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">?)</span> <span class="k">in</span>
-    <span class="p">})</span>
+<span class="k">let</span> <span class="nv">articles</span> <span class="o">=</span> <span class="k">try</span> <span class="n">await</span> <span class="n">resourceCollectionRequest</span><span class="o">.</span><span class="nf">result</span><span class="p">()</span>
 </code></pre>
 <h4 id='raw-json-api-object-manipulation' class='heading'>Raw JSON:API object manipulation</h4>
 
@@ -609,8 +624,8 @@ It has been greatly inspired from another library: <a href="https://github.com/a
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2022 <a class="link" href="https://github.com/aveine/JsonAPI" target="_blank" rel="external noopener">Christopher Paccard</a>. All rights reserved. (Last updated: 2022-02-28)</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+          <p>&copy; 2023 <a class="link" href="https://github.com/aveine/JsonAPI" target="_blank" rel="external noopener">Christopher Paccard</a>. All rights reserved. (Last updated: 2023-02-27)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
         </section>
       </article>
     </div>

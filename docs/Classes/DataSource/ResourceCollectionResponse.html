@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>PrimaryData Enumeration Reference</title>
+    <title>ResourceCollectionResponse Structure Reference</title>
     <link rel="stylesheet" type="text/css" href="../../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../../css/highlight.css" />
     <meta charset='utf-8'>
@@ -13,8 +13,8 @@
     <script src="../../js/jazzy.search.js" defer></script>
   </head>
   <body>
-    <a name="//apple_ref/swift/Enum/PrimaryData" class="dashAnchor"></a>
-    <a title="PrimaryData Enumeration Reference"></a>
+    <a name="//apple_ref/swift/Struct/ResourceCollectionResponse" class="dashAnchor"></a>
+    <a title="ResourceCollectionResponse Structure Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../../index.html">JsonAPI 2.0.0 Docs</a> (0% documented)</p>
@@ -29,7 +29,7 @@
       <p id="breadcrumbs">
         <a href="../../index.html">JsonAPI Reference</a>
         <img id="carat" src="../../img/carat.png" alt=""/>
-        PrimaryData Enumeration Reference
+        ResourceCollectionResponse Structure Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -141,9 +141,8 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>PrimaryData</h1>
-            <p>Represent the forms that the document primary data can take
-Resource and Resource Identifier are quite the same and can been see as inheritance, so we handle only the most flexible case</p>
+            <h1>ResourceCollectionResponse</h1>
+            <p>Represent a response for multiple resources</p>
 
           </section>
           <section class="section task-group-section">
@@ -153,8 +152,8 @@ Resource and Resource Identifier are quite the same and can been see as inherita
                   <div>
                     <code>
                     <a name="/"></a>
-                    <a name="//apple_ref/swift/Element/single(resource:)" class="dashAnchor"></a>
-                    <a class="token" href="#/">single(resource:<wbr>)</a>
+                    <a name="//apple_ref/swift/Property/document" class="dashAnchor"></a>
+                    <a class="token" href="#/">document</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -162,7 +161,7 @@ Resource and Resource Identifier are quite the same and can been see as inherita
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Single data resource</p>
+                        <p>Document of the response</p>
 
                       </div>
                     </section>
@@ -172,8 +171,8 @@ Resource and Resource Identifier are quite the same and can been see as inherita
                   <div>
                     <code>
                     <a name="/"></a>
-                    <a name="//apple_ref/swift/Element/collection(resources:)" class="dashAnchor"></a>
-                    <a class="token" href="#/">collection(resources:<wbr>)</a>
+                    <a name="//apple_ref/swift/Property/resources" class="dashAnchor"></a>
+                    <a class="token" href="#/">resources</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -181,7 +180,26 @@ Resource and Resource Identifier are quite the same and can been see as inherita
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Multiple data resources</p>
+                        <p>Deserialized resources of the response</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Method/init(_:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/">init(_:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Constructor</p>
 
                       </div>
                     </section>
