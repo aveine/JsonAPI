@@ -275,6 +275,132 @@ open class Resource : Identifiable, Equatable {
             meta: self.meta
         )
     }
+
+    /**
+     Serialize to a JSON API resource object and relationships as included
+
+     - Returns: JSON API resource object representation of the instance and relationships as included
+     */
+    public func toResourceObjectWithIncluded() -> (resourceObject: Document.ResourceObject, included: [Document.ResourceObject]) {
+        return toResourceObjectWithIncluded(alreadySerialized: [])
+    }
+
+    /**
+     Internal method of `toResourceObjectWithIncluded()` to avoid exposing internal parameter used for recursivity
+
+     - Parameter alreadySerialized: Array of resources already serialized to keep track during recursivity and avoid inifnite loops.
+     - Returns: JSON API resource object representation of the instance and relationships as included
+     */
+    private func toResourceObjectWithIncluded(alreadySerialized: [Resource]) -> (resourceObject: Document.ResourceObject, included: [Document.ResourceObject]) {
+        var attributes: Document.JsonObject = [:]
+        var relationships: Document.RelationshipObjects = [:]
+        var included: [Document.ResourceObject] = []
+
+        var mirror: Mirror? = Mirror(reflecting: self)
+        var properties: [Mirror.Child] = []
+        repeat {
+            for property in mirror!.children {
+                properties.append(property)
+            }
+            mirror = mirror?.superclassMirror
+        } while mirror != nil && mirror?.subjectType != Resource.self
+
+        for property in properties {
+            if let label = property.label {
+                let key: String = self.attributesKeys.first { $1 == label }?.key ?? label
+                if self.excludedAttributes.contains(key) {
+                    continue
+                }
+
+                if let optionalValue = property.value as? OptionalProtocol {
+                    let optionalValueWrappedType = optionalValue.wrappedType()
+                    if optionalValueWrappedType is Resource.Type {
+                        let resource = property.value as? Resource
+                        relationships[key] = self.resourceToRelationshipObject(resource: resource)
+                        if let resource = resource {
+                            if resource.id == nil && !alreadySerialized.contains(resource) {
+                                let (resourceObject, resourceObjectIncluded) = resource.toResourceObjectWithIncluded(alreadySerialized: alreadySerialized + [self])
+
+                                included.append(resourceObject)
+                                included.append(contentsOf: resourceObjectIncluded)
+                            }
+                        }
+                    } else if let optionalCollectionValue = optionalValue as? OptionalCollectionProtocol {
+                        let optionalCollectionValueWrappedElementType = optionalCollectionValue.wrappedElementType()
+                        if optionalCollectionValueWrappedElementType is Resource.Type {
+                            let resources = property.value as? [Resource]
+                            relationships[key] = self.resourcesToRelationshipObject(resources: resources)
+                            if let resources = resources {
+                                resources.forEach { resource in
+                                    if resource.id == nil && !alreadySerialized.contains(resource) {
+                                        let (resourceObject, resourceObjectIncluded) = resource.toResourceObjectWithIncluded(alreadySerialized: alreadySerialized + [self])
+
+                                        included.append(resourceObject)
+                                        included.append(contentsOf: resourceObjectIncluded)
+                                    }
+                                }
+                            }
+                        } else {
+                            var value: Any? = property.value
+                            if let collectionNestedAttribute = value as? [ResourceNestedAttribute] {
+                                value = collectionNestedAttribute.map { nestedAttribute -> Document.JsonObject in
+                                    serializeNestedAttribute(nestedAttribute: nestedAttribute)
+                                }
+                            }
+                            attributes[key] = value
+                        }
+                    } else {
+                        var value: Any? = property.value
+                        if let nestedAttribute = value as? ResourceNestedAttribute {
+                            value = serializeNestedAttribute(nestedAttribute: nestedAttribute)
+                        }
+                        attributes[key] = value
+                    }
+                } else {
+                    switch property.value {
+                    case let resource as Resource:
+                        relationships[key] = resource.toRelationshipObject()
+                        if resource.id == nil && !alreadySerialized.contains(resource) {
+                            let (resourceObject, resourceObjectIncluded) = resource.toResourceObjectWithIncluded(alreadySerialized: alreadySerialized + [self])
+
+                            included.append(resourceObject)
+                            included.append(contentsOf: resourceObjectIncluded)
+                        }
+                    case let resources as [Resource]:
+                        relationships[key] = self.resourcesToRelationshipObject(resources: resources)
+                        resources.forEach { resource in
+                            if resource.id == nil && !alreadySerialized.contains(resource) {
+                                let (resourceObject, resourceObjectIncluded) = resource.toResourceObjectWithIncluded(alreadySerialized: alreadySerialized + [self])
+
+                                included.append(resourceObject)
+                                included.append(contentsOf: resourceObjectIncluded)
+                            }
+                        }
+                    case let nestedAttribute as ResourceNestedAttribute:
+                        attributes[key] = serializeNestedAttribute(nestedAttribute: nestedAttribute)
+                    case let nestedAttributes as [ResourceNestedAttribute]:
+                        attributes[key] = nestedAttributes.map { nestedAttribute -> Document.JsonObject in
+                            serializeNestedAttribute(nestedAttribute: nestedAttribute)
+                        }
+                    default:
+                        attributes[key] = property.value
+                    }
+                }
+            }
+        }
+
+        let resourceObject = Document.ResourceObject(
+            id: self.id,
+            lid: self.lid,
+            type: self.type,
+            attributes: attributes.isEmpty ? nil : attributes,
+            relationships: relationships.isEmpty ? nil : relationships,
+            links: self.links,
+            meta: self.meta
+        )
+
+        return (resourceObject, included)
+    }
     
     /**
      Serialize the given nested attribute into a JSON object

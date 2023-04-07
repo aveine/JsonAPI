@@ -566,7 +566,25 @@ class RequestTests: XCTestCase {
     
     func testResourceSerialization() async throws {
         let article = Article()
-        article.id = "serialization"
+        article.id = "1"
+        article.title = "Title"
+        article.body = "Body"
+
+        let author = Person()
+        author.id = "1"
+        article.author = author
+
+        let firstCoAuthor = Person()
+        firstCoAuthor.id = "2"
+
+        let secondCoAuthor = Person()
+        secondCoAuthor.id = "3"
+
+        let thirdCoAuthor = Person()
+        thirdCoAuthor.name = "author"
+        thirdCoAuthor.favoriteArticle = article
+
+        article.coAuthors = [firstCoAuthor, secondCoAuthor, thirdCoAuthor]
 
         let response = try await ResourceRequest<Article>(path: "", method: HttpMethod.get, client: self.client, resource: article)
             .queryItems([URLQueryItem(name: "resourceSerialization", value: "true")])
@@ -582,7 +600,9 @@ class RequestTests: XCTestCase {
         }
 
         XCTAssertEqual(resource.id, article.id)
-        XCTAssertEqual(["data": resource.toResourceObject().toJson()] as NSDictionary, document.toJson() as NSDictionary)
+
+        let (resourceObject, included) = article.toResourceObjectWithIncluded()
+        XCTAssertEqual(["data": resourceObject.toJson(), "included": included.map { $0.toJson() }] as NSDictionary, document.toJson() as NSDictionary)
     }
     
     

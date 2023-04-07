@@ -60,10 +60,21 @@ public class Request<ResourceType: Resource, SuccessType> {
      */
     public func result() async throws -> SuccessType {
         let body: Document.JsonObject? = {
-            if let resourceObject = self.resource?.toResourceObject().toJson() {
-                return ["data": resourceObject]
+            let resourceObjectWithIncluded = self.resource?.toResourceObjectWithIncluded()
+
+            if let resourceObject = resourceObjectWithIncluded?.resourceObject {
+                var document: Document.JsonObject = [:]
+
+                document["data"] = resourceObject.toJson()
+
+                if let included = resourceObjectWithIncluded?.included, included.isEmpty == false {
+                    document["included"] = included.map { $0.toJson() }
+                }
+
+                return document
+            } else {
+                return nil
             }
-            return nil
         }()
 
         do {
