@@ -6,8 +6,13 @@ extension Document {
         /**
          Resource's id
          */
-        public let id: String
-        
+        public let id: String?
+
+        /**
+         Resource's local id
+         */
+        public let lid: String?
+
         /**
          Resource's type
          */
@@ -22,13 +27,14 @@ extension Document {
          Constructor
          
          - Parameter json: JSON object from which to build the resource identifier object
-         - Throws: `DocumentError.missingKey` if `id` and/or `type` attribute are missing
+         - Throws: `DocumentError.missingKey` if `id` or `lid`,  and/or `type` attributes are missing
          */
         public init(json: JsonObject) throws {
-            if let id = json["id"] as? String {
-                self.id = id
-            } else {
-                throw DocumentError.missingKey(key: "id")
+            self.id = json["id"] as? String
+            self.lid = json["lid"] as? String
+
+            if self.id == nil && self.lid == nil {
+                throw DocumentError.missingKey(key: "id or lid")
             }
             
             if let type = json["type"] as? String {
@@ -44,11 +50,18 @@ extension Document {
          Constructor
          
          - Parameter id: Resource's id
+         - Parameter lid: Resource's local id
          - Parameter type: Resource's type
          - Parameter meta: Non-standard meta-information about the resource
+         - Throws: `DocumentError.missingKey` if `id` or `lid`,  and/or `type` attributes are missing
          */
-        public init(id: String, type: String, meta: Meta?) {
+        public init(id: String?, lid: String?, type: String, meta: Meta?) throws {
             self.id = id
+            self.lid = lid
+            if self.id == nil && self.lid == nil {
+                throw DocumentError.missingKey(key: "id or lid")
+            }
+
             self.type = type
             self.meta = meta
         }
@@ -61,7 +74,11 @@ extension Document {
         public func toJson() -> JsonObject {
             var json: JsonObject = [:]
             
-            json["id"] = self.id
+            if let id = self.id {
+                json["id"] = id
+            } else if let lid = self.lid {
+                json["lid"] = lid
+            }
             json["type"] = self.type
             if let meta = self.meta {
                 json["meta"] = meta
@@ -71,10 +88,22 @@ extension Document {
         }
         
         /**
-         Equality is based on `id` and `type`
+         Equality is based on `id`, `lid` and `type`
          */
         public static func == (lhs: Document.ResourceIdentifierObject, rhs: Document.ResourceIdentifierObject) -> Bool {
-            return lhs.id == rhs.id && lhs.type == rhs.type
+            let idEquals: Bool = {
+                return lhs.id == rhs.id
+            }()
+
+            let lidEquals: Bool = {
+                return lhs.lid == rhs.lid
+            }()
+
+            let typeEquals: Bool = {
+                return lhs.type == rhs.type
+            }()
+
+            return idEquals && lidEquals && typeEquals
         }
     }
 }

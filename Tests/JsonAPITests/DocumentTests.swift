@@ -89,8 +89,25 @@ class DocumentTests: XCTestCase {
         ]
     ]
     
+    static let resourceIdentifierIdOnlyJson: Document.JsonObject = [
+        "id": "2",
+        "type": "persons",
+        "meta": [
+            "foo": "bar"
+        ]
+    ]
+
+    static let resourceIdentifierLidOnlyJson: Document.JsonObject = [
+        "lid": "3",
+        "type": "persons",
+        "meta": [
+            "foo": "bar"
+        ]
+    ]
+
     static let resourceIdentifierJson: Document.JsonObject = [
         "id": "2",
+        "lid": "3",
         "type": "persons",
         "meta": [
             "foo": "bar"
@@ -375,6 +392,7 @@ class DocumentTests: XCTestCase {
         
         let resourceObject = Document.ResourceObject(
             id: id,
+            lid: nil,
             type: type,
             attributes: attributes,
             relationships: relationshipObjects,
@@ -502,46 +520,124 @@ class DocumentTests: XCTestCase {
             XCTAssertEqual(error as! Document.DocumentError, Document.DocumentError.emptyRelationshipObject)
         }
     }
-    
-    func testResourceIdentiferUnserialization() {
-        let json = DocumentTests.resourceIdentifierJson
-        
+
+    func testResourceIdentiferIdOnlyUnserialization() {
+        let json = DocumentTests.resourceIdentifierIdOnlyJson
+
         let resourceIdentifierObject = try! Document.ResourceIdentifierObject(json: json)
-        
+
         let dictionnary = json as NSDictionary
         let id = dictionnary["id"] as! String
         let type = dictionnary["type"] as! String
         let meta = dictionnary["meta"] as? Document.JsonObject
-        
+
         XCTAssertEqual(resourceIdentifierObject.id, id)
         XCTAssertEqual(resourceIdentifierObject.type, type)
         XCTAssertEqual(resourceIdentifierObject.meta as NSDictionary?, meta as NSDictionary?)
-        
+
         XCTAssertEqual(resourceIdentifierObject.toJson() as NSDictionary, dictionnary)
     }
-    
-    func testResourceIdentifierSerialization() {
-        let json = DocumentTests.resourceIdentifierJson
-        
+
+    func testResourceIdentifierIdOnlySerialization() {
+        let json = DocumentTests.resourceIdentifierIdOnlyJson
+
         let dictionnary = json as NSDictionary
         let id = dictionnary["id"] as! String
         let type = dictionnary["type"] as! String
         let meta = dictionnary["meta"] as? Document.JsonObject
-        
-        let resourceIdentifierObject = Document.ResourceIdentifierObject(
+
+        let resourceIdentifierObject = try! Document.ResourceIdentifierObject(
             id: id,
+            lid: nil,
             type: type,
             meta: meta
         )
-        
+
         XCTAssertEqual(resourceIdentifierObject.toJson() as NSDictionary, dictionnary)
     }
-    
+
+    func testResourceIdentiferLidOnlyUnserialization() {
+        let json = DocumentTests.resourceIdentifierLidOnlyJson
+
+        let resourceIdentifierObject = try! Document.ResourceIdentifierObject(json: json)
+
+        let dictionnary = json as NSDictionary
+        let lid = dictionnary["lid"] as! String
+        let type = dictionnary["type"] as! String
+        let meta = dictionnary["meta"] as? Document.JsonObject
+
+        XCTAssertEqual(resourceIdentifierObject.lid, lid)
+        XCTAssertEqual(resourceIdentifierObject.type, type)
+        XCTAssertEqual(resourceIdentifierObject.meta as NSDictionary?, meta as NSDictionary?)
+
+        XCTAssertEqual(resourceIdentifierObject.toJson() as NSDictionary, dictionnary)
+    }
+
+    func testResourceIdentifierLidOnlySerialization() {
+        let json = DocumentTests.resourceIdentifierLidOnlyJson
+
+        let dictionnary = json as NSDictionary
+        let lid = dictionnary["lid"] as! String
+        let type = dictionnary["type"] as! String
+        let meta = dictionnary["meta"] as? Document.JsonObject
+
+        let resourceIdentifierObject = try! Document.ResourceIdentifierObject(
+            id: nil,
+            lid: lid,
+            type: type,
+            meta: meta
+        )
+
+        XCTAssertEqual(resourceIdentifierObject.toJson() as NSDictionary, dictionnary)
+    }
+
+    func testResourceIdentiferUnserialization() {
+        var json = DocumentTests.resourceIdentifierJson
+
+        let resourceIdentifierObject = try! Document.ResourceIdentifierObject(json: json)
+
+        let id = json["id"] as! String
+        let lid = json["lid"] as! String
+        let type = json["type"] as! String
+        let meta = json["meta"] as? Document.JsonObject
+
+        XCTAssertEqual(resourceIdentifierObject.id, id)
+        XCTAssertEqual(resourceIdentifierObject.lid, lid)
+        XCTAssertEqual(resourceIdentifierObject.type, type)
+        XCTAssertEqual(resourceIdentifierObject.meta as NSDictionary?, meta as NSDictionary?)
+
+        json.removeValue(forKey: "lid")
+        XCTAssertEqual(resourceIdentifierObject.toJson() as NSDictionary, (json as NSDictionary))
+    }
+
+    func testResourceIdentifierSerialization() {
+        var json = DocumentTests.resourceIdentifierJson
+
+        let id = json["id"] as! String
+        let lid = json["lid"] as! String
+        let type = json["type"] as! String
+        let meta = json["meta"] as? Document.JsonObject
+
+        let resourceIdentifierObject = try! Document.ResourceIdentifierObject(
+            id: id,
+            lid: lid,
+            type: type,
+            meta: meta
+        )
+
+        json.removeValue(forKey: "lid")
+        XCTAssertEqual(resourceIdentifierObject.toJson() as NSDictionary, (json as NSDictionary))
+    }
+
     func testWrongResourceIdentifer() {
         XCTAssertThrowsError(try Document.ResourceIdentifierObject(json: [:])) { error in
-            XCTAssertEqual(error as! Document.DocumentError, Document.DocumentError.missingKey(key: "id"))
+            XCTAssertEqual(error as! Document.DocumentError, Document.DocumentError.missingKey(key: "id or lid"))
         }
-        
+
+        XCTAssertThrowsError(try Document.ResourceIdentifierObject(id: nil, lid: nil, type: "persons", meta: nil)) { error in
+            XCTAssertEqual(error as! Document.DocumentError, Document.DocumentError.missingKey(key: "id or lid"))
+        }
+
         XCTAssertThrowsError(try Document.ResourceIdentifierObject(json: ["id": "1"])) { error in
             XCTAssertEqual(error as! Document.DocumentError, Document.DocumentError.missingKey(key: "type"))
         }

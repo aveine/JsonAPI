@@ -11,6 +11,11 @@ extension Document {
         public let id: String?
         
         /**
+         Resource's local id
+         */
+        public let lid: String?
+
+        /**
          Resource's type
          */
         public let type: String
@@ -46,6 +51,7 @@ extension Document {
          */
         public init(json: JsonObject) throws {
             self.id = json["id"] as? String
+            self.lid = json["lid"] as? String
             
             if let type = json["type"] as? String {
                 self.type = type
@@ -74,14 +80,16 @@ extension Document {
          Constructor
          
          - Parameter id: Resource's id
+         - Parameter lid: Resource's local id
          - Parameter type: Resource's type
          - Parameter attributes: Resource’s data
          - Parameter relationships: Relationships between the resource and other resources
          - Parameter links: Links related to the resource
          - Parameter meta: Non-standard meta-information about the resource that can not be represented as an attribute or relationship
          */
-        public init(id: String?, type: String, attributes: JsonObject?, relationships: RelationshipObjects?, links: LinksObject?, meta: Meta?) {
+        public init(id: String?, lid: String?, type: String, attributes: JsonObject?, relationships: RelationshipObjects?, links: LinksObject?, meta: Meta?) {
             self.id = id
+            self.lid = lid
             self.type = type
             self.attributes = attributes
             self.relationships = relationships
@@ -99,6 +107,8 @@ extension Document {
             
             if let id = self.id {
                 json["id"] = id
+            } else if let lid = self.lid {
+                json["lid"] = lid
             }
             json["type"] = type
             if let attributes = self.attributes {
@@ -118,16 +128,21 @@ extension Document {
         }
         
         /**
-         Equality is based on `id`,  `type`, `attributes` and `relationships`
+         Equality is based on `id`,  `lid`, `type`, `attributes` and `relationships`
          */
         public static func == (lhs: Document.ResourceObject, rhs: Document.ResourceObject) -> Bool {
             let idEquals: Bool = {
                 return lhs.id == rhs.id
             }()
             
+            let lidEquals: Bool = {
+                return lhs.lid == rhs.lid
+            }()
+
             let typeEquals: Bool = {
                 return lhs.type == rhs.type
             }()
+
             let attributesEquals: Bool = {
                 let lhsAttributes = lhs.attributes ?? [:]
                 let rhsAttributes = rhs.attributes ?? [:]
@@ -139,7 +154,7 @@ extension Document {
                 return lhs.relationships == rhs.relationships
             }()
             
-            return idEquals && typeEquals && attributesEquals && relationshipsEquals
+            return idEquals && lidEquals && typeEquals && attributesEquals && relationshipsEquals
         }
     }
 }
