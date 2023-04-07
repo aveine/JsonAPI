@@ -23,7 +23,12 @@ open class Resource : Identifiable, Equatable {
      Resource's id
      */
     public var id: String?
-    
+
+    /**
+     Resource's local id
+     */
+    public let lid: String
+
     /**
      Resource's meta data
      */
@@ -81,6 +86,7 @@ open class Resource : Identifiable, Equatable {
      Constructor
      */
     public required init() {
+        self.lid = UUID().uuidString
     }
     
     /**
@@ -89,6 +95,8 @@ open class Resource : Identifiable, Equatable {
      - Parameter resourceObject: Resource object from which to build the resource
      */
     public required init(resourceObject: Document.ResourceObject) {
+        self.lid = resourceObject.lid ?? UUID().uuidString
+
         var mutableSelf = self
         self.id = resourceObject.id
         self.meta = resourceObject.meta
@@ -259,6 +267,7 @@ open class Resource : Identifiable, Equatable {
         
         return Document.ResourceObject(
             id: self.id,
+            lid: self.lid,
             type: self.type,
             attributes: attributes.isEmpty ? nil : attributes,
             relationships: relationships.isEmpty ? nil : relationships,
@@ -301,13 +310,10 @@ open class Resource : Identifiable, Equatable {
     /**
      Serialize to a JSON API resource identifier object
      
-     - Returns: JSON API resource identifier object representation of the instance if `id` is set
+     - Returns: JSON API resource identifier object representation of the instance
      */
-    public func toResourceIdentifierObject() -> Document.ResourceIdentifierObject? {
-        if let id = self.id {
-            return Document.ResourceIdentifierObject(id: id, type: self.type, meta: self.meta)
-        }
-        return nil
+    public func toResourceIdentifierObject() -> Document.ResourceIdentifierObject {
+        return try! Document.ResourceIdentifierObject(id: self.id, lid: self.lid, type: self.type, meta: self.meta)
     }
     
     /**
@@ -338,7 +344,7 @@ open class Resource : Identifiable, Equatable {
      - Returns: JSON API relationship object representation of the given resources
      */
     private func resourcesToRelationshipObject(resources: [Resource]?) -> Document.RelationshipObject? {
-        let identifiers = resources?.compactMap { $0.toResourceIdentifierObject() } ?? []
+        let identifiers = resources?.map { $0.toResourceIdentifierObject() } ?? []
         let data = Document.RelationshipObject.ResourceLinkage.collection(identifiers: identifiers)
         return try! Document.RelationshipObject(links: nil, data: data, meta: nil)
     }
@@ -357,19 +363,19 @@ open class Resource : Identifiable, Equatable {
                 switch relationship.value.data {
                 case .single(let identifier):
                     if let identifier = identifier {
-                        if let value = resourceStore[Signature(id: identifier.id, type: identifier.type)]?.resource {
+                        if let id = identifier.id, let value = resourceStore[Signature(id: id, type: identifier.type)]?.resource {
                             try? property.set(value: value, on: &mutableSelf)
                         } else if let classType = self.resourceManager.resourceClasses[identifier.type] {
-                            let resourceObject = try! Document.ResourceObject(json: ["id": identifier.id, "type": identifier.type, "meta": identifier.meta as Any])
+                            let resourceObject = Document.ResourceObject(id: identifier.id, lid: identifier.lid, type: identifier.type, attributes: nil, relationships: nil, links: nil, meta: identifier.meta)
                             try? property.set(value: classType.init(resourceObject: resourceObject), on: &mutableSelf)
                         }
                     }
                 case .collection(let identifiers):
                     let values: [Resource] = identifiers.compactMap { identifier in
-                        if let value = resourceStore[Signature(id: identifier.id, type: identifier.type)]?.resource {
+                        if let id = identifier.id, let value = resourceStore[Signature(id: id, type: identifier.type)]?.resource {
                             return value
                         } else if let classType = self.resourceManager.resourceClasses[identifier.type] {
-                            let resourceObject = try! Document.ResourceObject(json: ["id": identifier.id, "type": identifier.type, "meta": identifier.meta as Any])
+                            let resourceObject = Document.ResourceObject(id: identifier.id, lid: identifier.lid, type: identifier.type, attributes: nil, relationships: nil, links: nil, meta: identifier.meta)
                             return classType.init(resourceObject: resourceObject)
                         }
                         return nil

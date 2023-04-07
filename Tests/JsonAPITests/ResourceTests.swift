@@ -208,40 +208,65 @@ class ResourceTests: XCTestCase {
         
         let firstCoAuthor = Person()
         firstCoAuthor.id = "2"
+
         let secondCoAuthor = Person()
         secondCoAuthor.id = "3"
-        let thirdCoAuthor = Person() //No id, should not be serialized
+
+        let thirdCoAuthor = Person() // No ID is set, so LID is going to be serialized
+
         article.coAuthors = [firstCoAuthor, secondCoAuthor, thirdCoAuthor]
         
         let json: Document.JsonObject = [
-            "id": "1",
-            "type": "articles",
+            "id": article.id,
+            "type": article.type,
             "attributes": [
-                "title": "Title",
-                "body": "Body"
+                "title": article.title,
+                "body": article.body
             ],
             "relationships": [
                 "coauthors": [
                     "data": [
                         [
-                            "id":"2",
-                            "type": "persons"
+                            "id": firstCoAuthor.id!,
+                            "type": firstCoAuthor.type
                         ],
                         [
-                            "id":"3",
-                            "type": "persons"
+                            "id": secondCoAuthor.id!,
+                            "type": secondCoAuthor.type
+                        ],
+                        [
+                            "lid": thirdCoAuthor.lid,
+                            "type": thirdCoAuthor.type
                         ]
                     ]
                 ],
                 "author": [
                     "data": [
-                        "id":"1",
-                        "type": "persons"
+                        "id": author.id!,
+                        "type": author.type
                     ]
                 ]
             ]
         ]
         XCTAssertEqual(article.toResourceObject().toJson() as NSDictionary?, json as NSDictionary?)
+    }
+
+    func testSerializationLid() {
+        let person = Person() // No ID is set, so LID is going to be serialized
+
+        let json: Document.JsonObject = [
+            "lid": person.lid,
+            "type": person.type,
+            "attributes": [
+                "name": nil
+            ],
+            "relationships": [
+                "favoriteArticle": [
+                    "data": nil
+                ]
+            ]
+        ]
+        XCTAssertEqual(person.toResourceObject().toJson() as NSDictionary?, json as NSDictionary?)
     }
     
     func testSerializationNested() {
